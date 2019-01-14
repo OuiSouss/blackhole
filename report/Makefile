@@ -13,7 +13,7 @@ $(REPORT_PDF): $(REPORT_TEX) $(REPORT_DEP) Makefile
 	pdflatex -shell-escape $<
 
 clean:
-	rm -f *~ *.nav *.snm *.toc *.out *.aux *.log
+	rm -f *~ *.nav *.snm *.toc *.out *.aux *.log *.bbl *.blg
 	rm -f $(REPORT_PDF)
 
 
