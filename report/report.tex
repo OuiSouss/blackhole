@@ -23,9 +23,13 @@
 %%% Define some commands %%%
 \newcommand{\authors}[1]{\def\theauthors{#1}\author{#1}}
 \newcommand{\supervisor}[1]{\def\thesupervisor{#1}}
+\newcommand{\client}[1]{\def\theclient{#1}}
 
 \newcommand{\supervisorname}{Supervisor}
-\addto{\captionsfrench}{\renewcommand{\supervisorname}{Client}}
+\addto{\captionsfrench}{\renewcommand{\supervisorname}{Chargé de TD}}
+
+\newcommand{\clientname}{Client}
+\addto{\captionsfrench}{\renewcommand{\clientname}{Client}}
 
 
 %%% Authors %%%
@@ -34,7 +38,9 @@
   Kévin Maître \texttt{<kevin.maitre@etu.u-bordeaux.fr>}\\
   Amélie Risi \texttt{<amelie.risi@etu.u-bordeaux.fr>}}
 
-\supervisor{Damien Magoni <magoni@labri.fr>}
+\client{Damien Magoni \texttt{<magoni@labri.fr>}}
+
+\supervisor{Emmanuel Fleury \texttt{<fleury@labri.fr>}}
 
 %%%%% Report Title %%%%%
 \title{Routage vers trou noir piloté à distance}
@@ -62,8 +68,10 @@ Mention \emph{Informatique},\\
 \small}
 \postauthor{\vspace{1em}
   \newline\textbf{\large\supervisorname}\\\thesupervisor
-\\[-.25em]
-\rule{\linewidth}{1mm}\\[-.25em]}
+\newline\vspace{0.15em}
+  \newline\textbf{\large\clientname}\\\theclient
+\\[-.15em]
+\rule{\linewidth}{1mm}\\[-.15em]}
 \predate{\hspace{\fill}}
 \postdate{}
 
