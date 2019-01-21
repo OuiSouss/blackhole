@@ -34,7 +34,7 @@
 
 %%% Authors %%%
 \authors{Geoffroy Gressier \texttt{<geoffroy.gressier@etu.u-bordeaux.fr>}\\
-  Cyrielle Dubois \texttt{<cyrielle.dubois@etu.u-bordeaux.fr>}\\
+  Cyrielle Dubois \texttt{<cyrielle.dubois@u-bordeaux.fr>}\\
   Kévin Maître \texttt{<kevin.maitre@etu.u-bordeaux.fr>}\\
   Amélie Risi \texttt{<amelie.risi@etu.u-bordeaux.fr>}}
 
@@ -109,7 +109,8 @@ Mention \emph{Informatique},\\
 
 
 %%% Hyperefs style %%%
-\hypersetup{backref,
+%\hypersetup{backref,
+\hypersetup{
   pdfpagemode=FullScreen,
   colorlinks=true}
 
@@ -178,7 +179,14 @@ Mention \emph{Informatique},\\
 
 \newpage
 
+\input{report/chapter-intro.tex}
+
+\input{report/chapter-state-of-the-art.tex}
+
+\input{report/chapter-requirements.tex}
+
 \nocite{*}
+
 \bibliography{biblio}
 
 \end{document}
