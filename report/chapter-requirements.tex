@@ -2,41 +2,54 @@
 
 \section{Besoins fonctionnels}
 
-\subsection{Interface}
-\subsection{Connexions \& Déconnexions}
-\subsection{Gestion des routes}
+\subsection{Créer de routes}L'application doit permettre de créer des routes et donc par la suite de permettre un routage vers trou noir.
+
+\subsection{Supprimer de routes}Puisque il permet la création, l'application devra permettre la suppression des routes précédemment créés.
+
+\subsection{Activer \& désactiver des routes}Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc avoir besoin de les recréer par la suite.
+
+\subsection{Interface}Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémenté en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
+
+%\subsection{Connexions \& Déconnexions}Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à y avoir accès.
+
+\newpage
 
 
 % Recevoir et utiliser l'information de l'autre groupe
-Même si nous ne savons pas clairement comme l'autre groupe va nous info
-
-% Traduction anglais/français, mode multi-langue
-Le code (fonctions, variables, commentaires) sera écrit en anglais.\newline
-Pour rester cohérent, l'interface de l'utilisateur serait elle aussi en anglais.\newline
-On pourrait éventuellement ajouter l'option de choisir une interface en français
-
+%Même si nous ne savons pas clairement comme l'autre groupe va nous info
 
 % recevoir des "sources" par l'api, considérées comme dangereuses
 % utilises ces "sources" pour créer des routes
 % utiliser ces routes pour rediriger ces "sources" dans le néant
-% pouvoir activer , désactiver et supprimer des routes
 
 \section{Besoins non fonctionnels}
+%\subsection{Sécurisé}
+% Seul l'administrateur doit pouvoir s'occuper des routes, il faut donc prévoir une connexion sécurisée avec login/mot de passe
 
-\subsection{Coût ?}
+%\subsection{Rapidité d'exécution}
+% L'action décidée par l'administrateur doit pouvoir se faire rapidement
 
-\subsection{Fiabilité ?}
+%\subsection{Interface} à voir si plutôt fonctionnel
+% L'interface doit être facile d'utilisation. L'administrateur n'a pas de temps à perdre à savoir comment ça fonctionne
 
-\subsection{Performance ?}
+%\subsection{Performant}
+% L'appli devra gérer plusieurs attaques simultanées
 
-\subsection{Capacité ?}
+%\subsection{Portabilité}
+% L'appli pourra notamment s'exécuter sur différents supports
 
-\subsection{Sécurité ?}
 
-\subsection{Pérennité ?}
 
-\subsection{Portabilité ?}
+\subsection{Coût}Le développement de l'application ne devra entraîner aucun coût pour le client.
 
-\subsection{Évolutivité ?}
+\subsection{Performant}L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées.
 
-\subsection{Déploiement ?}
+\subsection{Sécurisé}L’application ne devra être utilisable que par l'administrateur. Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
+
+\subsection{Déploiement}L'application sera déployée et testée sur un réseau virtuel.
+
+%\subsection{Pérennité ?}
+%\subsection{Portabilité ?}
+%\subsection{Fiabilité ?}
+%\subsection{Évolutivité ?}
+%\subsection{Capacité ?}
