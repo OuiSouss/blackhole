@@ -2,13 +2,17 @@
 
 \section{Besoins fonctionnels}
 
-\subsection{Créer de routes}L'application doit permettre de créer des routes et donc par la suite de permettre un routage vers trou noir.
+\subsection{Créer des routes}
+L'application doit permettre de créer des routes dans le réseau, c'est-à-dire de trouver un chemin allant du routeur d'entrée vers une autre cible. Il faudra donc modifier la table de routage du routeur d'entrée. Dans notre cas, la cible sera une adresse fictive et permettra un routage vers un trou noir pour contrer l'attaque.
 
-\subsection{Supprimer de routes}Puisque il permet la création, l'application devra permettre la suppression des routes précédemment créés.
+\subsection{Supprimer des routes}
+Puisqu'il permet la création, l'application devra permettre également la suppression des routes précédemment créées.
 
-\subsection{Activer \& désactiver des routes}Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc avoir besoin de les recréer par la suite.
+\subsection{Activer \& désactiver des routes}
+Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc sans avoir besoin de les recréer par la suite.
 
-\subsection{Interface}Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémenté en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
+\subsection{Interface}
+Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
 
 %\subsection{Connexions \& Déconnexions}Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à y avoir accès.
 
@@ -39,14 +43,17 @@
 % L'appli pourra notamment s'exécuter sur différents supports
 
 
+\subsection{Coût}
+Le développement de l'application ne devra entraîner aucun coût pour le client.
 
-\subsection{Coût}Le développement de l'application ne devra entraîner aucun coût pour le client.
+\subsection{Performant}
+L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées.
 
-\subsection{Performant}L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées.
+\subsection{Sécurisé}
+L’application ne devra être utilisable que par l'administrateur. Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
 
-\subsection{Sécurisé}L’application ne devra être utilisable que par l'administrateur. Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
-
-\subsection{Déploiement}L'application sera déployée et testée sur un réseau virtuel.
+\subsection{Déploiement}
+L'application sera déployée et testée sur un réseau virtuel.
 
 %\subsection{Pérennité ?}
 %\subsection{Portabilité ?}
