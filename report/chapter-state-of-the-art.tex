@@ -21,12 +21,11 @@ Ce dit d'une adresse IP fictive. Le routeur qui renvoie les données vers cette 
 \section{Outils principaux}
 
 \subsection{ExaBGP}
-s
 Exabgp est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
 \cite{Man10}
 
 \subsection{Remote Trigger Blackhole (RTBH)}
-Solution traditionnelle de mitigation de DDoS. 
+Solution traditionnelle de mitigation de DDoS.
 Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite les routeurs limitrophes  met le prochain "hop" à un "hop" spécial qui redirige vers dev/null, empêchant ainsi le trafic de sources suspectes dans votre réseau. Bien que cela offre une bonne protection, il rend le Serveur complètement inaccessible.
 
 % http://wawadeb.crdp.ac-caen.fr/iso/tmp/ressources/linux/reseau/www.laissus.fr/cours/node81.html
@@ -49,5 +48,3 @@ Qemu est un émulateur de machine virtuelle
 
 \subsection{NEmu}
 NEmu (Network Emulator for Mobile Universes) est un environement de réseaux virtuels distribué. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique.
-
-
