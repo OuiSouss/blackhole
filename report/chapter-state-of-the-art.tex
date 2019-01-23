@@ -21,5 +21,33 @@ Ce dit d'une adresse IP fictive. Le routeur qui renvoie les données vers cette 
 \section{Outils principaux}
 
 \subsection{ExaBGP}
+s
+Exabgp est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
+\cite{Man10}
 
-\subsection{Nemu}
+\subsection{Remote Trigger Blackhole (RTBH)}
+Solution traditionnelle de mitigation de DDoS. 
+Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite les routeurs limitrophes  met le prochain "hop" à un "hop" spécial qui redirige vers dev/null, empêchant ainsi le trafic de sources suspectes dans votre réseau. Bien que cela offre une bonne protection, il rend le Serveur complètement inaccessible.
+
+% http://wawadeb.crdp.ac-caen.fr/iso/tmp/ressources/linux/reseau/www.laissus.fr/cours/node81.html
+
+% https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k_r5-2/routing/configuration/guide/b_routing_cg52xasr9k/b_routing_cg52xasr9k_chapter_011.html
+
+% https://www.routerfreak.com/remotely-triggered-black-hole-routing-ddos-attacks/
+
+
+\subsection{FlowSpec}
+
+%https://www.netcraftsmen.com/bgp-flowspec-step-forward-ddos-mitigation/
+% WHY BGP FLOWSPEC IS A STEP FORWARD IN DDOS MITIGATION
+% MIKE BLUNT
+
+
+\subsection{Qemu}
+
+Qemu est un émulateur de machine virtuelle
+
+\subsection{NEmu}
+NEmu (Network Emulator for Mobile Universes) est un environement de réseaux virtuels distribué. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique.
+
+
