@@ -7,44 +7,54 @@
 C'est un élément intermédiaire permettant le transit des paquets d'un réseau à un autre réseau.
 
 \subsection{Route}
-C'est un chemin,permettant de relier une source à une destination. Le routeur possède dans une table(table de routage) la correspondance entre son adresse et l'adresse de destination du paquet qu'il a reçu.
+C'est un chemin, permettant de relier une source à une destination. Le routeur possède dans une table(table de routage) la correspondance entre son adresse et l'adresse de destination du paquet qu'il a reçu.
 
-\subsection{Restful}
+\subsection{RESTful}
 REST(REpresentational State Transfer) est un principe d'architecture qui s'applique aux services Web. Le serveur et le client communiquent sans que le client ne connaisse les informations stockées sur le serveur. Il utilise des requêtes HTTP un peu modifiées, PUT pour modifier ou mettre à jour l'état d'un objet, GET pour récupérer un objet, POST pour créer un objet et DELETE pour supprimer un objet.
 
 \subsection{BGP}
-Le protocole BGP, Border Gateway Protocol, est un protocole de routage. il permet l'échange des informations contenu dans un réseau avec un autre réseau.
+Le protocole BGP, Border Gateway Protocol, est un protocole de routage. Il permet l'échange des informations contenu dans un réseau avec un autre réseau.
 
 \subsection{Trou noir ou Black hole}
-Ce dit d'une adresse IP fictive. Le routeur qui renvoie les données vers cette adresse IP, les enverra vers Null. Ce point fera donc disparaître le trafic.
-
-\section{Outils principaux}
-
-\subsection{ExaBGP}
-Exabgp est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
-\cite{Man10}
+Se dit d'une adresse IP fictive. Le routeur qui renvoie les données vers cette adresse IP, les enverra vers une interface Null. Ce point fera donc disparaître le trafic.
 
 \subsection{Remote Trigger Blackhole (RTBH)}
-Solution traditionnelle de mitigation de DDoS.
-Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite les routeurs limitrophes  met le prochain "hop" à un "hop" spécial qui redirige vers dev/null, empêchant ainsi le trafic de sources suspectes dans votre réseau. Bien que cela offre une bonne protection, il rend le Serveur complètement inaccessible.
+Solution traditionnelle de mitigation de DDoS. 
+Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite, les routeurs limitrophes créent une route qui redirige le trafic vers Null, empêchant ainsi des sources suspectes d'atteindre le réseau. Bien que cela offre une bonne protection, le Serveur deviens complètement inaccessible.
+
+\subsection{DDoS}
+Une attaque DDoS(Distributed Denial of Service attack) est un type d'attaque DoS. DoS est une attaque inondant un service, le rendant ainsi inutilisable. Elle est dite distribuée, car l'attaque possède plusieurs sources.
+
 
 % http://wawadeb.crdp.ac-caen.fr/iso/tmp/ressources/linux/reseau/www.laissus.fr/cours/node81.html
 
-% https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k_r5-2/routing/configuration/guide/b_routing_cg52xasr9k/b_routing_cg52xasr9k_chapter_011.html
 
+% non
 % https://www.routerfreak.com/remotely-triggered-black-hole-routing-ddos-attacks/
 
 
-\subsection{FlowSpec}
+\subsection{BGP Flowspec}
+
+% https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k_r5-2/routing/configuration/guide/b_routing_cg52xasr9k/b_routing_cg52xasr9k_chapter_011.html
 
 %https://www.netcraftsmen.com/bgp-flowspec-step-forward-ddos-mitigation/
 % WHY BGP FLOWSPEC IS A STEP FORWARD IN DDOS MITIGATION
 % MIKE BLUNT
 
 
+\section{Outils principaux}
+
+\subsection{ExaBGP}
+ExaBGP est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
+\cite{Man10}
+
+
+
 \subsection{Qemu}
 
-Qemu est un émulateur de machine virtuelle
+Qemu est un émulateur de machine virtuelle.
 
 \subsection{NEmu}
-NEmu (Network Emulator for Mobile Universes) est un environement de réseaux virtuels distribué. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique.
+NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribué. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique.
+
+

@@ -2,21 +2,27 @@
 
 \section{Besoins fonctionnels}
 
-\subsection{Créer des routes}
+\subsection{Besoin Utilisateurs}
+\subsubsection{Créer des routes}
 L'application doit permettre de créer des routes dans le réseau, c'est-à-dire de trouver un chemin allant du routeur d'entrée vers une autre cible. Il faudra donc modifier la table de routage du routeur d'entrée. Dans notre cas, la cible sera une adresse fictive et permettra un routage vers un trou noir pour contrer l'attaque.
 
-\subsection{Supprimer des routes}
+\subsubsection{Supprimer des routes}
 Puisqu'il permet la création, l'application devra permettre également la suppression des routes précédemment créées.
 
-\subsection{Activer \& désactiver des routes}
+\subsubsection{Activer \& désactiver des routes}
 Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc sans avoir besoin de les recréer par la suite.
+
+\subsubsection{Connexions \& Déconnexions}
+Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à pouvoir se connecter.
 
 \subsection{Interface}
 % L'interface doit être facile d'utilisation. L'administrateur n'a pas de temps à perdre à savoir comment ça fonctionne
 Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
 
-%\subsection{Connexions \& Déconnexions}Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à y avoir accès.
+\subsection{Communication avec ExaBGP}
 
+\subsubsection{Envoyer les routes}
+Dès que l'utilisateur aura ajouté une route, il faut transmettre les informations à ExaBGP afin qu'il diffuse la route auprès des routeurs Cisco.
 \newpage
 
 
@@ -37,7 +43,8 @@ Le développement de l'application ne devra entraîner aucun coût.
 L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées.
 
 \subsection{Sécurisé}
-L’application ne devra être utilisable que par l'administrateur. Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
+L’application ne devra être utilisable que par l'administrateur, donc seulement l'administrateur devra pouvoir se connecter.
+%Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
 
 \subsection{Déploiement}
 L'application sera déployée et testée sur un réseau virtuel.
@@ -46,9 +53,6 @@ L'application sera déployée et testée sur un réseau virtuel.
 L'application devra être couverte par des tests pour vérifier que les différentes actions sur les routes sont bien implémentées et permettent donc bien de gérer un routage vers trou noir.
 
 %\subsection{Pérennité ?}
-
-%\subsection{Portabilité}
-% L'appli pourra notamment s'exécuter sur différents supports
 
 %\subsection{Évolutivité ?}
 
