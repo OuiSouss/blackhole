@@ -12,6 +12,7 @@ Puisqu'il permet la création, l'application devra permettre également la suppr
 Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc sans avoir besoin de les recréer par la suite.
 
 \subsection{Interface}
+% L'interface doit être facile d'utilisation. L'administrateur n'a pas de temps à perdre à savoir comment ça fonctionne
 Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
 
 %\subsection{Connexions \& Déconnexions}Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à y avoir accès.
@@ -27,26 +28,12 @@ Pour permettre une gestion plus visuelle des différentes fonctions implémenté
 % utiliser ces routes pour rediriger ces "sources" dans le néant
 
 \section{Besoins non fonctionnels}
-%\subsection{Sécurisé}
-% Seul l'administrateur doit pouvoir s'occuper des routes, il faut donc prévoir une connexion sécurisée avec login/mot de passe
-
-%\subsection{Rapidité d'exécution}
-% L'action décidée par l'administrateur doit pouvoir se faire rapidement
-
-%\subsection{Interface} à voir si plutôt fonctionnel
-% L'interface doit être facile d'utilisation. L'administrateur n'a pas de temps à perdre à savoir comment ça fonctionne
-
-%\subsection{Performant}
-% L'appli devra gérer plusieurs attaques simultanées
-
-%\subsection{Portabilité}
-% L'appli pourra notamment s'exécuter sur différents supports
-
 
 \subsection{Coût}
-Le développement de l'application ne devra entraîner aucun coût pour le client.
+Le développement de l'application ne devra entraîner aucun coût.
 
-\subsection{Performant}
+\subsection{Performance}
+% L'action décidée par l'administrateur doit pouvoir se faire rapidement
 L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées.
 
 \subsection{Sécurisé}
@@ -55,8 +42,14 @@ L’application ne devra être utilisable que par l'administrateur. Nous mettron
 \subsection{Déploiement}
 L'application sera déployée et testée sur un réseau virtuel.
 
+\subsection{Fiabilité}
+L'application devra être couverte par des tests pour vérifier que les différentes actions sur les routes sont bien implémentées et permettent donc bien de gérer un routage vers trou noir.
+
 %\subsection{Pérennité ?}
-%\subsection{Portabilité ?}
-%\subsection{Fiabilité ?}
+
+%\subsection{Portabilité}
+% L'appli pourra notamment s'exécuter sur différents supports
+
 %\subsection{Évolutivité ?}
+
 %\subsection{Capacité ?}
