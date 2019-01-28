@@ -12,34 +12,72 @@ C'est un chemin, permettant de relier une source à une destination. Le routeur 
 \subsection{RESTful}
 REST(REpresentational State Transfer) est un principe d'architecture qui s'applique aux services Web. Le serveur et le client communiquent sans que le client ne connaisse les informations stockées sur le serveur. Il utilise des requêtes HTTP un peu modifiées, PUT pour modifier ou mettre à jour l'état d'un objet, GET pour récupérer un objet, POST pour créer un objet et DELETE pour supprimer un objet.
 
+\subsubsection{Comment en écrire une :}
+
+
 \subsection{BGP}
 Le protocole BGP, Border Gateway Protocol, est un protocole de routage. Il permet l'échange des informations contenu dans un réseau avec un autre réseau.
 
 \subsection{Trou noir ou Black hole}
 Se dit d'une adresse IP fictive. Le routeur qui renvoie les données vers cette adresse IP, les enverra vers une interface Null. Ce point fera donc disparaître le trafic.
 
-\subsection{Remote Trigger Blackhole (RTBH)}
-Solution traditionnelle de mitigation de DDoS. 
-Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite, les routeurs limitrophes créent une route qui redirige le trafic vers Null, empêchant ainsi des sources suspectes d'atteindre le réseau. Bien que cela offre une bonne protection, le Serveur deviens complètement inaccessible.
-
 \subsection{DDoS}
 Une attaque DDoS(Distributed Denial of Service attack) est un type d'attaque DoS. DoS est une attaque inondant un service, le rendant ainsi inutilisable. Elle est dite distribuée, car l'attaque possède plusieurs sources.
 
-
 % http://wawadeb.crdp.ac-caen.fr/iso/tmp/ressources/linux/reseau/www.laissus.fr/cours/node81.html
-
 
 % non
 % https://www.routerfreak.com/remotely-triggered-black-hole-routing-ddos-attacks/
 
 
+\subsection{Remote Trigger Blackhole (RTBH)}
+Solution traditionnelle de mitigation de DDoS. 
+Une route BGP est injectée à l'emplacement de l’adresse du site Web sous attaque. Ensuite, les routeurs limitrophes créent une route qui redirige le trafic vers Null, empêchant ainsi des sources suspectes d'atteindre le réseau. Bien que cela offre une bonne protection, le Serveur deviens complètement inaccessible.
+% https://tools.ietf.org/html/rfc3882
+% https://tools.ietf.org/html/rfc5635
+
 \subsection{BGP Flowspec}
+Solution plus élaborée de mitigation de DDoS que RTBH.
+Permet une approche plus variée comme l'arrêt du trafic, l'injection du trafic dans un VRF (Virtual routing and forwarding) ou contrôler son débit. Cette solution prends en compte la destination, la source, le protocole, les ports ou encore la longueur des messages pour agir.
+
+
+
+% Type 	NLRI Component
+% 1 	Destination Prefix
+% Defines the destination prefix to match
+% 2 	Source Prefix
+% Defines the source prefix
+% 3 	IP Protocol
+% Contains a set of {operator, value} pairs that are used to match the IP protocol value byte in IP packets.
+% 4 	Port
+% This is defines whether TCP, UDP or both will be packets will be influenced
+% 5 	Destination Port
+% Defines the destination port that will be influenced by FlowSpec
+% 6 	Source Port
+% Defines the source port that will be influenced by FlowSpec
+% 7 	ICMP Type
+% 8 	ICMP Code
+% 9 	TCP flags
+% 10 	Packet Length
+% Match on the total IP packet length (excluding Layer 2 but including IP header)
+% 11 	DSCP
+% Match on the Class Of Service flag
+% 12 	Fragment Encoding
+
+
+% https://blog.marquis.co/what-is-bgp-flowspec/
+% https://tools.ietf.org/html/rfc7674
+
 
 % https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k_r5-2/routing/configuration/guide/b_routing_cg52xasr9k/b_routing_cg52xasr9k_chapter_011.html
 
 %https://www.netcraftsmen.com/bgp-flowspec-step-forward-ddos-mitigation/
 % WHY BGP FLOWSPEC IS A STEP FORWARD IN DDOS MITIGATION
 % MIKE BLUNT
+
+
+
+
 
 
 \section{Outils principaux}
