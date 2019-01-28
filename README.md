@@ -7,6 +7,14 @@ Le logiciel devra être implémenté en Javascript et du côté serveur il devra
 L'application Web devra être de type RESTful et elle s'appuiera éventuellement sur un framework JS.
 Elle devra supporter le routage vers trou noir par la destination, par la source et par la communauté BGP.
 
+## Structure du dépôt
+
+- [Project](./project) : Répertoire pour le code
+  - [Django](./project/django) : Code de l'application Django
+  - [Configuration initiale du projet](./project/prerequisite.md) : Informations pour configurer le projet
+- [Reports](./reports) : Répertoire pour les fichiers latex
+
+
 ## Organisation
 - [Trello](https://trello.com/invite/b/dZQteQPl/e0617eb1f7a6b316739c81d739760440/pdp-blackhole)
 
