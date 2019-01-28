@@ -6,3 +6,5 @@
 */*.out
 */*.pdf
 */*.toc
+*/*/__pycache__/
+*/*/*/__pycache__/
