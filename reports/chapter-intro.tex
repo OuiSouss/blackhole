@@ -17,6 +17,18 @@ Depuis quelques années, les attaques par déni de services sont de plus en plus
     \item \textbf{Attaque volumétrique} : Le but est de créer une congestion en occupant toute la bande passante réseau disponible afin de rendre un ou plusieurs services inaccessibles. Ce type d'attaque cherche donc à générer un grand nombre de paquets par seconde ou d'envoyer un grand nombre de données. Un exemple d'attaque est le DNS Amplification qui envoie une requête DNS à un serveur avec une adresse IP usurpée.
 \end{itemize}
 
-En 2018, lors du premier semestre, le nombre d'attaque DDoS a diminuer de 13\% mais cela reste tout de même minime car on recense en plus de 400 000 chaque mois. C'est pourquoi, il faut protéger son réseau de ce type d'attaque. Pour ce faire, il existe plusieurs contre-mesures comme préciser dans le document de l'ANSSI \cite{Ans15}. Mais, dans le cadre de ce projet, nous ne nous intéressons qu'à la technique de routage vers trou noir piloté à distance, autrement dit Remotely triggered blackhole filtering (RTBH), expliquée dans notre document principal \cite{Sys05} ainsi que dans le RFC 5635 \cite{Rfcrtbh09}. 
+En 2018, lors du premier semestre, le nombre d'attaque DDoS a diminuer de 13\% mais cela reste tout de même minime car on recense en plus de 400 000 chaque mois. C'est pourquoi, il faut protéger son réseau de ce type d'attaque. Pour ce faire, il existe plusieurs contre-mesures comme préciser dans le document de l'ANSSI \cite{Ans15}. Mais, dans le cadre de ce projet, nous ne nous intéressons qu'à la technique de routage vers trou noir piloté à distance, autrement dit Remotely triggered blackhole filtering (RTBH), expliquée dans notre document principal \cite{Sys05} ainsi que dans le RFC 5635 \cite{Rfcrtbh09}. Cette technique consiste à écarter tout trafic indésirable qui rentre dans un réseau protégé. Le challenge de cette méthode est de détecter rapidement les attaques, mais, nous ne sommes pas en charge de le faire. Cela sera fait par un autre groupe de travail. 
+
+Le principe consiste à utiliser des protocoles de routage afin de mettre à jour les tables de routage présents à la frontière du réseau. Pour ce faire, le protocole \hyperref[sec:BGP]{BGP} est utilisé \cite{Rfcbgp06}. 
+
+Il existe plusieurs moyens d'y arriver:
+
+\begin{itemize}
+    \item \textbf{Destination des paquets} : Tout les paquets qui sont destinés à une machine précise sont redirigés vers l'interface null0 en changeant le "next-hop" pour la ciblée. 
+    
+    \item \textbf{Source des paquets} : Si on constate que la source est malveillante, on la redirige, on annonce une redirection en envoyant les paquets de cette source vers le trou noir.
+    
+    \item \textbf{Communauté BGP} : Si l'on observe que l'attaque passe par une certaine communauté BGP, on peut envoyé à toute cette communauté des messages pour qu'elle redirige tout le trafic vers le blackhole.
+\end{itemize}
 
 Afin de comprendre le sujet, il nous faut définir les termes principaux du sujet ainsi que les outils qui vont être utilisés. De plus, ce projet se base sur deux existants, le projet de l'année dernière \cite{PMCB18} ainsi qu'une application web Erco \cite{Erc16}.
