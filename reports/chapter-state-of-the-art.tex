@@ -4,11 +4,11 @@
 \section{Définitions des termes principaux}
 
 \subsection{RESTful}
-REST(REpresentational State Transfer) \cite{Fie00} est un principe d'architecture qui s'applique aux services Web. Il ignore les détails de l'implémentation des composants et de la syntaxe de protocole afin de se concentrer sur les rôles des composants, les contraintes liées à leurs interactions avec d'autres composants et leurs interprétations des éléments de données significatifs. Il englobe les contraintes fondamentales sur les composants, les connecteurs et les données qui définissent la base de l'architecture Web. Le serveur et le client communiquent sans que le client ne connaisse les informations stockées sur le serveur. 
+REST(REpresentational State Transfer) \cite{Fie00} est un principe d'architecture qui s'applique aux services Web. Il ignore les détails de l'implémentation des composants et de la syntaxe de protocole afin de se concentrer sur les rôles des composants, les contraintes liées à leurs interactions avec d'autres composants et leurs interprétations des éléments de données significatifs. Il englobe les contraintes fondamentales sur les composants, les connecteurs et les données qui définissent la base de l'architecture Web. Le serveur et le client communiquent sans que le client ne connaisse les informations stockées sur le serveur.
 \newline
 
 \noindent
-En architecture REST, on utilise des requêtes HTTP pour interagir entre le client et le serveur : 
+En architecture REST, on utilise des requêtes HTTP pour interagir entre le client et le serveur :
 \begin{itemize}
     \item Créer (create) => POST
     \item Afficher (read) => GET
@@ -22,30 +22,30 @@ L'architecture REST est régie par des contraintes :
 
 \begin{itemize}
 
-    \item \textbf{Client / Serveur} : 
+    \item \textbf{Client / Serveur} :
     \newline
     Il faut séparer les problèmes d’interface utilisateur des problèmes de stockage de données, cela permet d'améliorer la portabilité de l'interface utilisateur sur plusieurs plates-formes ainsi que l’évolutivité en simplifiant les composants du serveur.
-    
+
     \item \textbf{Stateless} :
     \newline
     La communication doit être sans état, chaque demande du client au serveur doit contenir toutes les informations nécessaires pour comprendre la demande et ne peut tirer parti d'aucun contexte stocké sur le serveur. L'état de la session est donc entièrement conservé sur le client. Cela permet d'induire des propriétés de visibilité, de fiabilité et d'évolutivité.
-    
+
     \item \textbf{Cache} :
     \newline
     Les contraintes de cache exigent que les données contenues dans une réponse à une demande soient étiquetées de manière implicite ou explicite comme pouvant être mises en cache ou non. Si une réponse peut être mise en mémoire cache, un cache client reçoit le droit de réutiliser ces données de réponse pour des demandes équivalentes ultérieures.
-    
+
     \item \textbf{Interface uniforme} :
     \newline
     La caractéristique centrale qui distingue le style architectural REST est l'accent mis sur une interface uniforme entre les composants. Cela permet à l'architecture globale du système d'être simplifiée et la visibilité des interactions d'être améliorée.
-    
+
     \item \textbf{Système en couches} :
     \newline
     Le système en couches permet à une architecture d'être composée de couches hiérarchiques contraignante, cela implique que chaque composant ne peut échanger qu'avec la couche immédiate. Cela permet de limiter la complexité du système. Les couches peuvent être utilisées pour encapsuler des services existants et protéger les nouveaux services des clients existants. Les intermédiaires peuvent également être utilisés pour améliorer l'évolutivité du système en permettant l'équilibrage de la charge des services sur plusieurs réseaux et processeurs.
-    
+
     \item \textbf{Code à la demande} :
     \newline
     Le principe du code à la demande est de pouvoir étendre les fonctionnalités du client en téléchargeant et en exécutant du code sous la forme d'applets ou de scripts. Cela simplifie les clients en réduisant le nombre de fonctionnalités devant être pré-implémentées et permet d'ajouter de nouvelles fonctionnalités ultérieurement.
-    
+
 \end{itemize}
 
 

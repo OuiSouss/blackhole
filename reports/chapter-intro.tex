@@ -6,28 +6,28 @@ Ce projet a pour objectif de développer un outil permettant à un administrateu
 Depuis quelques années, les attaques par déni de services sont de plus en plus fréquentes. Ces attaques ont pour but de surcharger un serveur, afin d'empêcher les utilisateurs légitimes d'utiliser les services de serveurs. Ces attaques inondent le réseau d'une infrastructure en inondant le trafic internet par un surplus de donnée. Pour ce projet, on considère les attaques par déni de services distribué (DDoS). Pour effectuer une attaque DDoS, il faut que l'attaquant obtiennent l'accès à plusieurs machines connecté au réseau pour les utiliser lors de la compromission du serveur ciblé. Il existe différents type de vecteurs d'attaque comme expliqué dans le document de l'ANSSI \cite{Ans15} :
 
 \begin{itemize}
-    \item \textbf{Attaque sur la couche application} : 
-    
-    Le but est d'épuiser les ressources de la cible en ciblant la couche où les pages web sont générées sur le serveur. Une requête HTTP est facile à exécuter mais forger la réponse peut être difficile pour le serveur car il doit potentiellement exécuter des requêtes sur une base de donnée ou charger plusieurs fichiers. Étant donné que l'attaque s'effectue sur la couche application, il peut s'avérer difficile de détecter le trafic malveillant. Par exemple, l'attaque HTTP Flood consiste donc a envoyer au serveur pleins de requêtes sur différentes URL du serveur via différentes machines.  
-    
-    \item \textbf{Attaque sur les protocoles} : 
-    
+    \item \textbf{Attaque sur la couche application} :
+
+    Le but est d'épuiser les ressources de la cible en ciblant la couche où les pages web sont générées sur le serveur. Une requête HTTP est facile à exécuter mais forger la réponse peut être difficile pour le serveur car il doit potentiellement exécuter des requêtes sur une base de donnée ou charger plusieurs fichiers. Étant donné que l'attaque s'effectue sur la couche application, il peut s'avérer difficile de détecter le trafic malveillant. Par exemple, l'attaque HTTP Flood consiste donc a envoyer au serveur pleins de requêtes sur différentes URL du serveur via différentes machines.
+
+    \item \textbf{Attaque sur les protocoles} :
+
     Le but est d'interrompre le service en utilisant toutes les tables d'état libre d'une application web du serveur ou des ressources intermédiaires comme les pare-feux. Ce type d'attaque utilise les faiblesses des couches réseau et transport. L'exemple principal est l'attaque SYN Flood qui exploite le protocole TCP au moment du handshake. Elle envoie au serveur cible un grand nombre de requêtes TCP SYN, "Initial Connection Request", en usurpant l'adresse IP d'une victime pour générer des paquets SYN-ACK en réponse vers le serveur cible. Le serveur se retrouve donc à attendre des données sur une connexion qui n'en donnera jamais.
-    
+
     \item \textbf{Attaque volumétrique} : Le but est de créer une congestion en occupant toute la bande passante réseau disponible afin de rendre un ou plusieurs services inaccessibles. Ce type d'attaque cherche donc à générer un grand nombre de paquets par seconde ou d'envoyer un grand nombre de données. Un exemple d'attaque est le DNS Amplification qui envoie une requête DNS à un serveur avec une adresse IP usurpée.
 \end{itemize}
 
-En 2018, lors du premier semestre, le nombre d'attaque DDoS a diminuer de 13\% mais cela reste tout de même minime car on recense en plus de 400 000 chaque mois. C'est pourquoi, il faut protéger son réseau de ce type d'attaque. Pour ce faire, il existe plusieurs contre-mesures comme préciser dans le document de l'ANSSI \cite{Ans15}. Mais, dans le cadre de ce projet, nous ne nous intéressons qu'à la technique de routage vers trou noir piloté à distance, autrement dit Remotely triggered blackhole filtering (RTBH), expliquée dans notre document principal \cite{Sys05} ainsi que dans le RFC 5635 \cite{Rfcrtbh09}. Cette technique consiste à écarter tout trafic indésirable qui rentre dans un réseau protégé. Le challenge de cette méthode est de détecter rapidement les attaques, mais, nous ne sommes pas en charge de le faire. Cela sera fait par un autre groupe de travail. 
+En 2018, lors du premier semestre, le nombre d'attaque DDoS a diminuer de 13\% mais cela reste tout de même minime car on recense en plus de 400 000 chaque mois. C'est pourquoi, il faut protéger son réseau de ce type d'attaque. Pour ce faire, il existe plusieurs contre-mesures comme préciser dans le document de l'ANSSI \cite{Ans15}. Mais, dans le cadre de ce projet, nous ne nous intéressons qu'à la technique de routage vers trou noir piloté à distance, autrement dit Remotely triggered blackhole filtering (RTBH), expliquée dans notre document principal \cite{Sys05} ainsi que dans le RFC 5635 \cite{Rfcrtbh09}. Cette technique consiste à écarter tout trafic indésirable qui rentre dans un réseau protégé. Le challenge de cette méthode est de détecter rapidement les attaques, mais, nous ne sommes pas en charge de le faire. Cela sera fait par un autre groupe de travail.
 
-Le principe consiste à utiliser des protocoles de routage afin de mettre à jour les tables de routage présents à la frontière du réseau. Pour ce faire, le protocole \hyperref[sec:BGP]{BGP} est utilisé \cite{Rfcbgp06}. 
+Le principe consiste à utiliser des protocoles de routage afin de mettre à jour les tables de routage présents à la frontière du réseau. Pour ce faire, le protocole \hyperref[sec:BGP]{BGP} est utilisé \cite{Rfcbgp06}.
 
 Il existe plusieurs moyens d'y arriver:
 
 \begin{itemize}
-    \item \textbf{Destination des paquets} : Tout les paquets qui sont destinés à une machine précise sont redirigés vers l'interface null0 en changeant le "next-hop" pour la ciblée. 
-    
+    \item \textbf{Destination des paquets} : Tout les paquets qui sont destinés à une machine précise sont redirigés vers l'interface null0 en changeant le "next-hop" pour la ciblée.
+
     \item \textbf{Source des paquets} : Si on constate que la source est malveillante, on la redirige, on annonce une redirection en envoyant les paquets de cette source vers le trou noir.
-    
+
     \item \textbf{Communauté BGP} : Si l'on observe que l'attaque passe par une certaine communauté BGP, on peut envoyé à toute cette communauté des messages pour qu'elle redirige tout le trafic vers le blackhole.
 \end{itemize}
 
