@@ -2,20 +2,50 @@
 
 \section{ExaBGP}
 ExaBGP est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
-\cite{Man10}
-
-\section{Erco}
-Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter Exabgp. Il permet l'ajout et la suppression de routes. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes.
+\cite{Man10} \\ \indent
+Après avoir reçu les commandes en HTTP, nous les convertirons en JSON pour qu'il puisse les traiter.
 
 \section{Django}
-Django est un framework Python gratuit et open source consacré au développement web. Il propose des bases simples et déjà implémentées.
+Django est un framework Python gratuit et open source consacré au développement web. Il propose des bases simples et déjà implémentées. Nous l'utiliserons pour générer une interface utilisateur simple avec authentification. Elle permettra la gestion des routes. Ces commandes seront traitées par l'API.
 
 \section{Flask-RESTful}
-Flask-RESTful est une extension du framework Flask permettant de construire des APIs REST.
-
+Flask-RESTful est une extension du framework Flask permettant de construire des APIs RESTful. Il nous permettra d'en générer une derrière l'interface utilisateur, ce qui permettra l'envoi des commandes à ExaBGP.
 
 \section{Méthode de virtualisation avec NEmu}
-NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribué écrit en pyhton. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique.
-Ainsi nous pourrions facilement créer un ensemble de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante.
+NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribué écrit en pyhton. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique. \\ \indent
+Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante.
+
+\section{Erco}
+Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter ExaBGP \cite{Did15}. Il permet l'ajout et la suppression de routes. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes. Voici ce que nous propose la démo du logiciel \cite{Erc16} :
+
+\begin{figure}[H]
+\caption{Démo de Erco : Annoncer un nouveau réseau}
+\fbox{\includegraphics[width=\textwidth]{./medias/erco_demo_announce.png}}
+\end{figure}
+
+Sur la figure 2.1, nous pouvons voir que l'on peut facilement lancer une commande, au choix entre : reload, restart, show neighbors, show routes et version. Mais aussi ajouter un nouveau réseau ou une simple machine.
+
+\begin{figure}[H]
+\caption{Démo de Erco : Sous-réseaux annoncés}
+\fbox{\includegraphics[width=\textwidth]{./medias/erco_demo_announced.png}}
+\end{figure}
+
+Sur la figure 2.2, nous pouvons voir la liste des sous-réseaux. Nous pouvons effectuer des actions comme supprimer ou modifier un réseau.
 
 \section{Projet de l'an dernier}
+Ce projet aura été à la fois simple et difficile à comprendre. \\ \indent
+Dans un premier temps, il se seront basés sur le logiciel Erco qui fait quasiment la même chose. \\ \indent
+Ils ont également utilisé Meteor, un framework open source de developpement web en JavaScript.
+Il leur aura permis de développer une API restful permettant l'envoi des commandes pour ajouter ou supprimer des routes. Ils auront dans un premier temps tester sur la console d'une machine si ça s'exécutait bien avant de le faire avec l'API. \\ \indent
+La figure 2.3 montre leur interface utilisateur sous Meteor.
+
+\begin{figure}[H]
+\caption{Interface Utilisateur du Projet de l'an dernier}
+\fbox{\includegraphics[width=\textwidth]{./medias/ajoutRouteMeteor.png}}
+\end{figure}
+
+Pour stocker les modifications concernant les routes, ils ont utilisé une base de données avec MongoDB. C'est une base de données NoSQL, c'est à dire qu'il stocke les données dans des documents en JSON. C'est également un logiciel open source.
+\\ \indent
+GNS3 et Nemu leur auront permis de créer un environnement virtuel pour tester leur implémentation. Un read.me est disponible pour configurer l'environnement, pour pouvoir nous même lancer les tests avec leurs travaux. Des installations au préalable doivent être effectuées.
+Pour la modification directement sur les routeurs, ils ont utilisés ExaBGP. Recevant les réponses en JSON, ils ont implementé un convertisseur en python pour les transformer en chaîne de caractère et ainsi pouvoir les envoyer sur les routeurs. \\ \indent
+Nous avons décidé de ne pas reprendre le projet de l'an dernier. En effet, nous préférons partir du début car nous n'avons pas les mêmes acquis. De plus, nous serons plus valorisés à recommencer l'implémentation depuis le début, cela mettrait en avant nos compétences. Nous pourrions cependant reprendre la partie virtualisation d'un environnement avec différentes machines. Ceci, nous aidera simplement pour faire des tests.
