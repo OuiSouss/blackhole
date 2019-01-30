@@ -1,0 +1,145 @@
+\chapter{Tests}
+
+\section{Tests unitaires}
+
+\subsection{Besoins fonctionnels}
+
+\subsubsection{Besoin Utilisateurs :}
+\paragraph{Créer des routes}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Création d'une route.
+    \item Création d'une route avec arguments invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Route créée.
+    \item Aucune autre route n'a été créée.
+    \item Aucune route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{Supprimer des routes}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Suppression d'une route.
+    \item Suppression d'une route avec arguments invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Route supprimée.
+    \item Aucune route n'a été créée.
+    \item Aucune autre route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{Activer \& désactiver des routes}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Activation d'une route.
+    \item Désactivation d'une route.
+    \item Action sur route invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item État de la route modifiée.
+    \item Aucune route n'a été créée.
+    \item Aucune route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur et suppression de la base donnée si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{Connexions \& Déconnexions}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Connexion de l'administrateur.
+    \item Déconnexion de l'administrateur.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item État de la connexion modifié.
+    \item L'administrateur a accès aux fonctionnalités après une connexion réussie.
+    \item Retour à la page de connexions après une déconnexion réussie.
+    \item Aucune autre modification.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{Interface utilisateur}
+%geoff
+
+\paragraph{Communication avec ExaBGP :}%je sais pas comment l'exprimer
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Utilisation des commandes ExaBGP.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Les commandes fonctionnent.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{API REST :}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Utilisation des commandes HTTP.
+    \item Suivre les contraintes REST.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Les commandes fonctionnent.
+    \item Les contraintes sont bien suivies.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\subsection{Besoins non fonctionnels}
+
+%\subsection{Coût} %pas de test
+
+\paragraph{Performance}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Attaque d'au minimum 2 sources.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Routage vers trou noir de tous les trafics attaquants.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\paragraph{Authentifié}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Accès à l'application avec login.
+    \item Accès à l'application sans login.
+    \item Changement de mot de passe.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Accès sans login rejeté.
+    \item L'administrateur peut se connecter.
+    \item L'administrateur peut se déconnecter.
+    \item L'administrateur peut changer de mot de passe.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+%\subsection{Tester} Je pense qu'il n'est pas nécessaire
+
+\paragraph{Fiabilité}
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Test de couverture.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Code couvert au minimum à 80 \%.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
+\section{Tests d'acceptation}
+
+%
