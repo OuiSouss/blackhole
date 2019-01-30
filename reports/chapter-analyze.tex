@@ -1,22 +1,23 @@
 \chapter{Analyse de l'existant}
 
 \section{ExaBGP}
-ExaBGP est une application conçue pour permettre aux programmeurs et aux administrateur réseau d’interagir facilement avec les réseaux BGP. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
+ExaBGP est une application conçue pour permettre aux programmeurs et aux administrateurs réseaux d’interagir facilement avec les réseaux BGP. Il fut développé en 2010. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
 \cite{Man10} \\ \indent
 Après avoir reçu les commandes en HTTP, nous les convertirons en JSON pour qu'il puisse les traiter.
 
 \section{Django}
-Django est un framework Python gratuit et open source consacré au développement web. Il propose des bases simples et déjà implémentées. Nous l'utiliserons pour générer une interface utilisateur simple avec authentification. Elle permettra la gestion des routes. Ces commandes seront traitées par l'API.
+Django est un framework utilisant le langage Python. Il a été dévellopé pour facilité le travail des journaliste dans la ville de Lawrence dans le Kansas à partir de 2003 et s'est ouvert au public en 2005. Il est gratuit et open source, consacré au développement web. Il propose des bases simples et déjà implémentées par d'autres développeurs, comme une page pour l'authentification des utilisateurs ou de quoi gérer le site. Cela permet de grandement faciliter la tâche pour créer une interface web. \\ \indent Nous l'utiliserons donc pour générer une interface utilisateur simple avec authentification. Elle permettra à l'administrateur la gestion des routes. Ces commandes seront ensuite traitées par l'API.
 
 \section{Flask-RESTful}
-Flask-RESTful est une extension du framework Flask permettant de construire des APIs RESTful. Il nous permettra d'en générer une derrière l'interface utilisateur, ce qui permettra l'envoi des commandes à ExaBGP.
+Flask-RESTful est une extension du framework Flask permettant de construire des APIs RESTful. Flask a été développé en 2010. Il utilise également le langage Python et permet notamment de faire des sites web dynamiques, c'est à dire que l'utilisateur pourra intéragir avec le site. Cependant, ce qui nous intéresse ici, c'est son module Flask-Restful, l'interface utilisateur étant faite avec Django. Les différentes requêtes HTTP ont leur fonctionnalités codées en Python et peuvent être lancées avec une ligne de commande simple.\\ \indent 
+Il nous permettra d'en générer une derrière l'interface utilisateur, ce qui permettra l'envoi des commandes à ExaBGP. Ce module nous permettra de coder les requêtes HTTP et ainsi de pouvoir les exécuter.
 
 \section{Méthode de virtualisation avec NEmu}
-NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribué écrit en pyhton. Il gère des machines virtuelles de type QEmu pour construire une topologie virtuelle dynamique. \\ \indent
+NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribués, écrit en Pyhton. Il est destiné à l'enseignement et a été élaboré par une équipe de l'Université de Bordeaux. Il gère des machines virtuelles de type QEmu pour construire différentes topologies virtuelles. Ainsi, il possible de relier plusieurs machines entre elles, de simuler des switchs ou des routeurs. Il est également possible, de connecter deux réseaux virtuels différents sur deux machines physiques différentes, correspondant à deux sessions distinctes. On peut également créer plusieurs environnements virtuels, sans qu'ils ne l'existence les uns des autres.\\ \indent
 Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante.
 
 \section{Erco}
-Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter ExaBGP \cite{Did15}. Il permet l'ajout et la suppression de routes. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes. Voici ce que nous propose la démo du logiciel \cite{Erc16} :
+Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter ExaBGP \cite{Did15}. Il a été développé par l'Université de Lorraine afin de travailler en relation avec un service de trou noir en temps réel redirigeant le trafic entre un utilisateur et un fournisseur de services web. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes.\\ \indent Il permet l'ajout et la suppression de routes. Voici ce que nous propose la démo du logiciel \cite{Erc16} :
 
 \begin{figure}[H]
 \caption{Démo de Erco : Annoncer un nouveau réseau}
