@@ -15,16 +15,13 @@ Une fonction d'activation et de désactivation des routes existantes permettra d
 \subsubsection{Connexions \& Déconnexions}
 Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à pouvoir se connecter.
 
-\subsection{Interface}
-% L'interface doit être facile d'utilisation. L'administrateur n'a pas de temps à perdre à savoir comment ça fonctionne
-Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
+\subsection{Interface utilisateur}
+Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. %geoff
 
 \subsection{Communication avec ExaBGP}
 
 \subsubsection{Envoyer les routes}
 Dès que l'utilisateur aura ajouté une route, il faut transmettre les informations à ExaBGP afin qu'il diffuse la route auprès des routeurs Cisco.
-\newpage
-
 
 % Recevoir et utiliser l'information de l'autre groupe
 %Même si nous ne savons pas clairement comme l'autre groupe va nous info
@@ -32,6 +29,40 @@ Dès que l'utilisateur aura ajouté une route, il faut transmettre les informati
 % recevoir des "sources" par l'api, considérées comme dangereuses
 % utilises ces "sources" pour créer des routes
 % utiliser ces routes pour rediriger ces "sources" dans le néant
+
+\subsection{Définition de l'API REST}
+Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence :
+\begin{itemize}
+    \item POST /api/routes (Créer une route)
+    \item GET /api/routes/1 (Afficher la route 1)
+    \item PUT /api/routes/1 (Remplacer la route 1)
+    \item PATCH /api/routes/1 (Modifier la route 1)
+    \item DELETE /api/routes/1 (Supprimer la route 1)
+\end{itemize}
+
+\subsubsection{Utilisation de HTTP 1.1}
+Nous avons décidé d'utiliser HTTP 1.1 pour le développement de l'API. Bien que les performances soient accrues en HTTP 2, nous pensons que l'application sera assez légére pour ne pas avoir besoin de l'utiliser.
+
+\subsubsection{Client / Serveur}
+
+
+\subsubsection{Stateless}
+L’état de la session est entièrement conservé sur le client.
+
+\subsubsection{Cache}
+Nous mettrons en cache les communautés, les hops, la liste des routes existantes.
+
+\subsubsection{Interface uniforme}
+
+\subsubsection{Système en couches}
+
+\subsubsection{Code à la demande}
+\begin{itemize}
+    \item Implémenter la possibilité d'executer des commandes lié à des fonctionnalité non relié à l'interface.
+    \item L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
+\end{itemize}
+
+\newpage
 
 \section{Besoins non fonctionnels}
 
@@ -42,15 +73,14 @@ Le développement de l'application ne devra entraîner aucun coût financier.
 % L'action décidée par l'administrateur doit pouvoir se faire rapidement
 L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées. % il faut chiffrer
 
-\subsection{Sécurisé}
-L’application ne devra être utilisable que par l'administrateur, donc seulement l'administrateur devra pouvoir se connecter.
-%Nous mettrons donc en place un service d'authentification pour permettre à l'administrateur d'y avoir accès.
+\subsection{Authentifié}
+L’application ne devra être utilisable que par l'administrateur. Donc, nous devons donc en place un service d'authentification pour permettre à l'administrateur seulement d'y avoir accès.
 
-\subsection{Déploiement}
-L'application sera déployée et testée sur un réseau virtuel.
+\subsection{Tester}
+L'application sera testée sur un réseau virtuel avec au minimum deux routeur, une machine serveur et une machine cliente et attaquante. Les tests ne s'effectueront que sur le système d'exploitation debian.
 
 \subsection{Fiabilité}
-L'application devra être couverte par des tests pour vérifier que les différentes actions sur les routes sont bien implémentées et permettent donc bien de gérer un routage vers trou noir. % il faut chiffrer
+L'application devra être couverte par des tests pour vérifier que les différentes actions sur les routes sont bien implémentées et permettent donc bien de gérer un routage vers trou noir. C'est pourquoi, les tests doivent couvrir le code à hauteur de 80\%. % il faut chiffrer
 
 %\subsection{Pérennité ?}
 
