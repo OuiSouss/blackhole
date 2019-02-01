@@ -5,37 +5,240 @@
 \subsection{Besoin Utilisateurs}
 \subsubsection{Créer des routes}
 L'application doit permettre de créer des routes dans le réseau, c'est-à-dire de trouver un chemin allant du routeur d'entrée vers une autre cible. Il faudra donc modifier la table de routage du routeur d'entrée. Dans notre cas, la cible sera une adresse fictive et permettra un routage vers un trou noir pour contrer l'attaque.
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Création d'une route.
+    \item Création d'une route avec arguments invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Route créée.
+    \item Aucune autre route n'a été créée.
+    \item Aucune route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsubsection{Supprimer des routes}
 Puisqu'il permet la création, l'application devra permettre également la suppression des routes précédemment créées.
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Suppression d'une route.
+    \item Suppression d'une route avec arguments invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Route supprimée.
+    \item Aucune route n'a été créée.
+    \item Aucune autre route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsubsection{Activer \& désactiver des routes}
 Une fonction d'activation et de désactivation des routes existantes permettra de gérer les routes existantes sans les supprimer et donc sans avoir besoin de les recréer par la suite.
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Activation d'une route.
+    \item Désactivation d'une route.
+    \item Action sur route invalide.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item État de la route modifiée.
+    \item Aucune route n'a été créée.
+    \item Aucune route n'a été détruite.
+    \item Aucune modification sur l'état des autres routes.
+    \item Message d'erreur et suppression de la base donnée si arguments invalide.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsubsection{Connexions \& Déconnexions}
 Une page d'authentification permettra de restreindre l'accès de l'application et donc permettre que l'administrateur soit le seul à pouvoir se connecter.
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Connexion de l'administrateur.
+    \item Déconnexion de l'administrateur.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item État de la connexion modifié.
+    \item L'administrateur a accès aux fonctionnalités après une connexion réussie.
+    \item Retour à la page de connexions après une déconnexion réussie.
+    \item Aucune autre modification.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsection{Interface utilisateur}
-Pour permettre une gestion plus visuelle des différentes fonctions implémentées, une interface sera ajoutée. %geoff
+\label{sssec:ui}
+
+Pour permettre une gestion plus simplifiée des différentes fonctions demandées tout en gardant un visuel sur la situation actuelle, une interface graphique est nécessaire. 
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{./medias/ui_interface.png}
+    \includegraphics[width=\textwidth]{./medias/ui_interface4.png}
     \caption{Prototype interface utilisateur}
     \label{fig:ui_interfaces}
 \end{figure}
 
+L'interface graphique que l'utilisateur va utiliser est une application web, un client léger, qui est dépendante d'un serveur pour fonctionner correctement.\newline
+
+\textbf{Voyant coloré} (1)\newline
+Il faut indiquer à l'utilisateur si le client est actuellement connecté à l'API, ce qui sera représenté par un voyant coloré en haut de la page. Le "\textit{Vert}" signifie que le client est connecté. Le "\textit{Rouge}" signifie que le client est déconnecté et que toutes les modifications effectuées pendant cette période de déconnexion seront perdues.
+Le client vérifie périodiquement (chaque seconde) qu'il est toujours connecté à l'API en faisant une requête (rapide).
+S'il reçoit une réponse, le voyant coloré deviens vert.
+Dans le cas où il ne recevrait pas de réponse, le voyant coloré deviens rouge jusqu'au rétablissement de la connexion.\newline
+ 
+\textbf{Déconnexion} (2)\newline
+Permet à un utilisateur authentifié de se déconnecter.
+Dans le cas où il existerait plusieurs compte utilisateur, il serait possible d'afficher l'identité de l'utilisateur actuel à cet emplacement.\newline
+
+\textbf{Annoncer un nouveau réseau ou une IP} (3)\newline
+Un formulaire permettra à l'utilisateur de créer des routes. Ces routes serviront à rediriger des attaques dans un trou noir selon leur origine et des communautés de routeurs. Le formulaire est composé de trois éléments.
+
+\textit{L'adresse IP ou Réseau de l'attaquant} (4), un champ textuel où l'utilisateur pourra écrire.
+Si la source de l'attaque est une adresse IP, l'utilisateur devra écrire son adresse IP en notation IPv4.
+Si la source de l'attaque est un réseau, l'utilisateur devra respecter la notation IPv4 et CIDR, sinon la validation sera impossible. Il serait pertinent de relier cet élément à l'application du groupe "détection des attaques DDoS" afin d'éviter à l'utilisateur d'aller chercher ces informations.
+Un champ textuel avec de l'autocomplétion pourrait être adapté.
+
+\textit{L'adresse du prochain saut vers un trou noir} (5), une liste déroulante où l'utilisateur pourra sélectionner un élément parmi plusieurs. Dans le cas où les "prochain saut" sont toujours des interfaces null, cet élément peut être facultatif.
+
+\textit{La communauté de routeurs qui va utiliser cette route} (6), une liste avec des éléments à cocher où l'utilisateur pourra sélectionner quelques élément parmi plusieurs.
+Quand un élément de la liste est sélectionné, sa couleur passe du blanc (7) au vert (8).
+
+Quand l'utilisateur a fini de remplir le formulaire, il pourra cliquer sur le bouton valider (9).
+Ce qui fera apparaître une fenêtre de confirmation contenant un résumé du formulaire de création de route.
+Une fenêtre de confirmation permet de limiter les erreurs de manipulations, en demandant à l'utilisateur de cliquer à deux endroits différents.\newline
+
+\textbf{Sous-réseaux annoncés} (10)\newline
+Une liste permettra à l'utilisateur de consulter les routes existantes.
+
+%1 : synchronisation du contenu
+Cette liste sera mise à jour au lancement de l'application, lors de chaque modification et à la demande de l'utilisateur à l'aide d'un bouton (11) pour rafraîchir le contenu de la liste.
+La synchronisation de la liste pourrait être effectuée de deux manières.
+
+% tout récupérer = gros lag pour 1 changement + pas de désynchro
+Si un sous-réseau est modifié, on en informe l'API et on pourrait récupérer l'intégralité des sous-réseau existants par l'API pour mettre à jour la liste à afficher. Cette méthode empêche la désynchronisation entre le contenu de la base de données et la liste affichée mais est très coûteuse car il faut récupérer l'intégralité de la liste à cause d'une modification.
+
+% rien récupérer = pas de lag pour 1 changement + faible chance de désynchro
+Si un sous-réseau est modifié, on en informe l'API et on pourrait appliquer directement sur la page la modification, pour mettre à jour la liste des sous-réseaux. Cette méthode peut amener à des désynchronisation entre le contenu de  base de données et la liste affichée mais permet de ne pas demander de l'information redondante à l'API.
+
+%2 : ordre du contenu
+Les sous-réseaux pourrait être trié de deux manières, du plus récent au plus ancien ou du plus ancien au plus récent.
+
+% ancien -> récent : accéder à récent est pénible
+Si les sous-réseaux sont triés du plus ancien au plus récent alors l'insertion d'un nouveau sous-réseau ne provoquera pas de décalage. Mais s'il y a beaucoup de sous-réseaux alors accéder à ce nouveau sous-réseau sera plus pénible.
+
+% récent -> ancien : accéder à ancien est pénible ET insérer un élément fait lagger proportionnellement à la taille de la liste
+Si les sous-réseaux sont triés du plus récent au plus ancien alors l'insertion d'un nouveau sous-réseau et son affichage provoquera un décalage de tout les éléments. Mais s'il y a beaucoup de sous-réseaux alors accéder à un ancien sous-réseau sera plus pénible. 
+
+%3 : affichage du contenu
+Deux types d'affichage seraient possible, une liste sans-limite ou une liste paginée.
+
+% sans limite : lag proportionnel à la taille de la liste lors d'un chargement
+Si la liste des sous-réseaux ne possédait pas de limite de hauteur, cela permettrait de voir immédiatement l'intégralité des routes existantes. Mais en contrepartie si il y a énormément de routes à afficher, le temps de chargement de la page en sera proportionelle allongé.
+
+% liste paginée : lag limité à la taille max d'une page
+Si la liste des sous-réseaux était paginée, cela ne permettrait pas de voir immédiatement l'intégralité des routes existantes. Mais en contrepartie si il y a énormément de routes à afficher, le temps de chargement de la page sera borné par le nombre d'élément affiché par page.
+
+La liste des sous-réseaux annoncés affiche l'ID ("\#"), le réseau attaquant avec son masque (/32 est une adresse IP), les communautés de routeurs qui vont appliquer ce routage, la date de création, la date de modification (null si la route n'as jamais été modifiée), l'activité de la route et les action qui lui sont associées (modifier(12) ou supprimer(13)).
+
+%il faudrait : selection puis suppresion de plusieurs routes
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Connexion de l'API.%1
+    \item Déconnexion de l'API.%2
+    \item Connexion de l'utilisateur.%3
+    \item Déconnexion de l'utilisateur.%4
+    \item Création d'une route valide.%5
+    \item Création d'une route avec une adresse IP incorrecte ou un réseau qui n'utilise pas la notation CIDR.%6
+    \item Actualisation des "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%7
+    \item Modification d'un "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%8
+    \item Suppression d'un "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%9
+    
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Le voyant coloré est de couleur verte tant que l'API est connectée.%1
+    \item Le voyant coloré est de couleur rouge tant que l'API est déconnectée.%2
+    \item La page d'authentification deviens inaccessible et l'interface deviens accessible après une connection.%3
+    \item L'interface deviens inaccessible et la page d'authentification deviens accessible après une déconnection.%4
+    \item Une fenêtre apparaît et demande une confirmation pour la création de la route. Si la création est confirmée alors la fenêtre disparaîtra, la route sera ajoutée, la liste de "Sous-réseaux annoncés" sera mise à jour et les champs de "l'annoncement d'une route" seront réinitialisés.%5
+    \item La liste de "Prochain saut" correspond au contenu de la base de données%5 et %3
+    \item La liste de "Communautés" correspond au contenu de la base de données.%5 et %3
+    \item La liste de "Sous-réseaux annoncés" correspond au contenu de la base de données.%5 et %7 et %3
+    \item Un message d'erreur apparaît directement dans la page.%6
+    \item Une fenêtre contenant les informations de la route à modifier apparaît et demande une confirmation pour la modification. Ces informations seront éditables dans cette fenêtre. Si la modification est confirmée alors la fenêtre disparaîtra, appliquera la modification et la liste de "Sous-réseaux annoncés" sera mise à jour.%8
+    \item Une fenêtre contenant les informations de la route à supprimer apparaît et demande une confirmation pour la modification. Si la suppression est confirmée alors la fenêtre disparaîtra, appliquera la suppression et la liste de "Sous-réseaux annoncés" sera mise à jour.%9
+    
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsection{Communication avec ExaBGP}
+\label{sssec:exabgp}
 \noindent
 La liste des commandes ExaBGP sont :
 \begin{itemize}
-    \item GET /api/exabgp/status (Donne le statu de exaBGP)
+    \item GET /api/exabgp/status (Donne le status de exaBGP)
+    \begin{minted}{js}
+    {
+        "running":true,
+        "file_missing":false
+    }
+    \end{minted}
+    
     \item GET /api/exabgp/command{?action} (Execute une commande exaBGP)
+    \begin{minted}{js}
+    # Success:
+    {
+        "success":true,
+        "msg":"Exabgp has been successfully reloaded."
+    }
+
+    # Failure:
+    {
+        "success":false,
+        "msg":"The reason why it failed"
+    }
+    \end{minted}
+    
     \item GET /api/exabgp/commands (Donne la liste des commandes de exaBGP)
+    \begin{minted}{js}
+     [
+    "reload"
+    ]
+    \end{minted}
+    
     \item GET /api/communities (Donne la liste des communities valides)
+    \begin{minted}{js}
+    {
+        "64496:42":"Foo",
+        "64511:1337":"Bar",
+        "64511:123":"Baz",
+    }
+    \end{minted}
+    
     \item GET /api/next\_hops (Donne la liste des next\_hops valides)
+    \begin{minted}{js}
+    {
+        "192.0.2.42":"Alice",
+        "192.0.2.44":"Bob"
+    }
+    \end{minted}
 
 \end{itemize}
+
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Utilisation des commandes ExaBGP.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Les commandes fonctionnent.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
 
 \subsubsection{Envoyer les routes}
 Dès que l'utilisateur aura ajouté une route, il faut transmettre les informations à ExaBGP afin qu'il diffuse la route auprès des routeurs Cisco.
@@ -49,13 +252,127 @@ Dès que l'utilisateur aura ajouté une route, il faut transmettre les informati
 
 \subsection{Définition de l'API REST}
 Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence :
+
+
 \begin{itemize}
     \item POST /api/routes (Créer une route)
+    \begin{minted}{js}
+    # Success:
+    {
+        "success":true,
+        "msg":{
+            "id":3,
+            "cidr":"198.51.100.43\/32"
+            "next_hop":"192.0.2.42",
+            "communities":
+                [
+                    "64496:42",
+                    "64511:1337"
+                ],
+            "created_at":1433497409,
+            "human_created_at":"Fri, 05 Jun 2015 09:43:29 GMT",
+            "modified_at":null,
+            "human_modified_at":null
+        }
+    }
+    
+    # Failure:
+    {
+        "success":false,
+        "msg":"The reason why it failed"
+    }
+    \end{minted}
+
     \item GET /api/routes/1 (Afficher la route 1)
+    \begin{minted}{js}
+    {
+        "id":1,
+        "cidr":"203.0.113.0/24",
+        "next_hop":"192.0.2.42",
+        "communities":
+            [
+                "64496:42"
+            ],
+        "created_at":1433497409,
+        "human_created_at":"Fri, 05 Jun 2015 09:43:29 GMT",
+        "modified_at":null,
+        "human_modified_at":null
+    },{
+        "id":2,
+        "cidr":"198.51.100.42\/32",
+        "next_hop":"192.0.2.44",
+        "communities":
+            [
+                "64496:42",
+                "64511:1337"
+            ],
+        "created_at":1433497409,
+        "human_created_at":"Fri, 05 Jun 2015 09:43:29 GMT",
+        "modified_at":1435832156,
+        "human_modified_at":"Thu, 02 Jul 2015 10:15:55 GMT"
+    }
+    \end{minted}
+    
     \item PUT /api/routes/1 (Remplacer la route 1)
+    \begin{minted}{js}
+    # Success:
+    {
+        "success":true,
+        "msg":{
+            "id":3,
+            "cidr":"198.51.100.1\/32"
+            "next_hop":"192.0.2.42",
+            "communities":
+                [
+                    "64496:42",
+                    "64511:123"
+                ],
+            "created_at":1433497409,
+            "human_created_at":"Fri, 05 Jun 2015 09:43:29 GMT",
+            "modified_at":1435832156,
+            "human_modified_at":"Thu, 02 Jul 2015 10:15:55 GMT"
+        }
+    }
+
+    # Failure:
+    {
+        "success":false,
+        "msg":"The reason why it failed"
+    }
+    \end{minted}
+    
     \item PATCH /api/routes/1 (Modifier la route 1)
+    \begin{minted}{js}
+    \end{minted}
+    
     \item DELETE /api/routes/1 (Supprimer la route 1)
+    \begin{minted}{js}
+    # Success:
+    {
+        "success":true,
+        "msg":"Network successfully deleted."
+    }
+    
+    # Failure:
+    {
+        "success":false,
+        "msg":"The reason why it failed"
+    }
+    \end{minted}
+    
 \end{itemize}
+
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Utilisation des commandes HTTP.
+    \item Suivre les contraintes REST.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Les commandes fonctionnent.
+    \item Les contraintes sont bien suivies.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsubsection{Utilisation de HTTP 1.1}
 Nous avons décidé d'utiliser HTTP 1.1 pour le développement de l'API. Bien que les performances soient accrues en HTTP 2, nous pensons que l'application sera assez légére pour ne pas avoir besoin de l'utiliser.
@@ -74,13 +391,75 @@ Nous mettrons en cache les communautés, les hops, la liste des routes existante
 %\subsubsection{Système en couches}
 
 \subsubsection{Code à la demande}
+L'architecture REST propose dans son modèle une partie "code à la demande" malheureusement nous n'implémenterons sûrement pas cette partie car trop difficile à mettre en place. Cette partie réduit souvent la visibilité dans le projet et dois répondre aux contraintes REST, c'est pourquoi elle est souvent désignée comme optionnelle lorsque l'on suit l'architecture REST. Cependant si le projet était repris ou si nous avions le temps, il pourrais être intéressant d'implémenter ces fonctionnalitées en code à la demande :  
 \begin{itemize}
     \item Implémenter la possibilité d'exécuter des commandes lié à des fonctionnalité non relié à l'interface.
     \item L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
 \end{itemize}
 
+\section{Base de donnée}
+
+Voici les tables que nous mettrons en place sur SQLite dans un premier temps pour le prototype.
+
+\vspace{2em}
+
+\begin{tabular}{|l|l|l|l|l|l|l|} 
+   \hline
+    Table & Champ & Type & Interclassement & Attributs & Null & Défaut \\
+    \hline
+        Security & id & int &  &  & Non & 1 \\
+    \cline{2-7} 
+         & username & varchar & utf8\_unicode\_ci & & Non & admin \\
+    \cline{2-7} 
+         & password & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & salt & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & mail & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \hline
+        Route & id & int &  &  & Non & Aucun(e)\\
+    \cline{2-7} 
+         & network & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & mask & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & next\_hop & varchar & utf8\_unicode\_ci & & Oui & Aucun(e) \\ 
+    \cline{2-7} 
+         & community & int ou varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & enabled & bool &  & & Non & True \\
+    \cline{2-7} 
+         & created & datetime &  & & Non & Aucun(e) \\
+    \cline{2-7} 
+         & modified & datetime &  & & Non & Aucun(e) \\
+    \hline
+\end{tabular}
+
+\paragraph{Security} Cette table sera utilisée pour la gestion de la sécurité de l'application.
+\begin{itemize}
+    \item id : Ce champ permettra de donner un identifiant unique à l'utilisateur.
+    \item username : Ce champ désigne le nom de l'utilisateur. Il sera utilisé pour l'authentification.
+    \item password : Ce champ désigne le mot de passe de l'utilisateur. Il sera utilisé pour l'authentification.
+    \item salt : Ce champ est utilisé pour la sécurité du mot de passe.
+    \item mail : Ce champ désigne l'adresse mail de l'utilisateur. Il sera utilisé pour la récupération de mot de passe oublié.
+\end{itemize}
+
+\paragraph{Route} Cette table sera utilisée pour la gestion des routes entrée dans l'application.
+\begin{itemize}
+    \item id : Ce champ permettra de donner un identifiant unique à la présente route.
+    \item network : Ce champ désignera le réseau.
+    \item mask : Ce champ permettra de stocker le masque du réseau.
+    \item next\_hop : Ce champ permettra de gérer le prochain saut pour la route. En clair, la ou sera dirigé le trafic.
+    \item community : Ce champ permettra de stocker la ou les communauté(s) auquel appartient la route
+    \item enabled : Ce champ permettra de gérer l'état (activée ou désactivée) de la route.
+    \item created : Ce champ permettra de stocker la date au moment de la création de la route.
+    \item modified : Ce champ permettra de stocker la date actuelle à chaque modification de la route.
+\end{itemize}
+
+\section{Diagramme}
+
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{./medias/use_cases.png}
+    \includegraphics[width=\textwidth]{./medias/use_cases3.png}
     \caption{Diagramme d'utilisation de l'application}
     \label{fig:use_cases}
 \end{figure}
@@ -96,14 +475,49 @@ Le développement de l'application ne devra entraîner aucun coût financier. C'
 % L'action décidée par l'administrateur doit pouvoir se faire rapidement
 L'application devra être développée pour permettre une défense sur plusieurs attaques simultanées. % il faut chiffrer
 
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Attaque d'au minimum 2 sources.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Routage vers trou noir de tous les trafics attaquants.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
+
 \subsection{Authentifié}
 L’application ne devra être utilisable que par l'administrateur. Donc, nous devons donc en place un service d'authentification pour permettre à l'administrateur seulement d'y avoir accès.
+
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Accès à l'application avec login.
+    \item Accès à l'application sans login.
+    \item Changement de mot de passe.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Accès sans login rejeté.
+    \item L'administrateur peut se connecter.
+    \item L'administrateur peut se déconnecter.
+    \item L'administrateur peut changer de mot de passe.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 \subsection{Tester}
 L'application sera testée sur un réseau virtuel avec au minimum deux routeur, une machine serveur et une machine cliente et attaquante. Les tests ne s'effectueront que sur le système d'exploitation debian.
 
 \subsection{Fiabilité}
 L'application devra être couverte par des tests pour vérifier que les différentes actions sur les routes sont bien implémentées et permettent donc bien de gérer un routage vers trou noir. C'est pourquoi, les tests doivent couvrir le code à hauteur de 80\%.
+
+\subparagraph{Protocole de test :}
+\begin{itemize}
+    \item Test de couverture.
+\end{itemize}
+\subparagraph{Résultat obtenu :}
+    \begin{itemize}
+    \item Code couvert au minimum à 80 \%.
+\end{itemize}
+\subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
 %\subsection{Pérennité ?}
 
