@@ -1,21 +1,55 @@
 \chapter{Diagramme de Gantt}
 
-\begin{ganttchart}{1}{28}
-\gantttitle{Mini-projet}{28} \\
-\gantttitlelist{1,...,14}{2} \\
-%\ganttbar[bar/.append style={fill=yellow}]{Task 2}{4}{10}
-% pour colorier les tasks
-\ganttbar{Task 1}{}{} \\
-\ganttbar{Task 2}{}{}  \\
-\ganttbar{Task 3}{}{} \\
-\ganttbar{Task 4}{}{} \\
-\ganttbar{Task 5}{}{} \\
-\ganttbar{Task 6}{}{} \\
-\ganttbar{Task 7}{}{} \\
-\ganttbar{Task 8}{}{} \\
-\ganttbar{Task 9}{}{} \\
-\ganttbar{Task 10}{}{} \\
-\ganttbar{Task 11}{}{} \\
-\ganttbar{Task 12}{}{} \\
-\ganttbar{Task 13}{}{}
+\begin{ganttchart}[
+hgrid=true,
+vgrid={{dotted}}
+]{1}{18}
+\gantttitle{Routage vers trou noir}{18} \\
+\gantttitlelist{6,...,14}{2} \\
+% red = geoff ; green = cyrielle ; blue = kévin ; yellow = amélie
+\ganttbar[
+bar/.append style={fill=red!40}
+]{Connexion/Déconnexion}{1}{6} \\
+\ganttbar[
+bar/.append style={fill=green!40}
+]{Créer routes}{5}{8} \\
+\ganttbar[
+bar/.append style={fill=green!40}
+]{Supprimer routes}{9}{12} \\
+\ganttbar[
+bar/.append style={fill=blue!40}
+]{Activer routes}{5}{8} \\
+\ganttbar[
+bar/.append style={fill=blue!40}
+]{Désactiver routes}{9}{12} \\
+\ganttbar[
+bar/.append style={fill=yellow!40}
+]{Envoyer routes à ExaBGP}{3}{8} \\
+\ganttbar[
+bar/.append style={fill=yellow!40}
+]{Diffuser les routes}{9}{14} \\
+\ganttbar[
+bar/.append style={fill=red!40}
+]{Lien UI/API}{7}{12} \\
+\ganttbar[
+bar/.append style={fill=blue!40}
+]{Base de données routes}{1}{6} \\
+\ganttbar[
+bar/.append style={fill=green!40}
+]{Base de données identifiants}{1}{6}  \\
+\ganttbar[
+bar/.append style={fill=red!40}
+]{Générer cache}{13}{16} \\
+\ganttbar[
+bar/.append style={fill=green!40}
+]{Conversion HTTP/JSON}{12}{15} \\
+\ganttbar[
+bar/.append style={fill=yellow!40}
+]{Test Final}{15}{18}
 \end{ganttchart}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Légende & \cellcolor{green!40} Cyrielle DUBOIS & \cellcolor{yellow!40} Amélie RISI & \cellcolor{red!40} Geoffroy GRESSIER & \cellcolor{blue!40} Kevin Maitre \\
+\hline
+\end{tabular}

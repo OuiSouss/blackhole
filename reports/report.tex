@@ -8,9 +8,13 @@
 \usepackage[french]{babel}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{minted}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{minted}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage[table]{xcolor}
+
 \usepackage{pgfgantt}
 
 %%% Bibliograpy %%%
@@ -35,7 +39,7 @@
 %%% Authors %%%
 \authors{Geoffroy Gressier \texttt{<geoffroy.gressier@etu.u-bordeaux.fr>}\\
   Cyrielle Dubois \texttt{<cyrielle.dubois@u-bordeaux.fr>}\\
-  Kévin Maître \texttt{<kevin.maitre@etu.u-bordeaux.fr>}\\
+  Kevin Maitre \texttt{<kevin.maitre@etu.u-bordeaux.fr>}\\
   Amélie Risi \texttt{<amelie.risi@etu.u-bordeaux.fr>}}
 
 \client{Damien Magoni \texttt{<magoni@labri.fr>}}
@@ -174,6 +178,10 @@ Mention \emph{Informatique},\\
 
 \newpage
 
+\input{./abstract.tex}
+
+\newpage
+
 \tableofcontents*
 
 \newpage
@@ -190,7 +198,7 @@ Mention \emph{Informatique},\\
 
 \input{./chapter-tests.tex}
 
-%\input{./chapter-gantt.tex}
+\input{./chapter-gantt.tex}
 
 \nocite{*}
 

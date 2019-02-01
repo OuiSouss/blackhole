@@ -1,52 +1,82 @@
 \chapter{Analyse de l'existant}
 
+Dans le cadre du projet, il nous avons besoin : 
+
+\begin{itemize}
+    \item D'un serveur de route permettant de diffuser auprès des routeurs les mises à jour des routes.
+    \item D'un framework pour le Front-End
+    \item D'un framework pour le Back-End
+    \item D'un outil de virtualisation pour réaliser les tests d'acceptation.
+\end{itemize}
+
 \section{ExaBGP}
-ExaBGP est une application conçue pour permettre aux programmeurs et aux administrateurs réseaux d’interagir facilement avec les réseaux BGP. Il fut développé en 2010. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec.
-\cite{Man10} \\ \indent
-Après avoir reçu les commandes en HTTP, nous les convertirons en JSON pour qu'il puisse les traiter.
+\textbf{Version exabgp 4.0.10}
+
+ExaBGP \cite{Exa13} est une application conçue pour permettre aux programmeurs et aux administrateurs réseaux d’interagir facilement avec les réseaux BGP. Il fut développé en 2010. Le programme est conçu pour permettre l’injection de routes dans un réseau, y compris IPv6 et FlowSpec \cite{Man10}.
+
+Cet outil utilise le format JSON pour rendre les messages BGP plus agréables à manipuler. C'est pourquoi, nous devons définir les formats JSON que nous utilisons. Voir la section \hyperref[sssec:exabgp]{Communication avec ExaBGP}.
 
 \section{Django}
-Django est un framework utilisant le langage Python. Il a été dévellopé pour facilité le travail des journaliste dans la ville de Lawrence dans le Kansas à partir de 2003 et s'est ouvert au public en 2005. Il est gratuit et open source, consacré au développement web. Il propose des bases simples et déjà implémentées par d'autres développeurs, comme une page pour l'authentification des utilisateurs ou de quoi gérer le site. Cela permet de grandement faciliter la tâche pour créer une interface web. \\ \indent Nous l'utiliserons donc pour générer une interface utilisateur simple avec authentification. Elle permettra à l'administrateur la gestion des routes. Ces commandes seront ensuite traitées par l'API.
+\textbf{Version Django 2.1.5}
+
+Django \cite{Django03} est un framework utilisant le langage Python. Il a été développé pour facilité le travail des journaliste dans la ville de Lawrence dans le Kansas à partir de 2003 et s'est ouvert au public en 2005. Il est gratuit et open source, consacré au développement web. Il propose des bases simples et déjà implémentées par d'autres développeurs, comme une page pour l'authentification des utilisateurs ou de quoi gérer le site. Cela permet de grandement faciliter la tâche pour créer une interface web. 
+
+Nous l'utiliserons en tant que Front-End pour générer une interface utilisateur simple avec authentification. Elle permettra à l'administrateur de gérer les routes. Ces commandes seront ensuite traitées par le Back-End. Par conséquent, nous devons définir une \hyperref[ssec:ui]{interface utilisateur}. Ce choix nous paraît judicieux car l'apprentissage de l'utilisation de Django semble rapide.
 
 \section{Flask-RESTful}
-Flask-RESTful est une extension du framework Flask permettant de construire des APIs RESTful. Flask a été développé en 2010. Il utilise également le langage Python et permet notamment de faire des sites web dynamiques, c'est à dire que l'utilisateur pourra intéragir avec le site. Cependant, ce qui nous intéresse ici, c'est son module Flask-Restful, l'interface utilisateur étant faite avec Django. Les différentes requêtes HTTP ont leur fonctionnalités codées en Python et peuvent être lancées avec une ligne de commande simple.\\ \indent
+\textbf{Version Flask-RESTful 0.3.7}
+
+\href{https://flask-restful.readthedocs.io/en/latest/}{Flask-RESTful} est une extension du framework Flask permettant de construire des APIs RESTful. Flask a été développé en 2010. Il utilise également le langage Python et permet notamment de faire des sites web dynamiques, c'est à dire que l'utilisateur pourra intéragir avec le site. Cependant, ce qui nous intéresse ici, c'est son module Flask-Restful, l'interface utilisateur étant faite avec Django. Les différentes requêtes HTTP ont leur fonctionnalités codées en Python et peuvent être lancées avec une ligne de commande simple.
+
 Il nous permettra d'en générer une derrière l'interface utilisateur, ce qui permettra l'envoi des commandes à ExaBGP. Ce module nous permettra de coder les requêtes HTTP et ainsi de pouvoir les exécuter.
 
 \section{Méthode de virtualisation avec NEmu}
-NEmu (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribués, écrit en Pyhton. Il est destiné à l'enseignement et a été élaboré par une équipe de l'Université de Bordeaux. Il gère des machines virtuelles de type QEmu pour construire différentes topologies virtuelles. Ainsi, il possible de relier plusieurs machines entre elles, de simuler des switchs ou des routeurs. Il est également possible, de connecter deux réseaux virtuels différents sur deux machines physiques différentes, correspondant à deux sessions distinctes. On peut également créer plusieurs environnements virtuels, sans qu'ils ne l'existence les uns des autres.\\ \indent
-Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante.
+\href{https://gitlab.com/v-a/nemu}{NEmu} (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribués, écrit en Pyhton. Il est destiné à l'enseignement et a été élaboré par une équipe de l'Université de Bordeaux. Il gère des machines virtuelles de type QEmu pour construire différentes topologies virtuelles. Ainsi, il possible de relier plusieurs machines entre elles, de simuler des switchs ou des routeurs. Il est également possible, de connecter deux réseaux virtuels différents sur deux machines physiques différentes, correspondant à deux sessions distinctes. On peut également créer plusieurs environnements virtuels, sans qu'ils ne connaissent l'existence les uns des autres.
+
+Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante. Cet outil est fondamental pour les tests d'acceptation que nous mettrons en place. En effet, il faut que l'on crée un environnement avec un attaquant, un client et un serveur, ainsi que deux routeurs de frontières.   
 
 \section{Erco}
-Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter ExaBGP \cite{Did15}. Il a été développé par l'Université de Lorraine afin de travailler en relation avec un service de trou noir en temps réel redirigeant le trafic entre un utilisateur et un fournisseur de services web. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes.\\ \indent Il permet l'ajout et la suppression de routes. Voici ce que nous propose la démo du logiciel \cite{Erc16} :
+\textit{Apache License Version 2.0, January 2004}
+
+Erco (Exabgp ROutes COntroller) est un logiciel permettant de piloter ExaBGP \cite{Did15}. Il a été développé par l'Université de Lorraine afin de travailler en relation avec un service de trou noir en temps réel redirigeant le trafic entre un utilisateur et un fournisseur de services web. C'est un logiciel libre exposant une API REST, lui permettant ainsi d'être utilisé par des programmes.
+
+Il permet l'ajout et la suppression de routes. Voici ce que nous propose la démo du logiciel \cite{Erc16} :
 
 \begin{figure}[H]
 \caption{Démo de Erco : Annoncer un nouveau réseau}
 \fbox{\includegraphics[width=\textwidth]{./medias/erco_demo_announce.png}}
+\label{fig:erco_demo_announce}
 \end{figure}
 
-Sur la figure 2.1, nous pouvons voir que l'on peut facilement lancer une commande, au choix entre : reload, restart, show neighbors, show routes et version. Mais aussi ajouter un nouveau réseau ou une simple machine.
+Sur la figure \ref{fig:erco_demo_announce}, nous pouvons voir que l'on peut facilement lancer une commande, au choix entre : reload, restart, show neighbors, show routes et version. Mais aussi ajouter un nouveau réseau ou une simple machine.
 
 \begin{figure}[H]
 \caption{Démo de Erco : Sous-réseaux annoncés}
 \fbox{\includegraphics[width=\textwidth]{./medias/erco_demo_announced.png}}
+\label{fig:erco_announced}
 \end{figure}
 
-Sur la figure 2.2, nous pouvons voir la liste des sous-réseaux. Nous pouvons effectuer des actions comme supprimer ou modifier un réseau.
+Sur la figure \ref{fig:erco_announced}, nous pouvons voir la liste des sous-réseaux. Nous pouvons effectuer des actions comme supprimer ou modifier un réseau.
+
+Bien que cette API soit bien constituer, nous ne pouvons pas la reprendre car le client désire que l'on fasse la même API mais avec un langage plus adéquat. En effet, Erco a été programmé en perl, langage difficilement maintenable par des personnes non expérimentés avec ce langage. Néanmoins, nous allons reprendre tous les formats JSON proposés par l'API ainsi que le même principes des URIs.
 
 \section{Projet de l'an dernier}
-Ce projet aura été à la fois simple et difficile à comprendre. \\ \indent
-Dans un premier temps, il se seront basés sur le logiciel Erco qui fait quasiment la même chose. \\ \indent
-Ils ont également utilisé Meteor, un framework open source de developpement web en JavaScript.
-Il leur aura permis de développer une API restful permettant l'envoi des commandes pour ajouter ou supprimer des routes. Ils auront dans un premier temps tester sur la console d'une machine si ça s'exécutait bien avant de le faire avec l'API. \\ \indent
-La figure 2.3 montre leur interface utilisateur sous Meteor.
+Ce projet aura été à la fois simple et difficile à comprendre.
+
+Dans un premier temps, il se sont basés sur le logiciel Erco qui fait quasiment la même chose.
+
+Ils ont également utilisé Meteor, un framework open source de développement web en JavaScript.
+Il leur a permis de développer une API restful permettant l'envoi des commandes pour ajouter ou supprimer des routes. Ils auront dans un premier temps tester sur la console d'une machine si ça s'exécutait bien avant de le faire avec l'API. La figure \ref{fig:meteor_route} montre leur interface utilisateur sous Meteor.
 
 \begin{figure}[H]
 \caption{Interface Utilisateur du Projet de l'an dernier}
 \fbox{\includegraphics[width=\textwidth]{./medias/ajoutRouteMeteor.png}}
+\label{fig:meteor_route}
 \end{figure}
 
-Pour stocker les modifications concernant les routes, ils ont utilisé une base de données avec MongoDB. C'est une base de données NoSQL, c'est à dire qu'il stocke les données dans des documents en JSON. C'est également un logiciel open source.
-\\ \indent
+Pour stocker les modifications concernant les routes, ils ont utilisé une base de données avec MongoDB. C'est également un logiciel open source. 
+
 GNS3 et Nemu leur auront permis de créer un environnement virtuel pour tester leur implémentation. Un read.me est disponible pour configurer l'environnement, pour pouvoir nous même lancer les tests avec leurs travaux. Des installations au préalable doivent être effectuées.
-Pour la modification directement sur les routeurs, ils ont utilisés ExaBGP. Recevant les réponses en JSON, ils ont implementé un convertisseur en python pour les transformer en chaîne de caractère et ainsi pouvoir les envoyer sur les routeurs. \\ \indent
-Nous avons décidé de ne pas reprendre le projet de l'an dernier. En effet, nous préférons partir du début car nous n'avons pas les mêmes acquis. De plus, nous serons plus valorisés à recommencer l'implémentation depuis le début, cela mettrait en avant nos compétences. Nous pourrions cependant reprendre la partie virtualisation d'un environnement avec différentes machines. Ceci, nous aidera simplement pour faire des tests.
+Pour la modification directement sur les routeurs, ils ont utilisés ExaBGP. Recevant les réponses en JSON, ils ont implementé un convertisseur en python pour les transformer en chaîne de caractère et ainsi pouvoir les envoyer sur les routeurs.
+
+Nous avons décidé de ne pas reprendre le projet de l'an dernier. En effet, nous préférons partir du début car nous n'avons pas les mêmes acquis. De plus, nous serons plus valorisés à recommencer l'implémentation depuis le début, cela mettrait en avant nos compétences. Nous pourrions cependant reprendre la partie virtualisation d'un environnement avec différentes machines. Ceci, nous aidera simplement pour faire des tests. On réfléchi encore à l'utilisation de la base de donnée MongoDB car nous utilisons le format JSON pour communiquer entre toutes les parties de l'application. Dans un premier temps, nous utiliserons SQLite pour le prototype.
