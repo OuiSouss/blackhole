@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'mysite.urls'
+ROOT_URLCONF = 'blackhole_ui.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
+WSGI_APPLICATION = 'blackhole_ui.wsgi.application'
 
 
 # Database
@@ -108,13 +108,13 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Paris'
 
-# Django’s translation system 
+# Django’s translation system
 USE_I18N = False
 
 # localized formatting of data
 USE_L10N = True
 
-# timezone-aware 
+# timezone-aware
 USE_TZ = True
 
 
