@@ -10,8 +10,8 @@ Elle devra supporter le routage vers trou noir par la destination, par la source
 ## Structure du dépôt
 
 - [Project](./project) : Répertoire pour le code
-  - [Django](./project/django) : Code de l'application Django
-  - [Configuration initiale du projet](./project/prerequisite.md) : Informations pour configurer le projet
+  - [Frontend](./project/frontend) : Code du frontend
+  - [README du projet](./project/README.md) : Informations pour configurer le projet
 - [Reports](./reports) : Répertoire pour les fichiers latex
 
 
