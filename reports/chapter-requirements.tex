@@ -74,10 +74,10 @@ Une page d'authentification permettra de restreindre l'accès de l'application e
 \subsection{Interface utilisateur}
 \label{sssec:ui}
 
-Pour permettre une gestion plus simplifiée des différentes fonctions demandées tout en gardant un visuel sur la situation actuelle, une interface graphique est nécessaire. 
+Pour permettre une gestion plus simplifiée des différentes fonctions demandées tout en gardant un visuel sur la situation actuelle, une interface graphique est nécessaire.
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{./medias/ui_interface4.png}
+    \includegraphics[width=\textwidth]{./medias/ui_interface.png}
     \caption{Prototype interface utilisateur}
     \label{fig:ui_interfaces}
 \end{figure}
@@ -89,7 +89,7 @@ Il faut indiquer à l'utilisateur si le client est actuellement connecté à l'A
 Le client vérifie périodiquement (chaque seconde) qu'il est toujours connecté à l'API en faisant une requête (rapide).
 S'il reçoit une réponse, le voyant coloré deviens vert.
 Dans le cas où il ne recevrait pas de réponse, le voyant coloré deviens rouge jusqu'au rétablissement de la connexion.\newline
- 
+
 \textbf{Déconnexion} (2)\newline
 Permet à un utilisateur authentifié de se déconnecter.
 Dans le cas où il existerait plusieurs compte utilisateur, il serait possible d'afficher l'identité de l'utilisateur actuel à cet emplacement.\newline
@@ -131,7 +131,7 @@ Les sous-réseaux pourrait être trié de deux manières, du plus récent au plu
 Si les sous-réseaux sont triés du plus ancien au plus récent alors l'insertion d'un nouveau sous-réseau ne provoquera pas de décalage. Mais s'il y a beaucoup de sous-réseaux alors accéder à ce nouveau sous-réseau sera plus pénible.
 
 % récent -> ancien : accéder à ancien est pénible ET insérer un élément fait lagger proportionnellement à la taille de la liste
-Si les sous-réseaux sont triés du plus récent au plus ancien alors l'insertion d'un nouveau sous-réseau et son affichage provoquera un décalage de tout les éléments. Mais s'il y a beaucoup de sous-réseaux alors accéder à un ancien sous-réseau sera plus pénible. 
+Si les sous-réseaux sont triés du plus récent au plus ancien alors l'insertion d'un nouveau sous-réseau et son affichage provoquera un décalage de tout les éléments. Mais s'il y a beaucoup de sous-réseaux alors accéder à un ancien sous-réseau sera plus pénible.
 
 %3 : affichage du contenu
 Deux types d'affichage seraient possible, une liste sans-limite ou une liste paginée.
@@ -156,7 +156,7 @@ La liste des sous-réseaux annoncés affiche l'ID ("\#"), le réseau attaquant a
     \item Actualisation des "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%7
     \item Modification d'un "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%8
     \item Suppression d'un "sous-réseaux annoncés" par l'intermédiaire d'un bouton.%9
-    
+
 \end{itemize}
 \subparagraph{Résultat obtenu :}
     \begin{itemize}
@@ -171,7 +171,7 @@ La liste des sous-réseaux annoncés affiche l'ID ("\#"), le réseau attaquant a
     \item Un message d'erreur apparaît directement dans la page.%6
     \item Une fenêtre contenant les informations de la route à modifier apparaît et demande une confirmation pour la modification. Ces informations seront éditables dans cette fenêtre. Si la modification est confirmée alors la fenêtre disparaîtra, appliquera la modification et la liste de "Sous-réseaux annoncés" sera mise à jour.%8
     \item Une fenêtre contenant les informations de la route à supprimer apparaît et demande une confirmation pour la modification. Si la suppression est confirmée alors la fenêtre disparaîtra, appliquera la suppression et la liste de "Sous-réseaux annoncés" sera mise à jour.%9
-    
+
 \end{itemize}
 \subparagraph{Conclusion :}Ce besoin est correctement rempli.
 
@@ -187,7 +187,7 @@ La liste des commandes ExaBGP sont :
         "file_missing":false
     }
     \end{minted}
-    
+
     \item GET /api/exabgp/command{?action} (Execute une commande exaBGP)
     \begin{minted}{js}
     # Success:
@@ -202,14 +202,14 @@ La liste des commandes ExaBGP sont :
         "msg":"The reason why it failed"
     }
     \end{minted}
-    
+
     \item GET /api/exabgp/commands (Donne la liste des commandes de exaBGP)
     \begin{minted}{js}
      [
     "reload"
     ]
     \end{minted}
-    
+
     \item GET /api/communities (Donne la liste des communities valides)
     \begin{minted}{js}
     {
@@ -218,7 +218,7 @@ La liste des commandes ExaBGP sont :
         "64511:123":"Baz",
     }
     \end{minted}
-    
+
     \item GET /api/next\_hops (Donne la liste des next\_hops valides)
     \begin{minted}{js}
     {
@@ -275,7 +275,7 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
             "human_modified_at":null
         }
     }
-    
+
     # Failure:
     {
         "success":false,
@@ -312,7 +312,7 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
         "human_modified_at":"Thu, 02 Jul 2015 10:15:55 GMT"
     }
     \end{minted}
-    
+
     \item PUT /api/routes/1 (Remplacer la route 1)
     \begin{minted}{js}
     # Success:
@@ -340,11 +340,11 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
         "msg":"The reason why it failed"
     }
     \end{minted}
-    
+
     \item PATCH /api/routes/1 (Modifier la route 1)
     \begin{minted}{js}
     \end{minted}
-    
+
     \item DELETE /api/routes/1 (Supprimer la route 1)
     \begin{minted}{js}
     # Success:
@@ -352,14 +352,14 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
         "success":true,
         "msg":"Network successfully deleted."
     }
-    
+
     # Failure:
     {
         "success":false,
         "msg":"The reason why it failed"
     }
     \end{minted}
-    
+
 \end{itemize}
 
 \subparagraph{Protocole de test :}
@@ -391,7 +391,7 @@ Nous mettrons en cache les communautés, les hops, la liste des routes existante
 %\subsubsection{Système en couches}
 
 \subsubsection{Code à la demande}
-L'architecture REST propose dans son modèle une partie "code à la demande" malheureusement nous n'implémenterons sûrement pas cette partie car trop difficile à mettre en place. Cette partie réduit souvent la visibilité dans le projet et dois répondre aux contraintes REST, c'est pourquoi elle est souvent désignée comme optionnelle lorsque l'on suit l'architecture REST. Cependant si le projet était repris ou si nous avions le temps, il pourrais être intéressant d'implémenter ces fonctionnalitées en code à la demande :  
+L'architecture REST propose dans son modèle une partie "code à la demande" malheureusement nous n'implémenterons sûrement pas cette partie car trop difficile à mettre en place. Cette partie réduit souvent la visibilité dans le projet et dois répondre aux contraintes REST, c'est pourquoi elle est souvent désignée comme optionnelle lorsque l'on suit l'architecture REST. Cependant si le projet était repris ou si nous avions le temps, il pourrais être intéressant d'implémenter ces fonctionnalitées en code à la demande :
 \begin{itemize}
     \item Implémenter la possibilité d'exécuter des commandes lié à des fonctionnalité non relié à l'interface.
     \item L'interface de l'utilisateur sera implémentée en anglais. Une option pour traduire l'interface en français pourra être implémentée par la suite.
@@ -403,34 +403,34 @@ Voici les tables que nous mettrons en place sur SQLite dans un premier temps pou
 
 \vspace{2em}
 
-\begin{tabular}{|l|l|l|l|l|l|l|} 
+\begin{tabular}{|l|l|l|l|l|l|l|}
    \hline
     Table & Champ & Type & Interclassement & Attributs & Null & Défaut \\
     \hline
         Security & id & int &  &  & Non & 1 \\
-    \cline{2-7} 
+    \cline{2-7}
          & username & varchar & utf8\_unicode\_ci & & Non & admin \\
-    \cline{2-7} 
+    \cline{2-7}
          & password & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
-    \cline{2-7} 
+    \cline{2-7}
          & salt & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
-    \cline{2-7} 
+    \cline{2-7}
          & mail & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
     \hline
         Route & id & int &  &  & Non & Aucun(e)\\
-    \cline{2-7} 
+    \cline{2-7}
          & network & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
-    \cline{2-7} 
+    \cline{2-7}
          & mask & varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
-    \cline{2-7} 
-         & next\_hop & varchar & utf8\_unicode\_ci & & Oui & Aucun(e) \\ 
-    \cline{2-7} 
+    \cline{2-7}
+         & next\_hop & varchar & utf8\_unicode\_ci & & Oui & Aucun(e) \\
+    \cline{2-7}
          & community & int ou varchar & utf8\_unicode\_ci & & Non & Aucun(e) \\
-    \cline{2-7} 
+    \cline{2-7}
          & enabled & bool &  & & Non & True \\
-    \cline{2-7} 
+    \cline{2-7}
          & created & datetime &  & & Non & Aucun(e) \\
-    \cline{2-7} 
+    \cline{2-7}
          & modified & datetime &  & & Non & Aucun(e) \\
     \hline
 \end{tabular}
@@ -459,7 +459,7 @@ Voici les tables que nous mettrons en place sur SQLite dans un premier temps pou
 \section{Diagramme}
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{./medias/use_cases3.png}
+    \includegraphics[width=\textwidth]{./medias/use_cases.png}
     \caption{Diagramme d'utilisation de l'application}
     \label{fig:use_cases}
 \end{figure}
