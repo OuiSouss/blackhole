@@ -16,11 +16,12 @@ source bin/activate
 deactivate
 ```
 
-## Installer Django dans l'environnement virtuel
+## Installer les dépendances du projet
 
 ```bash
 # Depuis l'environnement virtuel
-pip3 install django
+# dans le répertoire project
+pip install -r requirements.txt
 ```
 
 ## Création de l'application
