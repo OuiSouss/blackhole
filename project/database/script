@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+#_*_coding:utf-8_*_
+
+python start_base.py
