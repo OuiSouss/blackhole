@@ -193,5 +193,5 @@ python manage.py createsuperuser
 # admin # Username
 # admin@example.com # Email address
 # admin # Password
-# at least 8 characters
+# Bypass password validation and create user anyway? [y/N]
 ```
