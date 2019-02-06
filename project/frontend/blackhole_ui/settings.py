@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import secret_key
+
+if __name__ == '__main__':
+    # execute only if run as the entry point into the program
+    print("SECRET_KEY :")
+    print( secret_key.get() )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,8 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'k%hrv*^ghh#lso8i@zrmfxz@4$#iz6w=9o=48+go&zm$n4p-_q'
-#TODO : importer la SECRET_KEY dans un fichier protégé par "git ignore"
+SECRET_KEY = secret_key.get()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
