@@ -12,7 +12,7 @@ class BaseTest(unittest.TestCase):
 		dbi = client.Security
 
 	def test_insert():
-    		#TODO
+    	#TODO
 	def test_read():
 		#TODO
 	def test_activate():
