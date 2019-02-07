@@ -1,8 +1,10 @@
 {% extends "base_generic.html" %}
 
+
+
 {% block content %}
 
-
+{% block title %}<title>Authentification</title>{% endblock %}
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
