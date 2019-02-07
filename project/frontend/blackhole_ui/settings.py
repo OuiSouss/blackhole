@@ -13,13 +13,19 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import secret_key
 
-if __name__ == '__main__':
-    # execute only if run as the entry point into the program
-    print("SECRET_KEY :")
-    print( secret_key.get() )
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+
+#https://docs.djangoproject.com/en/2.1/topics/email/
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#I haven't programmed that path yet
 
 
 # Quick-start development settings - unsuitable for production
