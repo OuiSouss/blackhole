@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, fields, marshal_with
+from datetime import datetime
 import json
-import sys
 
 subnets = {
     'subnet1': {
@@ -10,12 +10,10 @@ subnets = {
         "communities": [
             "564:65"
         ],
-        "created_at": 1456446454,
-        "human_created_at" : "Fri, 5 Feb 2019 09:46:56 GMT",
+        "created_at" : "Fri, 5 Feb 2019 09:46:56 GMT",
         "modified_at": "null",
-        "human_modified_at": "null",
+        "is_activated": False,
         "last_activation": "Fri, 5 Feb 2019 09:47:00 GMT",
-        "activated_since": 4564,
     },
     'subnet2': {
         "id": 2,
@@ -24,12 +22,10 @@ subnets = {
         "communities": [
             "56:655"
         ],
-        "created_at": 1456446450,
-        "human_created_at" : "Fri, 5 Feb 2019 09:50:00 GMT",
+        "created_at": "Fri, 5 Feb 2019 09:50:00 GMT",
         "modified_at": "null",
-        "human_modified_at": "null",
+        "is_activated" : True,
         "last_activation": "Fri, 5 Feb 2019 09:53:00 GMT",
-        "activated_since": 4556,
     },
 }
 
@@ -37,12 +33,11 @@ subnets_fields = {
     'id': fields.Integer,
     'ip': fields.String,
     'next_hop': fields.String,
-    'communities': fields.String,
+    'communities': fields.List(fields.String),
     'created_at': fields.DateTime,
     'modified_at': fields.DateTime,
     'is_activated': fields.Boolean,
     'last_activation': fields.DateTime,
-    'activated_since': fields.Integer,
 }
 
 post_parser = reqparse.RequestParser()
@@ -60,7 +55,7 @@ post_parser.add_argument(
 )
 class Subnet(Resource):
     def get(self):
-        return subnets
+        return json.dumps(subnets)
     
     @marshal_with(subnets_fields)
     def post(self):
@@ -72,6 +67,10 @@ class Subnet(Resource):
             'id': id,
             'ip': args.ip,
             'next_hop': args.next_hop,
-            'communities': args.communities,
+            'communities': [args.communities],
+            'created_at': datetime.now(),
+            'modified_at': datetime.now(),
+            'is_activated': True,
+            'last_activation': datetime.now(),
         }
         return subnets[subnet_name], 201
