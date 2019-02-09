@@ -1,4 +1,3 @@
-from funct_base import *
 import unittest
 from pymongo import MongoClient
 
