@@ -1,18 +1,6 @@
-
-from funct_base import *
+from funct_base import insert, get, update, delete
 import sys
 
-##while(1):
-##    selection = raw_input('\nSelect C to connect, R to register, Q to quit\n')
-##    if selection =='R':
-##	register()
-##    elif selection == 'C':
-##    	login()
-##    elif selection == 'Q':
-##	print '\nBye bye\n'
-##	sys.exit(1)
-##    else:
-##        print '\n INVALID SELECTION \n'
 while(1):
     selection = input('\nSelect POST to insert, PUT to update,  GET to read, DEL to delete or Q to quit\n')
 
