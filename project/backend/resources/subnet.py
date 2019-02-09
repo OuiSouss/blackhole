@@ -1,9 +1,8 @@
 from flask_restful import Resource, reqparse, fields, marshal_with
 from datetime import datetime
-import json
+from flask import jsonify
 
-subnets = {
-}
+subnets = []
 
 subnets_fields = {
     'id': fields.Integer,
@@ -27,29 +26,28 @@ post_parser.add_argument(
 
 post_parser.add_argument(
     "communities", dest="communities", location=["form", "json"], 
-    required=True, help="The community",
+    required=True, help="The community", action="append"
 )
 
 class Subnet(Resource):
     def get(self):
-        return subnets
+        return jsonify(subnets)
     
     @marshal_with(subnets_fields)
     def post(self):
         args = post_parser.parse_args()
         id = 1
-        if (len(subnets.keys()) > 0):
-            last_subnet = max(subnets.keys())
-            id = subnets[last_subnet]['id'] + 1
-        subnet_name = "subnet%i" % id
-        subnets[subnet_name] = {
+        if (len(subnets) > 0):
+            id = subnets[-1]['id'] + 1
+        subnet = {
             'id': id,
             'ip': args.ip,
             'next_hop': args.next_hop,
-            'communities': [args.communities],
+            'communities': args.communities,
             'created_at': str(datetime.now()),
             'modified_at': str(datetime.now()),
             'is_activated': True,
             'last_activation': str(datetime.now()),
         }
-        return subnets[subnet_name], 201
+        subnets.append(subnet)
+        return subnet, 201
