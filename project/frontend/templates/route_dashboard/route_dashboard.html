@@ -4,6 +4,14 @@
 {% block content %}
 
 <h1>Route Manager</h1>
+<br>
+Liste des routes existantes :
+<hr>
+{% for r in data %}
+      | {{r.id}} | {{r.ip}} | {{r.next_hop}} | {{r.communities}} |  {{r.created_at}} | {{r.modified_at}} | {{r.is_activated}} | {{r.last_activation}} |
+      <hr>
+{% endfor %}
 
+<br>
 
 {% endblock %}
