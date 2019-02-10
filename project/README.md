@@ -24,6 +24,29 @@ deactivate
 pip install -r requirements.txt
 ```
 
+# Backend
+
+## Lancer l'API REST
+```bash
+cd backend
+./run.sh
+```
+
+## Tester les méthodes
+
+```bash
+# GET : Liste de toutes les routes créées
+curl -i http://127.0.0.1:5000/api/subnet -X GET
+
+# PÖST : Créer une route
+curl -i http://127.0.0.1:5000/api/subnet -X POST -d "ip=1.13.12.1&next_hop=45.56.1.2&communities=45:4&communities=63:45"
+
+# DELETE : Supprimer une route selon son ID
+curl -i http://127.0.0.1:5000/api/subnet -X DELETE -d "id=1"
+```
+
+# Frontend
+
 ## Création de l'application
 
 ```bash
