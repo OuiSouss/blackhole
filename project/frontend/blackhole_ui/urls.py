@@ -17,9 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.views.generic import *
-
+from route_manager.models import *
 from . import views
-#from route_manager.models import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
