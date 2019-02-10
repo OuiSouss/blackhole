@@ -1,3 +1,6 @@
+"""
+Define a blueprint and all resources
+"""
 from flask import Blueprint
 from flask_restful import Api
 
