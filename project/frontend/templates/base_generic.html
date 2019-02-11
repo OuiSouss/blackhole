@@ -15,7 +15,8 @@
         <ul class="sidebar-nav">
 
 			{% if user.is_authenticated %}
-			  <li>User: {{ user.get_username }}</li>  
+			  <li>User: {{ user.get_username }}</li>
+				
 			{% endif %} 
 
         </ul>
@@ -28,17 +29,63 @@
 {% endblock %}
 	</div>
 
+
+	
+
+	
+
+
+	<!-- si l'utilisateur est authentifié -->
 	{% if user.is_authenticated %}
-		<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li> 
-	{% else %}
-		{% if request.get_full_path == "/account/login/" %}
-		<li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-		{% endif %} 
-	{% endif %} 
+
+		<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
+		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->	
+		{# if not "/accounts/change_password/" in request.get_full_path #}
+			<!-- Mais on ne vas lui proposer-->
+			<!-- Si l'utilsiateur est déjà dans la bonne page -->
+			<li><a href="{% url 'change_password'%}?next={{request.path}}">Change password</a></li>
+		{# endif #}
+
+		<!-- Alors on peut lui proposer de retourner au gestionnaire de route-->
+		<!-- Probleme : quand on pars du dashboard vers le login, ça detecte mal-->	
+		{# if not "/dashboard/" in request.get_full_path #}
+			<!-- Mais on ne vas lui proposer-->
+			<!-- Si l'utilsiateur est déjà dans la bonne page -->
+			<li><a href="{% url 'dashboard'%}?next={{request.path}}">Dashboard</a></li>
+		{# endif #} 
+	
+
+		<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+
+	{% endif %} 	
+
+	<!-- Sinon on peut lui proposer de se connecter.
+	Mais s'il n'est pas connecté alors il sera forcément dans la page login.
+	Et n'auras pas besoin qu'on lui propose cette option
+	 -->
+
+	
 
     </div>
   </div>
 </body>
+
+
+<!-- DEBUG -->
+{% if False %}
+	<br>
+	<br>
+	<b>is_authenticated :</b>
+	{{ user.is_authenticated }}<br>
+
+	<b>get_full_path :</b>
+	{{ request.get_full_path }}<br>
+
+
+
+{% endif %}
+
+
 </html>
 
 
