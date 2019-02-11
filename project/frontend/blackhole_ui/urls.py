@@ -20,11 +20,19 @@ from django.views.generic import *
 from route_manager.models import *
 from . import views
 
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('dashboard/', views.index),# route_manager
-    path('', views.index),# route_manager
+
+    #url(r'^password/$', views.change_password, name='change_password'),
+    path('accounts/change_password/', views.change_password, name='change_password'),
+    
+    path('dashboard/', views.index, name='dashboard'),# route_manager
+    path('', views.home ),# route_manager ou login
      
 ]
+
 

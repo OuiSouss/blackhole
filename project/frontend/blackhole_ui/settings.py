@@ -22,6 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/dashboard/'
 
+# Redirect to login url
+AUTH_URL = '/accounts/login/'
+
 
 #https://docs.djangoproject.com/en/2.1/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
