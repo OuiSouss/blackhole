@@ -1,124 +1,46 @@
-from pymongo import MongoClient
 from datetime import datetime
-import pprint
+from pprint import pprint
+from pymongo import MongoClient
 
-uri = 'mongodb://Bidule45:Truc45@ds127115.mlab.com:27115/route_base'
-
-client = MongoClient(uri)
-global dbr
-dbr = client.route_base
-print(dbr.collection_names(include_system_collections=False))
-
-def insert():
-    try:
-        routeNetwork = input('Enter Network :')
-        routeMask = input('Enter Mask :')
-        routeNextHop = input('Enter NextHop :')
-        routeCommunity = input('Enter Community:')
-        
-        dbr.Route.insert_one(
-            {
-                "network": routeNetwork,
-                "mask": routeMask,
-                "nexthop": routeNextHop,
-                "community": routeCommunity,
-                "enabled": 1,
-                "created": datetime.utcnow(),
-                "modified": datetime.utcnow(),
-                "last_activation": datetime.utcnow()
-        })
-        print ('\nInserted data successfully\n')
-    
-    except Exception as e:
-        print (e)
-
-def read():
-    try:
-        routesCol = dbr.Route.find()
-        print ('\n All data from Route Database \n')
-        for route in routesCol:
-            pprint.pprint(route)
-
-    except Exception as e:
-        print (e)
-
-def read_one():
-    try:
-        routeNetwork = input('Enter Network :')
-        route = dbr.Route.find_one({"network": routeNetwork})
-        print ('\n Data from Route Database \n')
-        pprint.pprint(route)
-
-    except Exception as e:
-        print (e)
-
-def get():
-    while(1):
-        selection = input('\nSelect RALL to read all data, RONE to read one or Q to quit\n')
-
-        if selection == 'RALL':
-            read()
-        elif selection == 'RONE':
-            read_one()
-        elif selection == 'Q':
-            print('\nExiting Read option\n')
-            break
+class MongoDB:
+    def __init__(self, collection_name):
+        self.client = MongoClient('mongodb://admin:admin45@ds127115.mlab.com:27115/route_base')
+        self.database = self.client.route_base
+        if collection_name == 'Route' :
+            self.route = self.database.Route
         else:
-            print ('\n INVALID SELECTION \n')
+            self.route = self.database.Test
 
-    
-def activate():
-    try:
-        routeNetwork = input('\nEnter network to update\n')
+#methods=['GET']
+    def get_all_routes(self):
+        routes = self.route.find()
+        for route in routes:
+            pprint (route) 
 
-        dbr.Route.update_one(
-            {"network": routeNetwork},
-            {
-                "$set": {
-                    "modified": datetime.utcnow(),
-                    "last_activation": datetime.utcnow(),
-                    "enabled": 1
-                }
-            }
-        )
-        print ('\nRecord updated successfully\n')    
-    
-    except Exception as e:
-        print (e)
+#methods=['POST']
+    def add_route(self, post):
+        route_ip = post['ip']
+        route_nexthop = post['next_hop']
+        route_communities = post['communities']
+        self.route.insert_one({
+            'ip': route_ip,
+            'next_hop': route_nexthop,
+            'communities': route_communities,
+            'created_at': datetime.now(),
+            'modified_at': datetime.now(),
+            'is_activated': 1,
+            'last_activation': datetime.now()})
 
-def desactivate():
-    try:
-        routeNetwork = input('\nEnter network to update\n')
+#methods=['DELETE']
+    def delete_route(self, post):
+        route_ip = post['ip']
+        self.route.delete_many({'ip': route_ip})
 
-        dbr.Route.update_one(
-            {"network": routeNetwork},
-            {
-                "$set": {
-                    "modified": datetime.utcnow(),
-                    "enabled": 0
-                }
-            }
-        )
-        print ('\nRecord updated successfully\n')    
-    
-    except Exception as e:
-        print (e)
-
-def update():
-    selection = input('\nSelect ACT to activate, DESACT to desactivate\n')
-    
-    if selection == 'ACT':
-        activate()
-    elif selection == 'DESACT':
-        desactivate()
-    else:
-        print ('\n INVALID SELECTION \n')
-
-
-def delete():
-    try:
-        routeNetwork = input('\nEnter network to delete\n')
-        dbr.Route.delete_many({"network": routeNetwork})
-        print ('\nDeletion successful\n') 
-    except Exception as e:
-        print (e)
+#methods=['PATCH']
+    def update_route(self, ip):
+        route_ip = ip['ip']
+        r = self.route.find_one({'ip': route_ip})
+        self.route.update_one({"ip": route_ip},
+                {"$set":{ 'modified_at':datetime.now(),
+                          'is_activated':1-r['is_activated'],
+                          'last_activation': datetime.now()}})
