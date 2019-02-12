@@ -3,7 +3,7 @@ REST API /api/subnet
 """
 from datetime import datetime
 from flask_restful import Resource, reqparse, fields, marshal_with
-from flask import jsonify
+from flask import jsonify, abort
 
 subnets = []
 
@@ -17,29 +17,6 @@ subnets_fields = {
     'is_activated': fields.Boolean,
     'last_activation': fields.String,
 }
-
-def create_post_parser():
-    """
-    Create a parser for POST request which needs
-    an IP, the next_hop, and communities on which we need
-    to apply the route
-    :return: post_parser
-    """
-    post_parser = reqparse.RequestParser()
-    post_parser.add_argument(
-        "ip", dest="ip", location=["form", "json"], required=True,
-        help="The IP",
-    )
-    post_parser.add_argument(
-        "next_hop", dest="next_hop", location=["form", "json"], required=True,
-        help="The next hop",
-    )
-
-    post_parser.add_argument(
-        "communities", dest="communities", location=["form", "json"],
-        required=True, help="The community", action="append"
-    )
-    return post_parser
 
 def create_delete_parser():
     """
@@ -60,6 +37,23 @@ class Subnet(Resource):
     database.
     """
 
+    def __init__(self):
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument(
+            "ip", dest="ip", location=["form", "json"], required=True,
+            help="The IP",
+        )
+        self.reqparser.add_argument(
+            "next_hop", dest="next_hop", location=["form", "json"],
+            required=True, help="The next hop",
+        )
+        self.reqparser.add_argument(
+            "communities", dest="communities", location=["form", "json"],
+            required=True, help="The community", action="append"
+        )
+        super(Subnet, self).__init__()
+
+
     def get(self):
         """
         GET request
@@ -74,7 +68,7 @@ class Subnet(Resource):
         It will announced to ExaBGP and store in database
         :return: The new subnet with 201 status
         """
-        args = create_post_parser().parse_args()
+        args = self.reqparser.parse_args()
         id_subnet = 1
         if subnets:
             id_subnet = subnets[-1]['id'] + 1
@@ -90,6 +84,45 @@ class Subnet(Resource):
         }
         subnets.append(subnet)
         return subnet, 201
+
+    @marshal_with(subnets_fields)
+    def put(self):
+        """
+        PUT request need all fields infos
+        :return: The subnet modify
+        """
+        put_parser = self.reqparser.copy()
+        put_parser.add_argument(
+            "id", dest="id", location=["form", "json"], required=True,
+            help="The ID",
+        )
+        put_parser.add_argument(
+            "is_activated", dest="is_activated", location=["form", "json"],
+            required=True, help="The activation",
+        )
+        args = put_parser.parse_args()
+        index_id = None
+        for i in range(len(subnets)):
+            if subnets[i]['id'] == int(args.id):
+                index_id = i
+        if index_id is None:
+            abort(404)
+        last_activation_state = subnets[index_id]['is_activated']
+        last_activation = subnets[index_id]['last_activation']
+        if bool(args.is_activated) != last_activation_state:
+            last_activation = str(datetime.now())
+        subnet = {
+            'id': args.id,
+            'ip': args.ip,
+            'next_hop': args.next_hop,
+            'communities': args.communities,
+            'created_at': subnets[index_id]['created_at'],
+            'modified_at': str(datetime.now()),
+            'is_activated': args.is_activated,
+            'last_activation': last_activation,
+        }
+        subnets[i] = subnet
+        return subnet, 200
 
     @marshal_with(subnets_fields)
     def delete(self):
