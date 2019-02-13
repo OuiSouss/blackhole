@@ -81,7 +81,7 @@ class Subnet(Resource):
     @marshal_with(subnets_fields)
     def put(self):
         """
-        PUT request need all fields infos
+        PUT request need all fields infos except dates
         :return: The subnet modify
         """
         put_parser = self.general_parser.copy()
@@ -95,14 +95,17 @@ class Subnet(Resource):
         )
         args = put_parser.parse_args()
         index_id = None
-        for i in range(len(subnets)):
+        for i, _ in enumerate(subnets):
             if subnets[i]['id'] == int(args.id):
                 index_id = i
         if index_id is None:
             abort(404)
+        is_activated = True
+        if (args.is_activated == "false" or args.is_activated == "False"):
+            is_activated = False
         last_activation_state = subnets[index_id]['is_activated']
         last_activation = subnets[index_id]['last_activation']
-        if not last_activation_state and bool(args.is_activated):
+        if not last_activation_state and is_activated:
             last_activation = str(datetime.now())
         subnet = {
             'id': args.id,
@@ -111,7 +114,7 @@ class Subnet(Resource):
             'communities': args.communities,
             'created_at': subnets[index_id]['created_at'],
             'modified_at': str(datetime.now()),
-            'is_activated': args.is_activated,
+            'is_activated': is_activated,
             'last_activation': last_activation,
         }
         subnets[index_id] = subnet
@@ -119,6 +122,10 @@ class Subnet(Resource):
 
     @marshal_with(subnets_fields)
     def patch(self):
+        """
+        PATCH request need ID and is_activated
+        :return: The modify subnet
+        """
         patch_parser = self.simple_parser.copy()
         patch_parser.add_argument(
             "is_activated", dest="is_activated", location=["form", "json"],
@@ -126,16 +133,19 @@ class Subnet(Resource):
         )
         args = patch_parser.parse_args()
         index_id = None
-        for i in range(len(subnets)):
+        for i, _ in enumerate(subnets):
             if subnets[i]['id'] == int(args.id):
                 index_id = i
         if index_id is None:
             abort(404)
+        is_activated = True
+        if (args.is_activated == "false" or args.is_activated == "False"):
+            is_activated = False
         last_activation_state = subnets[index_id]['is_activated']
         last_activation = subnets[index_id]['last_activation']
-        if not last_activation_state and bool(args.is_activated):
+        if not last_activation_state and is_activated:
             last_activation = str(datetime.now())
-        subnets[index_id]['is_activated'] = args.is_activated
+        subnets[index_id]['is_activated'] = is_activated
         subnets[index_id]['modified_at'] = str(datetime.now())
         subnets[index_id]['last_activation'] = last_activation
         return subnets[index_id], 200
