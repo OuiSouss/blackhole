@@ -39,8 +39,9 @@ def index(request):
     if request.user.is_authenticated:
         try:
             response = requests.get('http://127.0.0.1:5000/api/subnet')
-        except ConnectionError as e:
-            return render(request, 'error/Error503.html')
+        except ConnectionError as exception:
+            return render(request, 'error/Error503.html',
+                          {'exception' : exception})
         json_data = response.json()
         if request.method == "POST":
             form = PostForm(request.POST)
