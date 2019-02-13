@@ -1,5 +1,4 @@
 #!/bin/sh
-. ../venv/bin/activate
 export FLASK_APP=run.py
 export FLASK_ENV=development
 export LC_ALL=C.UTF-8
