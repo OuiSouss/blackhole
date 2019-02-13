@@ -8,14 +8,18 @@
 <h2>Announce a new IP :</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Créer</button>
+        <button type="submit" class="save btn btn-default">Create</button>
     </form>
 <br>
 
 <h2>Announced networks :</h2>
 <hr>
 {% for r in data %}
-      | {{r.id}} | {{r.ip}} | {{r.next_hop}} | {{r.communities}} |  {{r.created_at}} | {{r.modified_at}} | {{r.is_activated}} | {{r.last_activation}} |
+      <form action="" method="POST">
+          {% csrf_token %}
+          <button type="submit" type="text" name="id" value="{{ r.id }}">Delete</button>
+          | {{r.id}} | {{r.ip}} | {{r.next_hop}} | {{r.communities}} |  {{r.created_at}} | {{r.modified_at}} | {{r.is_activated}} | {{r.last_activation}} |
+      </form>
       <hr>
 {% endfor %}
 

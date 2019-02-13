@@ -52,6 +52,11 @@ def index(request):
                                   "ip": str(route.ip),
                                   "communities": str(route.community),
                                   "next_hop": str(route.next_hop)})
+            else:
+                if request.POST['id']!='':
+                    requests.delete('http://127.0.0.1:5000/api/subnet',
+                              json={
+                                  "id": str(request.POST['id'])})
         else:
             form = PostForm()
         return render(request, 'route_dashboard/route_dashboard.html', {
