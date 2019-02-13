@@ -1,3 +1,3 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-python3 unittest_base.py
+python unittest_base.py

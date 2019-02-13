@@ -1,4 +1,3 @@
-#!/usr/bin/bash
-#_*_coding:utf-8_*_
+#!/bin/bash
 
-python3 start_base.py
+python start_base.py
