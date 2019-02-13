@@ -6,7 +6,7 @@ class MongoDB:
     def __init__(self, collection_name):
         self.client = MongoClient('mongodb://admin:admin45@ds127115.mlab.com:27115/route_base')
         self.database = self.client.route_base
-        if collection_name == 'Route' :
+        if collection_name == 'Route':
             self.route = self.database.Route
         else:
             self.route = self.database.Test
@@ -15,7 +15,7 @@ class MongoDB:
     def get_all_routes(self):
         routes = self.route.find()
         for route in routes:
-            pprint (route) 
+            pprint(route)
 
 #methods=['POST']
     def add_route(self, post):
@@ -41,6 +41,8 @@ class MongoDB:
         route_ip = ip['ip']
         r = self.route.find_one({'ip': route_ip})
         self.route.update_one({"ip": route_ip},
-                {"$set":{ 'modified_at':datetime.now(),
-                          'is_activated':1-r['is_activated'],
-                          'last_activation': datetime.now()}})
+                              {"$set": {
+                                  'modified_at': datetime.now(),
+                                  'is_activated': 1-r['is_activated'],
+                                  'last_activation': datetime.now()
+                                  }})

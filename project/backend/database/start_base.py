@@ -2,7 +2,7 @@ import sys
 from funct_base import MongoDB
 
 
-while(1):
+while 1:
     self = MongoDB('Route')
     selection = input('POST : add route, PATCH : update route, GET : get routes, DEL : delete route, Q : quit\n')
 
@@ -15,7 +15,7 @@ while(1):
     elif selection == 'PATCH':
         ip = input('Enter ip\n')
         post = {'ip': ip}
-        self.update_route(post)    
+        self.update_route(post)
     elif selection == 'GET':
         self.get_all_routes()
     elif selection == 'DEL':
