@@ -3,9 +3,11 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.conf import settings
-from route_manager.forms import PostForm
 from requests.exceptions import ConnectionError
 import requests
+
+from route_manager.forms import PostForm
+
 
 
 
@@ -35,7 +37,7 @@ def index(request):
     # AUTHENTIFICATION
 
     if request.user.is_authenticated:
-        try :
+        try:
             response = requests.get('http://127.0.0.1:5000/api/subnet')
         except ConnectionError as e:
             return render(request, 'error/Error503.html')

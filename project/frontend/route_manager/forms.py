@@ -6,5 +6,4 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('ip', 'next_hop','community',)
-
+        fields = ('ip', 'next_hop', 'community',)
