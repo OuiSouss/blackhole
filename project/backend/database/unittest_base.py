@@ -1,12 +1,25 @@
+"""
+ Units tests for the database 
+"""
+
 import unittest
 from funct_base import MongoDB
 
 class BaseTest(unittest.TestCase):
+    """
+     Test class for MongoDB
+    """
 
     def setUp(self):
+        """
+         Test initialization
+        """
         self.database = MongoDB('Test')
 
     def test_add_route(self):
+        """
+         Tests if the route has successfully been added to the database
+        """
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -22,6 +35,9 @@ class BaseTest(unittest.TestCase):
         self.database.delete_route({'ip': post['ip']})
 
     def test_get_all_routes(self):
+        """
+         Test is the route has succesfully been got to the database
+        """
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -52,6 +68,9 @@ class BaseTest(unittest.TestCase):
         self.database.delete_route({'ip': post2['ip']})
 
     def test_update_route(self):
+        """
+         Test if the route has succesfully been updated in the database
+        """
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -64,6 +83,9 @@ class BaseTest(unittest.TestCase):
         self.database.delete_route({'ip': post['ip']})
 
     def test_delete_route(self):
+        """
+         Test  if the route has succesfully been deleted of the database
+        """
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
