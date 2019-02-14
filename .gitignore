@@ -11,6 +11,7 @@
 **/VirtualEnv
 **/_minted-report
 **/db.sqlite3
+**/secret_key.py
 **/#*#
 **/.vscode
 **/unittest
