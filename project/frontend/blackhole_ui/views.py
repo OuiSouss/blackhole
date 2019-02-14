@@ -70,24 +70,27 @@ def index(request):
                               "ip": str(route.ip),
                               "communities": str(route.community),
                               "next_hop": str(route.next_hop)})
+            return redirect(settings.DASHBOARD_URL)
         else:
             print(request.POST)
             if 'id' in request.POST:
                 requests.delete(settings.API_URL,
                                 json={"id": str(request.POST['id'])})
+                return redirect(settings.DASHBOARD_URL)
             else:
                 if 'id1' in request.POST:
                     requests.patch(settings.API_URL,
                                    json={
                                        "id": str(request.POST['id1']),
-                                       "is_activated": False })
+                                       "is_activated": False})
+                    return redirect(settings.DASHBOARD_URL)
                 else:
                     if 'id2' in request.POST:
                         requests.patch(settings.API_URL,
                                        json={
                                            "id": str(request.POST['id2']),
                                            "is_activated": True})
-        return redirect(settings.DASHBOARD_URL)
+                        return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
