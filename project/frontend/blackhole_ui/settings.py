@@ -18,8 +18,6 @@ import secret_key
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#### URL
-
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/dashboard/'
 
@@ -35,13 +33,9 @@ CHANGE_PASSWORD = 'change_password'
 # API url to manage routes
 API_URL = 'http://127.0.0.1:5000/api/subnet'
 
-
-
 #### TEMPLATES
 TEMPLATE_DASHBOARD =  'route_dashboard/route_dashboard.html'
 TEMPLATE_CHANGE_PASSWORD = 'registration/change_password.html'
-
-
 
 #https://docs.djangoproject.com/en/2.1/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -7,17 +7,29 @@ import requests
 from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
 
+"""
+The ``views`` module
+======================
 
+Used to manage the various pages of the webapp
+"""
 
-
-#VERIFIE L'AUTHENTIFICATION
 def not_auth(request):
+    """
+    Checks if the user is currently anonymous
+
+    :param request: the request page
+    :return: True for anonymous, False for authenticated
+    """
     return not request.user.is_authenticated
 
-
-# '' => '/dashboard/'
-# '' => '/accounts/login/'
 def home(request):
+    """
+    Activated when trying to access the root page (/)
+
+    :param request: the request page
+    :return: dashboard for authenticated, login page for anonymous
+    """
 
     # AUTHENTIFICATION
     if not_auth(request):
@@ -26,15 +38,22 @@ def home(request):
 
     return redirect(settings.DASHBOARD_URL)
 
-
-# 'dashboard/'
 def index(request):
+    """
+    Activated when trying to access the dashboard
+
+    The entire dashboard will update for each modification.
+    It would have been preferable to update only the concerned elements,
+    but that would require javascript and more development time.
+
+    :param request: the request page
+    :return: dashboard for authenticated, login page for anonymous
+    """
 
     # AUTHENTIFICATION
     if not_auth(request):
         return redirect(settings.AUTH_URL)
     # AUTHENTIFICATION
-
 
     try:
         response = requests.get(settings.API_URL)
@@ -76,10 +95,13 @@ def index(request):
         'form': form,
     })
 
-
-
-# 'accounts/change_password/'
 def change_password(request):
+    """
+    Activated when trying to access the change_password page
+
+    :param request: the request page
+    :return: change_password page for authenticated, login page for anonymous
+    """
 
     # AUTHENTIFICATION
     if not_auth(request):
