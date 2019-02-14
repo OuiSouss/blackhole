@@ -29,6 +29,9 @@ AUTH_URL = '/accounts/login/'
 # Redirect to dashboard url
 DASHBOARD_URL = '/dashboard/'
 
+# Redirects to change password url
+CHANGE_PASSWORD = 'change_password'
+
 # API url to manage routes
 API_URL = 'http://127.0.0.1:5000/api/subnet'
 
