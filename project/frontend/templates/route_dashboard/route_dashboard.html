@@ -16,8 +16,13 @@
 <hr>
 {% for r in data %}
       <form action="" method="POST">
-          {% csrf_token %}
-          <button type="submit" type="text" name="id" value="{{ r.id }}">Delete</button>
+            {% csrf_token %}
+            <button type="submit" type="text" name="id" value="{{ r.id }}">Delete</button>
+            {% if r.is_activated %}
+                <button type="submit" type="text" name="id1" value="{{ r.id }}">X</button>
+            {% else %}
+                <button type="submit" type="text" name="id2" value="{{ r.id }}">O</button>
+            {% endif %}
           | {{r.id}} | {{r.ip}} | {{r.next_hop}} | {{r.communities}} |  {{r.created_at}} | {{r.modified_at}} | {{r.is_activated}} | {{r.last_activation}} |
       </form>
       <hr>

@@ -53,10 +53,22 @@ def index(request):
                                   "communities": str(route.community),
                                   "next_hop": str(route.next_hop)})
             else:
-                if request.POST['id']!='':
+                print(request.POST)
+                if 'id' in request.POST:
                     requests.delete('http://127.0.0.1:5000/api/subnet',
-                              json={
-                                  "id": str(request.POST['id'])})
+                                    json={"id": str(request.POST['id'])})
+                else:
+                    if 'id1' in request.POST:
+                        requests.patch('http://127.0.0.1:5000/api/subnet',
+                                       json={
+                                           "id": str(request.POST['id1']),
+                                           "is_activated": False })
+                    else:
+                        if 'id2' in request.POST:
+                            requests.patch('http://127.0.0.1:5000/api/subnet',
+                                           json={
+                                               "id": str(request.POST['id2']),
+                                               "is_activated": True})
         else:
             form = PostForm()
         return render(request, 'route_dashboard/route_dashboard.html', {
