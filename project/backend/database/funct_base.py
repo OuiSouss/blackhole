@@ -17,7 +17,9 @@ class MongoDB:
 	     :param collection_name: The name of the collection in the database
 	     :type collection_name: string
         """
-        self.client = MongoClient('mongodb://admin:admin45@ds127115.mlab.com:27115/route_base')
+        mongo_db = "admin:admin45@ds127115.mlab.com:27115/route_base"
+        mongo_connection = "mongodb://" + mongo_db
+        self.client = MongoClient(mongo_connection)
         self.database = self.client.route_base
         if collection_name == 'Route':
             self.route = self.database.Route
@@ -61,8 +63,8 @@ class MongoDB:
          Delete one route in the database
          :type post: dict
         """
-        route_ip = post['ip']
-        self.route.delete_many({'ip': route_ip})
+        route_id = post['_id']
+        self.route.delete_many({'_id': route_id})
 
 #methods=['PATCH']
     def update_route(self, ip):
