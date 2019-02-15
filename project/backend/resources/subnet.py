@@ -2,8 +2,10 @@
 REST API /api/subnet
 """
 from datetime import datetime
-from flask_restful import Resource, reqparse, fields, marshal_with
 from flask import jsonify, abort
+from flask_restful import Resource, reqparse, fields, marshal_with
+from bson import ObjectId
+from backend.database.funct_base import MongoDB
 
 subnets = []
 
@@ -44,6 +46,7 @@ class Subnet(Resource):
             "id", dest="id", location=["form", "json"], required=True,
             help="The ID",
         )
+        self.mongo_db = MongoDB("Route")
         super(Subnet, self).__init__()
 
 
@@ -52,7 +55,8 @@ class Subnet(Resource):
         GET request
         :return: List of subnets in json stored
         """
-        return jsonify(subnets)
+        items = self.mongo_db.get_all_routes()
+        return jsonify(items)
 
     @marshal_with(subnets_fields)
     def post(self):
@@ -62,20 +66,12 @@ class Subnet(Resource):
         :return: The new subnet with 201 status
         """
         args = self.general_parser.parse_args()
-        id_subnet = 1
-        if subnets:
-            id_subnet = subnets[-1]['id'] + 1
         subnet = {
-            'id': id_subnet,
             'ip': args.ip,
             'next_hop': args.next_hop,
             'communities': args.communities,
-            'created_at': str(datetime.now()),
-            'modified_at': str(datetime.now()),
-            'is_activated': True,
-            'last_activation': str(datetime.now()),
         }
-        subnets.append(subnet)
+        self.mongo_db.add_route(subnet)
         return subnet, 201
 
     @marshal_with(subnets_fields)
@@ -157,8 +153,4 @@ class Subnet(Resource):
         DELETE request delete a subnet which has a specific ID
         """
         args = self.simple_parser.parse_args()
-        for s in subnets:
-            if s["id"] == int(args.id):
-                subnets.remove(s)
-                return {"message": "Success"}, 204
-        return 404
+        self.mongo_db.delete_route({'_id' : ObjectId(args.id)})

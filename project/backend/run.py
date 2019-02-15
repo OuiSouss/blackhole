@@ -2,6 +2,7 @@
 Run the application
 """
 from flask import Flask
+from backend.mongo_json_encoder import MongoJSONEncoder, ObjectIdConverter
 
 def create_app():
     """
@@ -10,11 +11,13 @@ def create_app():
     app = Flask(__name__)
     app.debug = True
 
-    from app import api_bp
+    app.json_encoder = MongoJSONEncoder
+    app.url_map.converters['objectid'] = ObjectIdConverter
+
+    from backend.app import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
     return app
-
 
 if __name__ == "__main__":
     application = create_app()
