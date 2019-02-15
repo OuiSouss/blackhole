@@ -27,12 +27,12 @@ class BaseTest(unittest.TestCase):
         }
         route_id = self.database.add_route(post)
         post2 = self.database.route.find_one({'ip': post['ip']})
-        self.database.delete_route({'_id': route_id})
         self.assertEqual(post2['ip'], post['ip'], 'insertion failed')
         self.assertEqual(post2['next_hop'], post['next_hop'],
                          'insertion failed')
         self.assertEqual(post2['communities'], post['communities'],
                          'insertion failed')
+        self.database.delete_route({'_id': route_id})
 
     def test_get_all_routes(self):
         """
@@ -50,9 +50,7 @@ class BaseTest(unittest.TestCase):
         }
         route1_id = self.database.add_route(post)
         route2_id = self.database.add_route(post2)
-        post3 = self.database.get_all_routes()
-        self.database.delete_route({'_id': route1_id})
-        self.database.delete_route({'_id': route2_id})
+        post3 = self.database.route.find()
         for r in post3:
             if r['ip'] == post['ip']:
                 self.assertEqual(r['ip'], post['ip'], 'insertion failed')
@@ -66,42 +64,12 @@ class BaseTest(unittest.TestCase):
                                  'insertion failed')
                 self.assertEqual(r['communities'], post2['communities'],
                                  'insertion failed')
+        self.database.delete_route({'_id': route1_id})
+        self.database.delete_route({'_id': route2_id})
 
     def test_update_route(self):
         """
          Test if the route has succesfully been updated in the database
-        """
-        patch = {
-            'ip': 'test_ip',
-            'next_hop': 'test_nexthop',
-            'communities': 'test_commu'
-        }
-        route_id = self.database.add_route(patch)
-        self.database.update_route({
-            '_id': route_id,
-            'is_activated': False,
-        })
-        patch2 = self.database.route.find_one({'_id': route_id})
-        self.database.delete_route({'_id': route_id})
-        self.assertEqual(patch2['is_activated'], False, 'activation failed')
-
-    def test_delete_route(self):
-        """
-         Test  if the route has succesfully been deleted in the database
-        """
-        delete = {
-            'ip': 'test_ip',
-            'next_hop': 'test_nexthop',
-            'communities': 'test_commu'
-        }
-        route_id = self.database.add_route(delete)
-        self.database.delete_route({'_id': route_id})
-        route = self.database.route.find_one({'_id': route_id})
-        self.assertEqual(route, None, 'deletion failed')
-
-    def test_put_route(self):
-        """
-         Test  if the route has succesfully been updated in the database
         """
         post = {
             'ip': 'test_ip',
@@ -109,25 +77,27 @@ class BaseTest(unittest.TestCase):
             'communities': 'test_commu'
         }
         route_id = self.database.add_route(post)
-        post3 = {
-            'ip': 'test_ip',
-            'next_hop': 'test_nexthop2',
-            'communities': 'test_commu2'
-        }
-        put = self.database.route.find_one({'_id': route_id})
-        route_id2 = self.database.put_route({
-            '_id': put['_id'],
-            'ip' : post3['ip'],
-            'communities': post3['communities'],
-            'next_hop' :  post3['next_hop'],
+        self.database.update_route({
+            '_id': route_id,
             'is_activated': False,
         })
-        post2 = self.database.route.find_one({'_id': route_id2['_id']})
-        self.database.delete_route({'_id': route_id2['_id']})
-        self.assertEqual(post2['ip'], post3['ip'], 'insertion failed')
-        self.assertEqual(post2['next_hop'], post3['next_hop'], 'insertion failed')
-        self.assertEqual(post2['communities'], post3['communities'], 'insertion failed')
+        post2 = self.database.route.find_one({'_id': route_id})
         self.assertEqual(post2['is_activated'], False, 'activation failed')
+        self.database.delete_route({'_id': route_id})
+
+    def test_delete_route(self):
+        """
+         Test  if the route has succesfully been deleted of the database
+        """
+        post = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(post)
+        self.database.delete_route({'_id': route_id})
+        route = self.database.route.find_one({'_id': route_id})
+        self.assertEqual(route, None, 'deletion failed')
 
 if __name__ == '__main__':
     unittest.main()
