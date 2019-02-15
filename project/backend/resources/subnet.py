@@ -56,6 +56,10 @@ class Subnet(Resource):
         :return: List of subnets in json stored
         """
         items = self.mongo_db.get_all_routes()
+        for i in items:
+            _id = i['_id']
+            del i['_id']
+            i['id'] = _id
         return jsonify(items)
 
     @marshal_with(subnets_fields)
@@ -90,30 +94,17 @@ class Subnet(Resource):
             required=True, help="The activation",
         )
         args = put_parser.parse_args()
-        index_id = None
-        for i, _ in enumerate(subnets):
-            if subnets[i]['id'] == int(args.id):
-                index_id = i
-        if index_id is None:
-            abort(404)
         is_activated = True
         if (args.is_activated == "false" or args.is_activated == "False"):
             is_activated = False
-        last_activation_state = subnets[index_id]['is_activated']
-        last_activation = subnets[index_id]['last_activation']
-        if not last_activation_state and is_activated:
-            last_activation = str(datetime.now())
         subnet = {
-            'id': args.id,
+            '_id': ObjectId(args.id),
             'ip': args.ip,
             'next_hop': args.next_hop,
             'communities': args.communities,
-            'created_at': subnets[index_id]['created_at'],
-            'modified_at': str(datetime.now()),
             'is_activated': is_activated,
-            'last_activation': last_activation,
         }
-        subnets[index_id] = subnet
+        subnet = self.mongo_db.update_route(subnet)
         return subnet, 200
 
     @marshal_with(subnets_fields)
@@ -128,23 +119,15 @@ class Subnet(Resource):
             required=True, help="The activation",
         )
         args = patch_parser.parse_args()
-        index_id = None
-        for i, _ in enumerate(subnets):
-            if subnets[i]['id'] == int(args.id):
-                index_id = i
-        if index_id is None:
-            abort(404)
         is_activated = True
         if (args.is_activated == "false" or args.is_activated == "False"):
             is_activated = False
-        last_activation_state = subnets[index_id]['is_activated']
-        last_activation = subnets[index_id]['last_activation']
-        if not last_activation_state and is_activated:
-            last_activation = str(datetime.now())
-        subnets[index_id]['is_activated'] = is_activated
-        subnets[index_id]['modified_at'] = str(datetime.now())
-        subnets[index_id]['last_activation'] = last_activation
-        return subnets[index_id], 200
+        subnet = {
+            '_id': ObjectId(args.id),
+            'is_activated': is_activated
+        }
+        subnet = self.mongo_db.update_route(subnet)
+        return subnet, 200
 
 
     @marshal_with(subnets_fields)

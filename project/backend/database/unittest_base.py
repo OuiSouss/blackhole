@@ -1,5 +1,5 @@
 """
- Units tests for the database 
+ Units tests for the database
 """
 
 import unittest
@@ -77,9 +77,12 @@ class BaseTest(unittest.TestCase):
             'communities': 'test_commu'
         }
         route_id = self.database.add_route(post)
-        self.database.update_route({'ip': post['ip']})
-        post2 = self.database.route.find_one({'ip': post['ip']})
-        self.assertEqual(post2['is_activated'], 0, 'activation failed')
+        self.database.update_route({
+            '_id': route_id,
+            'is_activated': False,
+        })
+        post2 = self.database.route.find_one({'_id': route_id})
+        self.assertEqual(post2['is_activated'], False, 'activation failed')
         self.database.delete_route({'_id': route_id})
 
     def test_delete_route(self):
