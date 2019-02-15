@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
   {% block title %}<title>Route Manager</title>{% endblock %}
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 <body>
@@ -37,7 +39,7 @@
 
 	<!-- si l'utilisateur est authentifié -->
 	{% if user.is_authenticated %}
-
+		<hr>
 		<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
 		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->	
 		{# if not "/accounts/change_password/" in request.get_full_path #}
