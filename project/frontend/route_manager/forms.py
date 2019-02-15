@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-from django import forms
-
-from .models import Post
-
-class PostForm(forms.ModelForm):
-
-    class Meta:
-=======
 """
 Define a new form used by POST method.
 """
@@ -21,6 +12,5 @@ class PostForm(forms.ModelForm):
         """
         Class Method define model and required fields.
         """
->>>>>>> development
         model = Post
         fields = ('ip', 'next_hop', 'community',)
