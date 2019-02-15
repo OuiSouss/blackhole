@@ -1,10 +1,13 @@
+"""
+MongoDB terminal mode
+"""
 import sys
 from funct_base import MongoDB
 
-
 while 1:
     self = MongoDB('Route')
-    selection = input('POST : add route, PATCH : update route, GET : get routes, DEL : delete route, Q : quit\n')
+    selection = input('POST : add route, PATCH : update route, '\
+                      'GET : get routes, DEL : delete route, Q : quit\n')
 
     if selection == 'POST':
         ip = input('Enter ip\n')

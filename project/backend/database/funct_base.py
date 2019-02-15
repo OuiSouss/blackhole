@@ -44,18 +44,20 @@ class MongoDB:
         """
          Add one route in the database
          :type post: dict
+         :return: id of created route
         """
         route_ip = post['ip']
         route_nexthop = post['next_hop']
         route_communities = post['communities']
-        self.route.insert_one({
+        route_id = self.route.insert_one({
             'ip': route_ip,
             'next_hop': route_nexthop,
             'communities': route_communities,
             'created_at': datetime.now(),
             'modified_at': datetime.now(),
             'is_activated': 1,
-            'last_activation': datetime.now()})
+            'last_activation': datetime.now()}).inserted_id
+        return route_id
 
 #methods=['DELETE']
     def delete_route(self, post):
