@@ -1,8 +1,7 @@
 """
 REST API /api/subnet
 """
-from datetime import datetime
-from flask import jsonify, abort
+from flask import jsonify
 from flask_restful import Resource, reqparse, fields, marshal_with
 from bson import ObjectId
 from backend.database.funct_base import MongoDB
@@ -30,23 +29,23 @@ class Subnet(Resource):
     def __init__(self):
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
-            "ip", dest="ip", location=["form", "json"], required=True,
-            help="The IP",
+            'ip', dest='ip', location=['form', 'json'], required=True,
+            help='The IP',
         )
         self.general_parser.add_argument(
-            "next_hop", dest="next_hop", location=["form", "json"],
-            required=True, help="The next hop",
+            'next_hop', dest='next_hop', location=['form', 'json'],
+            required=True, help='The next hop',
         )
         self.general_parser.add_argument(
-            "communities", dest="communities", location=["form", "json"],
-            required=True, help="The community", action="append"
+            'communities', dest='communities', location=['form', 'json'],
+            required=True, help='The community', action='append'
         )
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
-            "id", dest="id", location=["form", "json"], required=True,
-            help="The ID",
+            'id', dest='id', location=['form', 'json'], required=True,
+            help='The ID',
         )
-        self.mongo_db = MongoDB("Route")
+        self.mongo_db = MongoDB('Route')
         super(Subnet, self).__init__()
 
 
@@ -86,16 +85,16 @@ class Subnet(Resource):
         """
         put_parser = self.general_parser.copy()
         put_parser.add_argument(
-            "id", dest="id", location=["form", "json"], required=True,
-            help="The ID",
+            'id', dest='id', location=['form', 'json'], required=True,
+            help='The ID',
         )
         put_parser.add_argument(
-            "is_activated", dest="is_activated", location=["form", "json"],
-            required=True, help="The activation",
+            'is_activated', dest='is_activated', location=['form', 'json'],
+            required=True, help='The activation',
         )
         args = put_parser.parse_args()
         is_activated = True
-        if (args.is_activated == "false" or args.is_activated == "False"):
+        if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
         subnet = {
             '_id': ObjectId(args.id),
@@ -115,12 +114,12 @@ class Subnet(Resource):
         """
         patch_parser = self.simple_parser.copy()
         patch_parser.add_argument(
-            "is_activated", dest="is_activated", location=["form", "json"],
-            required=True, help="The activation",
+            'is_activated', dest='is_activated', location=['form', 'json'],
+            required=True, help='The activation',
         )
         args = patch_parser.parse_args()
         is_activated = True
-        if (args.is_activated == "false" or args.is_activated == "False"):
+        if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
         subnet = {
             '_id': ObjectId(args.id),
