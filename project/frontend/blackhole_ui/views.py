@@ -39,29 +39,6 @@ def home(request):
 
     return redirect(settings.DASHBOARD_URL)
 
-from route_manager.forms import PostForm
-
-
-
-
-#VERIFIE L'AUTHENTIFICATION
-def not_auth(request):
-    return not request.user.is_authenticated
-
-
-# '' => '/dashboard/'
-# '' => '/accounts/login/'
-def home(request):
-
-    # AUTHENTIFICATION
-    if not_auth(request):
-        return redirect(settings.AUTH_URL)
-    # AUTHENTIFICATION
-
-    return redirect(settings.LOGIN_REDIRECT_URL)
-
-
-# 'dashboard/'
 def index(request):
     """
     Activated when trying to access the dashboard
