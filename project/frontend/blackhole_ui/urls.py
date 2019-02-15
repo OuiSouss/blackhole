@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+<<<<<<< HEAD
 from django.views.generic import *
 from route_manager.models import *
+=======
+>>>>>>> development
 from . import views
 
 

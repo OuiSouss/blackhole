@@ -1,9 +1,11 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block content %}
 
 <h1>Route Manager</h1>
 <br>
+<<<<<<< HEAD
 
 <h2>Announce a new IP :</h2>
     <form method="POST" class="post-form">{% csrf_token %}
@@ -19,5 +21,43 @@
       <hr>
 {% endfor %}
 
+=======
+
+<h2>Announce a new Network :</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Create</button>
+    </form>
+<br>
+
+<h2>Announced networks :</h2>
+<table>
+    <tr>
+    <th scope="col">Action</th>
+    <th scope="col">Status</th>
+    <th scope="col">Network</th>
+    <th scope="col">Next_hop</th>
+    <th scope="col">Communities</th>
+    <th scope="col">Created_at</th>
+    <th scope="col">Modified_at</th>
+    <th scope="col">Last_activation</th>
+    </tr>
+    {% for r in data %}
+        <tr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <td><button type="submit" type="text" name="id" value="{{ r.id }}">Delete</button></td>
+                {% if r.is_activated %}
+                    <td><button type="submit" type="text" name="id1" value="{{ r.id }}">O</button></td>
+                {% else %}
+                    <td><button type="submit" type="text" name="id2" value="{{ r.id }}">X</button></td>
+                {% endif %}
+                <td>{{r.ip}}</td> <td>{{r.next_hop}}</td> <td>{{r.communities}}</td>  <td>{{r.created_at}}</td> <td>{{r.modified_at}}</td> <td>{{r.last_activation}} </td>
+            </form>
+        </tr>
+    {% endfor %}
+</table>
+
+>>>>>>> development
 <br>
 {% endblock %}
