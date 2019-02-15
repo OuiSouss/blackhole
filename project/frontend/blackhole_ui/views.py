@@ -1,3 +1,10 @@
+"""
+The ``views`` module
+======================
+
+Used to manage the various pages of the webapp
+"""
+
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -6,13 +13,7 @@ from django.conf import settings
 import requests
 from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
-
-"""
-The ``views`` module
-======================
-
-Used to manage the various pages of the webapp
-"""
+import route_manager.request_json
 
 def not_auth(request):
     """
@@ -61,35 +62,26 @@ def index(request):
         return render(request, 'error/Error503.html',
                       {'exception' : exception})
     json_data = response.json()
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             route = form.save(commit=False)
-            requests.post(settings.API_URL,
-                          json={
-                              "ip": str(route.ip),
-                              "communities": str(route.community),
-                              "next_hop": str(route.next_hop)})
+            route_manager.request_json.post_new_route(route)
             return redirect(settings.DASHBOARD_URL)
         else:
             print(request.POST)
             if 'id' in request.POST:
-                requests.delete(settings.API_URL,
-                                json={"id": str(request.POST['id'])})
+                route_manager.request_json.delete_route(str(request.POST['id']))
                 return redirect(settings.DASHBOARD_URL)
             else:
                 if 'id1' in request.POST:
-                    requests.patch(settings.API_URL,
-                                   json={
-                                       "id": str(request.POST['id1']),
-                                       "is_activated": False})
+                    route_manager.request_json.enable_disable_route(
+                        str(request.POST['id1']), False)
                     return redirect(settings.DASHBOARD_URL)
                 else:
                     if 'id2' in request.POST:
-                        requests.patch(settings.API_URL,
-                                       json={
-                                           "id": str(request.POST['id2']),
-                                           "is_activated": True})
+                        route_manager.request_json.enable_disable_route(
+                            str(request.POST['id2']), True)
                         return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
