@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 """
 The ``views`` module
 ======================
@@ -7,16 +5,11 @@ The ``views`` module
 Used to manage the various pages of the webapp
 """
 
->>>>>>> development
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.conf import settings
-<<<<<<< HEAD
-from requests.exceptions import ConnectionError
-import requests
-=======
 import requests
 from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
@@ -45,34 +38,8 @@ def home(request):
     # AUTHENTIFICATION
 
     return redirect(settings.DASHBOARD_URL)
->>>>>>> development
 
-from route_manager.forms import PostForm
-
-
-
-
-#VERIFIE L'AUTHENTIFICATION
-def not_auth(request):
-    return not request.user.is_authenticated
-
-
-# '' => '/dashboard/'
-# '' => '/accounts/login/'
-def home(request):
-
-    # AUTHENTIFICATION
-    if not_auth(request):
-        return redirect(settings.AUTH_URL)
-    # AUTHENTIFICATION
-
-    return redirect(settings.LOGIN_REDIRECT_URL)
-
-
-# 'dashboard/'
 def index(request):
-<<<<<<< HEAD
-=======
     """
     Activated when trying to access the dashboard
 
@@ -130,61 +97,12 @@ def change_password(request):
     :param request: the request page
     :return: change_password page for authenticated, login page for anonymous
     """
->>>>>>> development
 
     # AUTHENTIFICATION
     if not_auth(request):
         return redirect(settings.AUTH_URL)
     # AUTHENTIFICATION
 
-<<<<<<< HEAD
-    if request.user.is_authenticated:
-        try:
-            response = requests.get('http://127.0.0.1:5000/api/subnet')
-        except ConnectionError as exception:
-            return render(request, 'error/Error503.html',
-                          {'exception' : exception})
-        json_data = response.json()
-        if request.method == "POST":
-            form = PostForm(request.POST)
-            if form.is_valid():
-                route = form.save(commit=False)
-                requests.post('http://127.0.0.1:5000/api/subnet',
-                              json={
-                                  "ip": str(route.ip),
-                                  "communities": str(route.community),
-                                  "next_hop": str(route.next_hop)})
-        else:
-            form = PostForm()
-        return render(request, 'route_dashboard/route_dashboard.html', {
-            'data' : json_data,
-            'form': form,
-        })
-    else:
-        return redirect('/accounts/login/')
-
-
-# 'accounts/change_password/'
-def change_password(request):
-
-    # AUTHENTIFICATION
-    if not_auth(request):
-        return redirect(settings.AUTH_URL)
-    # AUTHENTIFICATION
-
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'registration/change_password.html', {
-=======
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -197,6 +115,5 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, settings.TEMPLATE_CHANGE_PASSWORD, {
->>>>>>> development
         'form': form
     })

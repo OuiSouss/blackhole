@@ -24,8 +24,6 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 # Redirect to login url
 AUTH_URL = '/accounts/login/'
 
-<<<<<<< HEAD
-=======
 # Redirect to dashboard url
 DASHBOARD_URL = '/dashboard/'
 
@@ -38,7 +36,6 @@ API_URL = 'http://127.0.0.1:5000/api/subnet'
 #### TEMPLATES
 TEMPLATE_DASHBOARD = 'route_dashboard/route_dashboard.html'
 TEMPLATE_CHANGE_PASSWORD = 'registration/change_password.html'
->>>>>>> development
 
 #https://docs.djangoproject.com/en/2.1/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

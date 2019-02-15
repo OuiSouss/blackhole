@@ -5,23 +5,6 @@
 
 <h1>Route Manager</h1>
 <br>
-<<<<<<< HEAD
-
-<h2>Announce a new IP :</h2>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Créer</button>
-    </form>
-<br>
-
-<h2>Announced networks :</h2>
-<hr>
-{% for r in data %}
-      | {{r.id}} | {{r.ip}} | {{r.next_hop}} | {{r.communities}} |  {{r.created_at}} | {{r.modified_at}} | {{r.is_activated}} | {{r.last_activation}} |
-      <hr>
-{% endfor %}
-
-=======
 
 <h2>Announce a new Network :</h2>
     <form method="POST" class="post-form">{% csrf_token %}
@@ -58,6 +41,5 @@
     {% endfor %}
 </table>
 
->>>>>>> development
 <br>
 {% endblock %}
