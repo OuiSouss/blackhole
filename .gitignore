@@ -15,3 +15,6 @@
 **/#*#
 **/.vscode
 **/unittest
+**/.coverage
+**/cover
+**/bredelebeamer.cls

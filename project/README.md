@@ -15,6 +15,12 @@ pip install -r requirements.txt
 ./backend/run.sh
 ```
 
+##### Run test
+```bash
+# Depuis le répertoire "backend"
+nosetests --with-coverage tests/unittest_base.py --cover-package=backend --cover-html
+```
+
 ## Frontend
 
 ##### Lancer l'application web (Django)
