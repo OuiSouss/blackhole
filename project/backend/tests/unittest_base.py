@@ -3,7 +3,7 @@
 """
 
 import unittest
-from funct_base import MongoDB
+from backend.database.funct_base import MongoDB
 
 class BaseTest(unittest.TestCase):
     """
@@ -125,8 +125,10 @@ class BaseTest(unittest.TestCase):
         post2 = self.database.route.find_one({'_id': route_id2['_id']})
         self.database.delete_route({'_id': route_id2['_id']})
         self.assertEqual(post2['ip'], post3['ip'], 'insertion failed')
-        self.assertEqual(post2['next_hop'], post3['next_hop'], 'insertion failed')
-        self.assertEqual(post2['communities'], post3['communities'], 'insertion failed')
+        self.assertEqual(post2['next_hop'], post3['next_hop'],
+                         'insertion failed')
+        self.assertEqual(post2['communities'], post3['communities'],
+                         'insertion failed')
         self.assertEqual(post2['is_activated'], False, 'activation failed')
 
 if __name__ == '__main__':
