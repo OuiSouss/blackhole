@@ -15,10 +15,17 @@ pip install -r requirements.txt
 ./backend/run.sh
 ```
 
-##### Run test
+##### Lances les tests
 ```bash
 # Depuis le répertoire "backend"
 nosetests --with-coverage tests/unittest_base.py --cover-package=backend --cover-html
+```
+
+##### Generate docs
+```bash
+# Depuis le répertoire "backend/docs"
+sphinx-apidoc -f -o source/ ../../
+make html
 ```
 
 ## Frontend
