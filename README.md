@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/OuiSouss/blackhole.svg?branch=master)](https://travis-ci.org/OuiSouss/blackhole)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=OuiSouss_blackhole&metric=alert_status)](https://sonarcloud.io/dashboard?id=OuiSouss_blackhole)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=OuiSouss_blackhole&metric=bugs)](https://sonarcloud.io/dashboard?id=OuiSouss_blackhole)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=OuiSouss_blackhole&metric=code_smells)](https://sonarcloud.io/dashboard?id=OuiSouss_blackhole)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=OuiSouss_blackhole&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=OuiSouss_blackhole)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=OuiSouss_blackhole&metric=coverage)](https://sonarcloud.io/dashboard?id=OuiSouss_blackhole)
 
 ## Objectif
 L'objectif de ce projet est de développer un outil permettant à un administrateur réseau de définir à distance à partir d'un client Web, des routes menant vers des trous noirs pour dévier des attaques réseaux.
