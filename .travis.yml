@@ -1,6 +1,13 @@
 language: python
 python:
   - "3.5"
+addons:
+  sonarcloud:
+    organisation: "ouisouss-github"
 install:
   - pip install -r project/requirements.txt
-script: nosetests project/backend/tests/*
+script:
+  - sonar-scanner
+  - cd project/backend
+  - echo "Starting test..."
+  - nosetests tests/*
