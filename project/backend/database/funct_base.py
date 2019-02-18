@@ -25,7 +25,6 @@ class MongoDB:
         else:
             self.route = self.database.Test
 
-    # methods = ['GET']
     def get_all_routes(self):
         """
         Get all of the routes stored in the database
@@ -37,7 +36,6 @@ class MongoDB:
             output.append(route)
         return output
 
-    # methods = ['POST']
     def add_route(self, post):
         """
         Add one route in the database
@@ -57,7 +55,6 @@ class MongoDB:
             'last_activation': datetime.now()}).inserted_id
         return route_id
 
-    # methods = ['DELETE']
     def delete_route(self, delete):
         """
         Delete one route in the database
@@ -66,7 +63,6 @@ class MongoDB:
         route_id = delete['_id']
         self.route.delete_many({'_id': route_id})
 
-    # methods = ['PATCH']
     def update_route(self, patch):
         """
         Update the field 'is_activated'.
@@ -90,7 +86,6 @@ class MongoDB:
                               }})
         return self.route.find_one({'_id': route_id})
 
-    # methods = ['PUT']
     def put_route(self, put):
         """
         Update all fields except created_at
