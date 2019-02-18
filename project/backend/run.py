@@ -1,15 +1,24 @@
 """
+run.py
+===================
 Run the application
 """
 from flask import Flask
 from backend.mongo_json_encoder import MongoJSONEncoder, ObjectIdConverter
 def create_app():
     """
-    @return app : Create the application in debug mode
+    create_app Configure applicationt on /api
+
+    Set Flask on debug mode
+    Add a JSON Encode
+    Set a blueprint /api
+
+    :return: An application
+    :rtype: Application object
     """
     app = Flask(__name__)
     app.debug = True
-    
+
     app.json_encoder = MongoJSONEncoder
     app.url_map.converters['objectid'] = ObjectIdConverter
 

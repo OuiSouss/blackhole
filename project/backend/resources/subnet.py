@@ -1,12 +1,12 @@
 """
+subnet.py
+===================
 REST API /api/subnet
 """
 from flask import jsonify
 from flask_restful import Resource, reqparse, fields, marshal_with
 from bson import ObjectId
 from backend.database.funct_base import MongoDB
-
-subnets = []
 
 subnets_fields = {
     'id': fields.Integer,
@@ -51,8 +51,12 @@ class Subnet(Resource):
 
     def get(self):
         """
-        GET request
-        :return: List of subnets in json stored
+        get GET Method
+
+        GET /api/subnet
+
+        :return: List of subnets stored on database
+        :rtype: list
         """
         items = self.mongo_db.get_all_routes()
         for i in items:
@@ -64,11 +68,13 @@ class Subnet(Resource):
     @marshal_with(subnets_fields)
     def post(self):
         """
-        POST request create a new subnet
-        It will announced to ExaBGP and store in database
-        :return: The new subnet with 201 status
-        """
+        post POST Method
 
+        POST api/subnet?ip=<ip>&next_hop=<next_hop>&communities=<communities>
+
+        :return: The created subnet
+        :rtype: dict, HTTP status
+        """
         args = self.general_parser.parse_args()
         subnet = {
             'ip': args.ip,
@@ -81,8 +87,13 @@ class Subnet(Resource):
     @marshal_with(subnets_fields)
     def put(self):
         """
-        PUT request need all fields infos except dates
-        :return: The subnet modify
+        put PUT Method
+
+        PUT api/subnet?id=<id>&ip=<ip>&next_hop=<next_hop>&\
+            communities=<communities>&is_activated=<is_activated>
+
+        :return: The updated subnet
+        :rtype: dict, HTTP status
         """
         put_parser = self.general_parser.copy()
         put_parser.add_argument(
@@ -110,8 +121,12 @@ class Subnet(Resource):
     @marshal_with(subnets_fields)
     def patch(self):
         """
-        PATCH request need ID and is_activated
-        :return: The modify subnet
+        patch PATCH Method
+
+        PATCH api/subnet?id=<id>&is_activated=<is_activated>
+
+        :return: The updated subnet
+        :rtype: dict, HTTP status
         """
         patch_parser = self.simple_parser.copy()
         patch_parser.add_argument(
@@ -133,7 +148,10 @@ class Subnet(Resource):
     @marshal_with(subnets_fields)
     def delete(self):
         """
-        DELETE request delete a subnet which has a specific ID
+        delete DELETE Method
+
+        DELETE api/subnet?id=<id>
+
         """
         args = self.simple_parser.parse_args()
         self.mongo_db.delete_route({'_id' : ObjectId(args.id)})

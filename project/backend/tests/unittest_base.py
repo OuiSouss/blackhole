@@ -7,7 +7,7 @@ from backend.database.funct_base import MongoDB
 
 class BaseTest(unittest.TestCase):
     """
-     Test class for MongoDB
+    BaseTest Test actions on MongoDB
     """
 
     def setUp(self):
