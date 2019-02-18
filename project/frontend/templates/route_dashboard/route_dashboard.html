@@ -29,13 +29,23 @@
         <tr>
             <form action="" method="POST">
                 {% csrf_token %}
-                <td><button type="submit" type="text" name="id" value="{{ r.id }}">Delete</button></td>
+                <td>
+                    <button type="submit" type="text" name="id_delete" value="{{ r.id }}">Delete</button>
+                    <br>
+                    <br>
+                    <button type="submit" type="text" name="id_modify" value="{{ r.id }}">Modify</button>
+                </td>
                 {% if r.is_activated %}
                     <td><button type="submit" type="text" name="id1" value="{{ r.id }}">O</button></td>
                 {% else %}
                     <td><button type="submit" type="text" name="id2" value="{{ r.id }}">X</button></td>
                 {% endif %}
-                <td>{{r.ip}}</td> <td>{{r.next_hop}}</td> <td>{{r.communities}}</td>  <td>{{r.created_at}}</td> <td>{{r.modified_at}}</td> <td>{{r.last_activation}} </td>
+                    <td><input type="text" name="ip" value="{{r.ip}}"></td> 
+                    <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td> 
+                    <td><input type="text" name="communities" value="{{r.communities}}"></td> 
+                    <td>{{r.created_at}}</td> 
+                    <td>{{r.modified_at}}</td> 
+                    <td>{{r.last_activation}}</td> 
             </form>
         </tr>
     {% endfor %}
