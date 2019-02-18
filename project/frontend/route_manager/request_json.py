@@ -1,5 +1,5 @@
 """
-Define some requests with JSON to call API REST
+Define some requests with JSON to call API REST.
 """
 from django.conf import settings
 import requests
@@ -8,7 +8,7 @@ def post_new_route(route):
     """
     POST method
 
-    :param route: the dict who contain the data
+    :param route: the dict who contain the data.
     :type route: dict
     """
     requests.post(settings.API_URL,
@@ -16,6 +16,26 @@ def post_new_route(route):
                       'ip': str(route.ip),
                       'communities': str(route.community),
                       'next_hop': str(route.next_hop)})
+
+def put_route(ident, ip, next_hop, communities):
+    """
+    PUT method
+
+    :param ident: the id of the route who will be update.
+    :type ident: String
+    :param ip: the ip of the route.
+    :type ip: String
+    :param next_hop: the next_hop of the route.
+    :type next_hop: String
+    :param communities: the communities of the route.
+    :type communities: String
+    """
+    requests.put(settings.API_URL,
+                 json={
+                     'id': ident,
+                     'ip': ip,
+                     'communities': communities,
+                     'next_hop': next_hop})
 
 def delete_route(ident):
     """
