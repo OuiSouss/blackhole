@@ -3,4 +3,4 @@ python:
   - "3.5"
 install:
   - pip install -r project/requirements.txt
-script: nosetests project/tests/*
+script: nosetests project/backend/tests/*
