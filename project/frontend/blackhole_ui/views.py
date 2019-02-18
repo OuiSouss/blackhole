@@ -75,7 +75,6 @@ def index(request):
                 return redirect(settings.DASHBOARD_URL)
             else:
                 if 'id_modify' in request.POST:
-                    print(request.POST)
                     route_manager.request_json.put_route(
                         str(request.POST['id_modify']),
                         str(request.POST['ip']),
@@ -84,7 +83,6 @@ def index(request):
                     return redirect(settings.DASHBOARD_URL)
                 else:
                     if 'id1' in request.POST:
-                        print(request.POST)
                         route_manager.request_json.enable_disable_route(
                             str(request.POST['id1']), False)
                         return redirect(settings.DASHBOARD_URL)

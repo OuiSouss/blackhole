@@ -35,7 +35,8 @@ def put_route(ident, ip, next_hop, communities):
                      'id': ident,
                      'ip': ip,
                      'communities': communities,
-                     'next_hop': next_hop})
+                     'next_hop': next_hop,
+                     'is_activated': True})
 
 def delete_route(ident):
     """
