@@ -15,6 +15,20 @@ from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
 import route_manager.request_json
 
+global_column = None
+
+def json_sort(json):
+    global global_column
+    try:
+        return json[global_column]
+    except KeyError:
+        return 0
+
+def sort_by(json, key_col):
+    global global_column
+    global_column = key_col
+    return sorted(json, key=json_sort)
+
 def not_auth(request):
     """
     Checks if the user is currently anonymous
@@ -69,6 +83,20 @@ def index(request):
             route_manager.request_json.post_new_route(route)
             return redirect(settings.DASHBOARD_URL)
         else:
+            if 'net_sort' in request.POST:
+                json_data = sort_by(json_data, 'ip')
+            elif 'hop_sort' in request.POST:
+                json_data = sort_by(json_data, 'next_hop')
+            elif 'com_sort' in request.POST:
+                json_data = sort_by(json_data, 'communities')
+            elif 'create_sort' in request.POST:
+                json_data = sort_by(json_data, 'created_at')
+            elif 'modi_sort' in request.POST:
+                json_data = sort_by(json_data, 'modified_at')
+            elif 'last_sort' in request.POST:
+                json_data = sort_by(json_data, 'last_activation')
+            elif 'active_sort' in request.POST:
+                json_data = sort_by(json_data, 'is_activated')
             if 'id_delete' in request.POST:
                 route_manager.request_json.delete_route(
                     str(request.POST['id_delete']))

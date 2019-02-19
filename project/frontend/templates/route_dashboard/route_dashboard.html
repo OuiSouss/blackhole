@@ -17,13 +17,15 @@
 <table>
     <tr>
     <th scope="col">Action</th>
-    <th scope="col">Status</th>
-    <th scope="col">Network</th>
-    <th scope="col">Next_hop</th>
-    <th scope="col">Communities</th>
-    <th scope="col">Created_at</th>
-    <th scope="col">Modified_at</th>
-    <th scope="col">Last_activation</th>
+    <form action="" method="POST">{% csrf_token %}
+        <th scope="col">Status <button type="submit" type="text" name="active_sort">^</button></th>
+        <th scope="col">Network <button type="submit" type="text" name="net_sort">^</button></th>
+        <th scope="col">Next_hop <button type="submit" type="text" name="hop_sort">^</button></th>
+        <th scope="col">Communities <button type="submit" type="text" name="com_sort">^</button></th>
+        <th scope="col">Created_at <button type="submit" type="text" name="create_sort">^</button></th>
+        <th scope="col">Modified_at <button type="submit" type="text" name="modi_sort">^</button></th>
+        <th scope="col">Last_activation <button type="submit" type="text" name="last_sort">^</button></th>
+    </form>
     </tr>
     {% for r in data %}
         <tr>
