@@ -7,7 +7,9 @@ addons:
 install:
   - pip install -r project/requirements.txt
 script:
-  - cd project/
-  - sonar-scanner -X
   - echo "Starting test..."
-  - nosetests tests/*
+  - nosetests project/backend/tests/*
+  - echo "Starting cover test..."
+  - cd project
+  - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/unittest_base.py
+  - sonar-scanner
