@@ -5,6 +5,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{background}
+\usepackage{tabulary}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{ragged2e}
+\usepackage{schemabloc}
 
 %%% Define where theme files are located.
 \usepackage{styles/fluxmacros}
@@ -25,10 +30,6 @@
 \date{20 Février 2019}
 
 %%%
-\usepackage{booktabs}
-\usepackage{colortbl}
-\usepackage{ragged2e}
-\usepackage{schemabloc}
 
 \begin{document}
 
@@ -45,9 +46,13 @@
 
 \input{./prez-architecture.tex}
 
+\input{./prez-sequence-diagram.tex}
+
 \section{Nos réalisations}
 
 \input{./prez-api-rest.tex}
+
+\input{./prez-ui.tex}
 
 \input{./prez-tests.tex}
 
