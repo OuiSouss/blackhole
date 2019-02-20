@@ -15,7 +15,6 @@ $(PREZ_PDF): $(PREZ_TEX) $(PREZ_DEP) Makefile
 
 clean:
 	rm -f *~ *.nav *.snm *.toc *.out *.aux *.log
-	rm -r _minted-presentation
 	rm -f $(PREZ_PDF)
 
 
