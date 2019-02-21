@@ -5,7 +5,6 @@ Run the application
 """
 from flask import Flask
 from backend.mongo_json_encoder import MongoJSONEncoder, ObjectIdConverter
-
 def create_app():
     """
     create_app Configure applicationt on /api
