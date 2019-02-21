@@ -213,32 +213,28 @@ def index(request):
             route = form.save(commit=False)
             route_manager.request_json.post_new_route(route)
             return redirect(settings.DASHBOARD_URL)
-        else:
-            json_data = sort_switcher(request.POST, json_data)
-            if 'id_delete' in request.POST:
-                route_manager.request_json.delete_route(
-                    str(request.POST['id_delete']))
-                return redirect(settings.DASHBOARD_URL)
-            else:
-                if 'id_modify' in request.POST:
-                    route_manager.request_json.put_route(
-                        str(request.POST['id_modify']),
-                        str(request.POST['ip']),
-                        str(request.POST['next_hop']),
-                        str(request.POST['communities']))
-                    return redirect(settings.DASHBOARD_URL)
-                else:
-                    if 'id1' in request.POST:
-                        route_manager.request_json.enable_disable_route(
-                            str(request.POST['id1']), False)
-                        return redirect(settings.DASHBOARD_URL)
-                    else:
-                        if 'id2' in request.POST:
-                            route_manager.request_json.enable_disable_route(
-                                str(request.POST['id2']), True)
-                            return redirect(settings.DASHBOARD_URL)
-    else:
-        form = PostForm()
+
+        json_data = sort_switcher(request.POST, json_data)
+        if 'id_delete' in request.POST:
+            route_manager.request_json.delete_route(
+                str(request.POST['id_delete']))
+            return redirect(settings.DASHBOARD_URL)
+        if 'id_modify' in request.POST:
+            route_manager.request_json.put_route(
+                str(request.POST['id_modify']),
+                str(request.POST['ip']),
+                str(request.POST['next_hop']),
+                str(request.POST['communities']))
+            return redirect(settings.DASHBOARD_URL)
+        if 'id1' in request.POST:
+            route_manager.request_json.enable_disable_route(
+                str(request.POST['id1']), False)
+            return redirect(settings.DASHBOARD_URL)
+        if 'id2' in request.POST:
+            route_manager.request_json.enable_disable_route(
+                str(request.POST['id2']), True)
+            return redirect(settings.DASHBOARD_URL)
+    form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
         'data' : json_data,
         'form': form,
