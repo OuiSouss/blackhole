@@ -20,3 +20,8 @@
 **/bredelebeamer.cls
 reports/pdp-blackhole-report-realease.tar.xz
 **/build
+**/bhre.tar
+**/bhre
+**/coverage.xml
+**/nosetests.xml
+**/_minted-presentation/
