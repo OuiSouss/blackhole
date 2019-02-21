@@ -18,8 +18,8 @@
 
 			{% if user.is_authenticated %}
 			  <li>User: {{ user.get_username }}</li>
-				
-			{% endif %} 
+
+			{% endif %}
 
         </ul>
      {% endblock %}
@@ -34,16 +34,17 @@
 	</div>
 
 
-	
 
-	
+
+
 
 
 	<!-- si l'utilisateur est authentifié -->
 	{% if user.is_authenticated %}
 		<hr>
+		<ol>
 		<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
-		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->	
+		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->
 		{# if not "/accounts/change_password/" in request.get_full_path #}
 			<!-- Mais on ne vas lui proposer-->
 			<!-- Si l'utilsiateur est déjà dans la bonne page -->
@@ -51,24 +52,24 @@
 		{# endif #}
 
 		<!-- Alors on peut lui proposer de retourner au gestionnaire de route-->
-		<!-- Probleme : quand on pars du dashboard vers le login, ça detecte mal-->	
+		<!-- Probleme : quand on pars du dashboard vers le login, ça detecte mal-->
 		{# if not "/dashboard/" in request.get_full_path #}
 			<!-- Mais on ne vas lui proposer-->
 			<!-- Si l'utilsiateur est déjà dans la bonne page -->
 			<li><a href="{% url 'dashboard'%}?next={{request.path}}">Dashboard</a></li>
-		{# endif #} 
-	
+		{# endif #}
+
 
 		<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-
-	{% endif %} 	
+		</ol>
+	{% endif %}
 
 	<!-- Sinon on peut lui proposer de se connecter.
 	Mais s'il n'est pas connecté alors il sera forcément dans la page login.
 	Et n'auras pas besoin qu'on lui propose cette option
 	 -->
 
-	
+
 
     </div>
   </div>
@@ -79,10 +80,10 @@
 {% if False %}
 	<br>
 	<br>
-	<b>is_authenticated :</b>
+	<strong>is_authenticated :</strong>
 	{{ user.is_authenticated }}<br>
 
-	<b>get_full_path :</b>
+	<strong>get_full_path :</strong>
 	{{ request.get_full_path }}<br>
 
 
