@@ -5,7 +5,7 @@
 ```bash
 # Création d'un répertoire pour contenir les fichiers
 mkdir venv
-cd myvenv
+cd venv
 
 # Création des fichiers pour l'environnement virtuel
 python3 -m venv .
