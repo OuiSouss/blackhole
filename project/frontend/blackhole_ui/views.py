@@ -56,27 +56,27 @@ def sort_by(json, key_col):
 
 
     ### Why we can't do it in one line
-    
+
     Sorting in one line with lambda expression is not possible
     because there may be 'KeyError' exceptions when reading json.
     Therefore another sub function must be used to handle exceptions.
 
 
     ### Why we prefer not duplicate code
-    
+
     It is not necessary to create a sub function for each 'column'
     to sort because the sorting method is the same. That would
     needlessly duplicate code as only the name of the 'key' would change.
 
 
     ### Sorting function constraints
-    
+
     Sorting functions cannot handle additionnal arguments.
-    Only the data and the function to sort are processed. 
+    Only the data and the function to sort are processed.
 
 
     ### How we handle constraints
-    
+
     Therefore the 'column key' is specified via a global variable,
     that will be used immediately and only by the sub sorting function.
 
@@ -91,33 +91,33 @@ def sort_by(json, key_col):
 
 
 
-def sort_by_ip(json,key_col):
+def sort_by_ip(json, key_col):
     """
     Sorting function, custom sort (by ip adress)
 
 
     ### Why we can't do it in one line
-    
+
     Sorting in one line with lambda expression is not possible
     because there may be 'KeyError' exceptions when reading json.
     Therefore another sub function must be used to handle exceptions.
 
 
     ### Why we prefer not duplicate code
-    
+
     It is not necessary to create a sub function for each 'column'
     to sort because the sorting method is the same. That would
     needlessly duplicate code as only the name of the 'key' would change.
 
 
     ### Sorting function constraints
-    
+
     Sorting functions cannot handle additionnal arguments.
-    Only the data and the function to sort are processed. 
+    Only the data and the function to sort are processed.
 
 
     ### How we handle constraints
-    
+
     Therefore the 'column key' is specified via a global variable,
     that will be used immediately and only by the sub sorting function.
 
@@ -130,6 +130,34 @@ def sort_by_ip(json,key_col):
     global_column = key_col
     return sorted(json, key=json_ip_sort)
 
+def sort_switcher(request, json_data):
+    """
+    sort_switcher implement a switcher to sort what we want
+
+
+    :param request: request.POST
+    :type request: dict
+    :param json_data: response in json format
+    :type json_data: dict
+    :return: json_data
+    :rtype: dict
+    """
+
+    if 'net_sort' in request:
+        json_data = sort_by_ip(json_data, 'ip')
+    elif 'hop_sort' in request:
+        json_data = sort_by_ip(json_data, 'next_hop')
+    elif 'com_sort' in request:
+        json_data = sort_by(json_data, 'communities')
+    elif 'create_sort' in request:
+        json_data = sort_by(json_data, 'created_at')
+    elif 'modi_sort' in request:
+        json_data = sort_by(json_data, 'modified_at')
+    elif 'last_sort' in request:
+        json_data = sort_by(json_data, 'last_activation')
+    elif 'active_sort' in request:
+        json_data = sort_by(json_data, 'is_activated')
+    return json_data
 
 def not_auth(request):
     """
@@ -186,20 +214,7 @@ def index(request):
             route_manager.request_json.post_new_route(route)
             return redirect(settings.DASHBOARD_URL)
         else:
-            if 'net_sort' in request.POST:
-                json_data = sort_by_ip(json_data, 'ip')
-            elif 'hop_sort' in request.POST:
-                json_data = sort_by_ip(json_data, 'next_hop')
-            elif 'com_sort' in request.POST:
-                json_data = sort_by(json_data, 'communities')
-            elif 'create_sort' in request.POST:
-                json_data = sort_by(json_data, 'created_at')
-            elif 'modi_sort' in request.POST:
-                json_data = sort_by(json_data, 'modified_at')
-            elif 'last_sort' in request.POST:
-                json_data = sort_by(json_data, 'last_activation')
-            elif 'active_sort' in request.POST:
-                json_data = sort_by(json_data, 'is_activated')
+            json_data = sort_switcher(request.POST, json_data)
             if 'id_delete' in request.POST:
                 route_manager.request_json.delete_route(
                     str(request.POST['id_delete']))
