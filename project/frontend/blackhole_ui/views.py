@@ -15,10 +15,9 @@ from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
 import route_manager.request_json
 
-global_column = None
 
 
-def json_sort(json):
+def json_sort(json, key_col):
     """
     Used by a sorting function, regular sort (by string)
 
@@ -26,14 +25,13 @@ def json_sort(json):
     :return: specifc value from json dict, the key is specified by a previous function
     :return: returns 0 if the json is incorrect
     """
-    global global_column
+
     try:
-        return json[global_column]
+        return json[key_col]
     except KeyError:
         return 0
 
-
-def json_ip_sort(json):
+def json_ip_sort(json, key_col):
     """
     Used by a sorting function, custom sort (by ip adress)
 
@@ -41,94 +39,12 @@ def json_ip_sort(json):
     :return: specifc value from json dict, the key is specified by a previous function
     :return: returns 0 if the json is incorrect
     """
-    global global_column
+
     try:
-        ip = json[global_column]
+        ip = json[key_col]
         return tuple(int(part) for part in ip.split('.'))
     except KeyError:
         return 0
-
-
-
-def sort_by(json, key_col):
-    """
-    Sorting function, regular sort (by string)
-
-
-    ### Why we can't do it in one line
-
-    Sorting in one line with lambda expression is not possible
-    because there may be 'KeyError' exceptions when reading json.
-    Therefore another sub function must be used to handle exceptions.
-
-
-    ### Why we prefer not duplicate code
-
-    It is not necessary to create a sub function for each 'column'
-    to sort because the sorting method is the same. That would
-    needlessly duplicate code as only the name of the 'key' would change.
-
-
-    ### Sorting function constraints
-
-    Sorting functions cannot handle additionnal arguments.
-    Only the data and the function to sort are processed.
-
-
-    ### How we handle constraints
-
-    Therefore the 'column key' is specified via a global variable,
-    that will be used immediately and only by the sub sorting function.
-
-
-    :param json: list of routes (json format)
-    :param key_col: key of the column to sort
-    :return: sorted list of routes by a specified column
-    """
-    global global_column
-    global_column = key_col
-    return sorted(json, key=json_sort)
-
-
-
-def sort_by_ip(json, key_col):
-    """
-    Sorting function, custom sort (by ip adress)
-
-
-    ### Why we can't do it in one line
-
-    Sorting in one line with lambda expression is not possible
-    because there may be 'KeyError' exceptions when reading json.
-    Therefore another sub function must be used to handle exceptions.
-
-
-    ### Why we prefer not duplicate code
-
-    It is not necessary to create a sub function for each 'column'
-    to sort because the sorting method is the same. That would
-    needlessly duplicate code as only the name of the 'key' would change.
-
-
-    ### Sorting function constraints
-
-    Sorting functions cannot handle additionnal arguments.
-    Only the data and the function to sort are processed.
-
-
-    ### How we handle constraints
-
-    Therefore the 'column key' is specified via a global variable,
-    that will be used immediately and only by the sub sorting function.
-
-
-    :param json: list of routes (json format)
-    :param key_col: key of the column to sort
-    :return: sorted list of routes by a specified column
-    """
-    global global_column
-    global_column = key_col
-    return sorted(json, key=json_ip_sort)
 
 def sort_switcher(request, json_data):
     """
@@ -144,19 +60,19 @@ def sort_switcher(request, json_data):
     """
 
     if 'net_sort' in request:
-        json_data = sort_by_ip(json_data, 'ip')
+        json_data = sorted(json_data, key=lambda elem : (json_ip_sort(elem, 'ip')))
     elif 'hop_sort' in request:
-        json_data = sort_by_ip(json_data, 'next_hop')
+        json_data = sorted(json_data, key=lambda elem : (json_ip_sort(elem, 'next_hop')))
     elif 'com_sort' in request:
-        json_data = sort_by(json_data, 'communities')
+        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'communities')))
     elif 'create_sort' in request:
-        json_data = sort_by(json_data, 'created_at')
+        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'created_at')))
     elif 'modi_sort' in request:
-        json_data = sort_by(json_data, 'modified_at')
+        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'modified_at')))
     elif 'last_sort' in request:
-        json_data = sort_by(json_data, 'last_activation')
+        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'last_activation')))
     elif 'active_sort' in request:
-        json_data = sort_by(json_data, 'is_activated')
+        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'is_activated')))
     return json_data
 
 def not_auth(request):
@@ -166,6 +82,7 @@ def not_auth(request):
     :param request: the request page
     :return: True for anonymous, False for authenticated
     """
+
     return not request.user.is_authenticated
 
 def home(request):
@@ -182,7 +99,6 @@ def home(request):
     # AUTHENTIFICATION
 
     return redirect(settings.DASHBOARD_URL)
-
 
 def index(request):
     """
