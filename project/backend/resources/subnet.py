@@ -48,7 +48,6 @@ class Subnet(Resource):
         self.mongo_db = MongoDB('Route')
         super(Subnet, self).__init__()
 
-
     def get(self):
         """
         get GET Method
@@ -64,25 +63,6 @@ class Subnet(Resource):
             del i['_id']
             i['id'] = _id
         return jsonify(items)
-
-    @marshal_with(subnets_fields)
-    def post(self):
-        """
-        post POST Method
-
-        POST api/subnet?ip=<ip>&next_hop=<next_hop>&communities=<communities>
-
-        :return: The created subnet
-        :rtype: dict, HTTP status
-        """
-        args = self.general_parser.parse_args()
-        subnet = {
-            'ip': args.ip,
-            'next_hop': args.next_hop,
-            'communities': args.communities,
-        }
-        self.mongo_db.add_route(subnet)
-        return subnet, 201
 
     @marshal_with(subnets_fields)
     def put(self):
@@ -115,7 +95,7 @@ class Subnet(Resource):
             'communities': args.communities,
             'is_activated': is_activated,
         }
-        subnet = self.mongo_db.update_route(subnet)
+        subnet = self.mongo_db.put_route(subnet)
         return subnet, 200
 
     @marshal_with(subnets_fields)
@@ -151,7 +131,6 @@ class Subnet(Resource):
         delete DELETE Method
 
         DELETE api/subnet?id=<id>
-
         """
         args = self.simple_parser.parse_args()
         self.mongo_db.delete_route({'_id' : ObjectId(args.id)})
