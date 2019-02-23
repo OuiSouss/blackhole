@@ -1,0 +1,228 @@
+Remotely Triggered Black Hole Routing (RTBH) Methodology
+--------------------------------------------------------
+
+1. launch: ./dyna.sh which fires 2 routers in non-hypervisor mode (access them with telnet 127.0.0.1 2001 the port nb given by the -T option)
+2. launch nemu script with: nemu -f bhre.py -i
+3. from nemu interpreter launch: StartNemu()
+4. in VMs: mkdir /run/bird; bird; birdc
+5. in route-server: systemctl status exabgp (or erco)
+6. using http api (flask must run): curl --form "command=announce route 10.1.0.2/32 next-hop 192.0.2.1" http://localhost:5000/
+https://thepacketgeek.com/give-exabgp-an-http-api-with-flask/
+
+7. insert route to attacker source @ (source @ -> destination prefix -> next-hop = null)
+curl --form "command=announce route 10.1.0.2/32 next-hop 192.0.2.1 local-preference 200 origin igp community [no-export,100:100]" http://localhost:5000/
+
+8. BGP attributes and communities:
+https://thepacketgeek.com/advanced-router-peering-and-route-announcement/
+- MED (Multi Exit Discriminator): med 50
+- Origin: origin incomplete (also egb or igp)
+- Local Preference: local-preference 200
+- AS Path: as-path [ 65000 65010 65020 ]
+- Community: community [65000:2]
+(local-preference will only work if ExaBGP and the peer you’re advertising to are in the same AS)
+
+NEW METEOR!!
+--------------
+
+create 2 fifos: 
+mkfifo /var/local/exabgp.in
+mkfifo /var/local/exabgp.out
+
+start exabgp:
+sudo env exabgp.daemon.daemonize=false exabgp4 ./conf_http.ini
+
+start meteor:
+
+meteor update
+
+meteor add aldeed:simple-schema
+meteor add aldeed:collection2
+meteor add dburles:collection-helpers
+meteor add practicalmeteor:mocha
+meteor add dburles:factory
+meteor add practicalmeteor:chai
+meteor add xolvio:cleaner
+meteor add kevohagan:sweetalert
+meteor add peppelg:bootstrap-3-modal
+
+meteor npm install --save @babel/runtime
+meteor npm install lodash --save
+meteor npm install --save @babel/runtime
+meteor npm install simpl-schema@>=0.0.0
+meteor npm install --save-dev phantomjs-prebuilt
+
+meteor run
+
+
+
+
+
+DDoS Black-holing with ExaBGP in a Provider Network At the beginning there is a DDos At the end there is mostly happyness You have a Server/Customer in your Network which is under a DDoS attack.
+First you need to have the tools to find out the attacked IP. Attacker is not of interest in a DDoS situation. 
+
+We use Netflow/sFlow data from our Core Equipment and analyze it with the help of nfsen/nfdump.
+If you have the IP you can start trying filtering at L3-L7 on the customer Firewall or with ACL's on the core. 
+If that helps you are lucky. But probably not for long... The attack has changed. 
+Now it is a bandwidth heavy attack. This is normal when the Attacker sees that the Site comes back on line while still under attack.
+So what now ? Call your upstream to black hole the traffic ? Yes, sort of. We do it the automatic way.
+Most of the Transit Carriers have BGP community's in place to black hole a /32 prefix. 
+With a exaBGP server in Place it is a matter of a few minutes Your upstream Transit Links get full The Provider Network The BGP and exaBGP Config Now your Network is happy again. 
+The only thing you have to deal with is the customer that is offline now because you black holed him. But usually he is not entirely innocent...
+To see if the DDoS has stopped. Just stop the exaBGP announcements... And see if traffic comes or not. If not we have a big success. Else wait another few minutes/hours...
+
+
+Flowspec RFC 5575
+-----------------
+FlowSpec as an alternative to static Policy Based Routing (PBR)
+Makes static PBR, dynamic !
+Propagates your PBR rules
+Does not need any new communication channel to spread
+By using your existing MP-BGP Infrastructure
+Defines new NLRI (AFI=1, SAFI=133)
+Actions are defined in extended communities
+
+How the RFC describes the architecture :
+-Your customer already announces you its own prefixes (family inet)
+-He advertises inetflow NLRI if the destination address matches (or is more specific) its own announced prefixes.  (validation principle)
+-iBGP propagates the information all over your backbone.
+Issues with this:
+-Your customer needs to support this new family
+-It’s sometimes hard to setup a simple inet eBGP session. . . Forget about inetflow. . .
+-Determining the policy is often complex
+
+Real life : operators won’t enable inetflow on eBGP sessions. . .
+What do we do instead ?
+-Centralized inetflow speaker
+-Meshed with core routers
+-Only one peer allowed to announce inetflow
+-Considered ”trusted” by the network (no-validate)
+
+FlowSpec speaker :  Arbor Networks or exabgp (supports the entire RFC5575, JunOS like configuration)
+
+FlowSpec listener : Get an Alcatel SR or a Juniper MX ??? (cisco??)
+
+What do you need ?
+-Traffic analyzer to qualify the attacks (netflow parser)
+-Flowspec interface to manage the mitigation
+-Long list of prefix-list (EU prefixes, APNIC prefixes, . . . )
+-A lot of attacks can be easily qualified (ICMP flood, UDP
+flood), but others can’t (e.g.  TCP SYN flood), you need a cleaning box (TCP SYN Proxy, URL analyze, ...), And that’s really expensive !
+
+Netflow/sFlow
+-------------
+netflow/ipfix -> from cisco -> deep packet inspection -> IP traffic stats and analysis
+sflow -> sFlow, short for "sampled flow", is an industry standard for packet export at Layer 2 of the OSI model. It provides a means for exporting truncated packets, together with interface counters for the purpose of network monitoring. Maintenance of the protocol is performed by the sFlow.org consortium, the authoritative source of the sFlow protocol specifications. The current version of sFlow is v5.
+
+NetFlow/IPFIX are flow export protocols that aim at aggregating packets into flows. After that, flow records are sent to a collection point for storage and analysis. sFlow, however, has no notion of flows or packet aggregation at all.
+
+sFlow allows for exporting packet data chunks and interface counters, which are non-typical features of flow export protocols. Note however that (recent) IPFIX developments provide a means for exporting SNMP MIB variables and packet data chunks.
+
+While flow export can be performed with 1:1 sampling (i.e., considering every packet), this is typically not possible with sFlow, as it was not designed to do so. Sampling forms an integral part of sFlow, aiming to provide scalability for network-wide monitoring.
+
+Debian tools:
+-------------
+flow-tools : collects and processes NetFlow data 
+flowgrind : Distributed network performance measurement tool 
+flowscan : flow-based IP traffic analysis and visualization tool  
+flowscan-cuflow : Flowscan module combining CampusIO and SubNetIO 
+nfdump-flow-tools : import from flow-tools 
+nfdump-sflow : sflow collector daemon 
+softflowd : Flow-based network traffic analyser 
+tcpflow : TCP flow recorder 
+python3-openflow : low level library to parse OpenFlow messages 
+
+nfsen/nfdump
+------------
+NfSen is a graphical web based front end for the nfdump netflow tools.
+The nfdump tools collect and process netflow data on the command line
+
+VM NICs
+-------
+E1000 – which will emulate a 1 Gbit Intel 82545EM card, and is available for most operating systems since the generation of Windows Server 2003. This card is the default when creating almost all virtual machines and is by that widely used.
+
+E1000E – emulates a newer real network adapter, the 1 Gbit Intel 82574, and is available for Windows 2012 and later. The E1000E needs VM hardware version 8 or later.
+
+Paravirtualized:
+
+The other type of virtual network adapters are the “paravirtualized”. The most recent one is called VMXNET3.
+
+The paravirtualized network card does not exist as a physical NIC, but is a device “made up” entirely by VMware. For the guest operating system this will mean that it typically during the OS installation phase only senses that an unknown device is located in a PCI slot on the (virtual) motherboard, but it has no driver to actually use it.
+
+(Note: some Linux distributions do even have the VMXNET3 driver pre-installed.)
+
+For Windows Server, when a device driver is supplied, typically through the installation of VMware Tools, the guest operating system will perceive this as a real NIC from some network card manufacturer called “VMware” and use it as an ordinary network adapter. It has no reason to believe anything else than this is a NIC just as any other NIC around. 
+
+To the guest operating system the VMXNET3 card looks like a 10 Gbit physical device.
+
+Note: there are also two obsolete paravirtualized adapters called VMXNET and VMXNET2 (sometimes the “Enhanced VMXNET”), however as long as the virtual machine has at least hardware version 7 only the VMXNET3 adapter should be used.
+
+Since VMware with the VMXNET3 card owns much more of the network components even inside the VM there are many performance enhancements that could done. With the emulated E1000/E1000E the kernel has to mimic the exact behavior of existing adapters to the guest but with the VMXNET3 it could create a “perfect” virtual adapter optimized to be used in a virtual environment.
+
+_______________________________________________________________________________________________
+
+Notes
+-----
+
+1. if dynamic libs are not up to date, erase the execs in rcd subdirs and relaunch init.py
+2. do not use wireshark in VMs for more than a few minutes or it will saturate the mem/fs and freeze the VM
+3. ospf only work with and bcast declared networks, redistribute connected into bgp!
+4. to backup cisco confs to be stored on RS - 11.1.0.4 do:
+atftpd --daemon --no-fork --bind-address 11.1.0.4 /srv/tftp
+
+
+API to handle ExaBGP
+    shutdown Terminates ExaBGP. > shutdown in progress
+    reload Reload ExaBGP's configuration > reload in progress
+    restart Reloads ExaBGP from scracth > restart in progress
+    version Show exabgp's version
+    show neighbor [optional neighbor ip] summary
+    show neighbor [optional neighbor ip] extensive
+    show neighbor [optional neighbor ip]configuration
+    show ajd-rib in [extensive] (will be integrated in neighbour)
+    show ajd-rib out [extensive] (will be integrated in neighbour)
+    announce watchdog
+    announce route (will be deprecated when announce <afi> <safi> is introduced)
+    announce eor
+    announce flow
+    announce operational
+    announce vpls
+    announce route-refresh
+    teardown_
+
+every announce command has it withdraw equivalent.
+
+BGP Cease Status Codes for Teardown
+# neighbor 10.0.0.1 teardown 1
+See list below:
+1	Maximum Number of Prefixes Reached
+2	Administrative Shutdown
+3	Peer De-configured
+4	Administrative Reset
+5	Connection Rejected
+6	Other Configuration Change
+7	Connection Collision Resolution
+8	Out of Resources
+
+
+-----------------------------
+
+R1
+router ospf 1
+ log-adj
+ network 11.1.0.0 0.0.255.255 area 0
+
+router bgp 64501
+ neighbor 11.1.0.3 remote-as 64501
+
+Free and open source IDS systems
+    ACARM-ng
+    AIDE
+    Bro NIDS
+    Fail2ban
+    OSSEC HIDS
+    Prelude Hybrid IDS
+    Sagan
+    Samhain
+    Snort
+    Suricata
+

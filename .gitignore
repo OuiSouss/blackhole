@@ -21,7 +21,13 @@
 reports/pdp-blackhole-report-realease.tar.xz
 **/build
 **/bhre.tar
-**/bhre
+**/nemu
 **/coverage.xml
 **/nosetests.xml
 **/_minted-presentation/
+**/dynamips
+**/nemu_virt/blackholerouting
+**/nemu_virt/symlink-blackholerouting
+**/nemu_virt/c7200*
+**/nemu_virt/dynamips_log.txt
+**/nemu_virt/ilt*
