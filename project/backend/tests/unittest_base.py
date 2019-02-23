@@ -77,11 +77,10 @@ class BaseTest(unittest.TestCase):
             'communities': 'test_commu'
         }
         route_id = self.database.add_route(patch)
-        self.database.update_route({
+        patch2 = self.database.update_route({
             '_id': route_id,
             'is_activated': False,
         })
-        patch2 = self.database.route.find_one({'_id': route_id})
         self.database.delete_route({'_id': route_id})
         self.assertEqual(patch2['is_activated'], False, 'activation failed')
 
@@ -112,7 +111,8 @@ class BaseTest(unittest.TestCase):
         post3 = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop2',
-            'communities': 'test_commu2'
+            'communities': 'test_commu2',
+            'is_activated ' : False
         }
         put = self.database.route.find_one({'_id': route_id})
         route_id2 = self.database.put_route({
@@ -120,7 +120,7 @@ class BaseTest(unittest.TestCase):
             'ip' : post3['ip'],
             'communities': post3['communities'],
             'next_hop' :  post3['next_hop'],
-            'is_activated': False,
+            'is_activated': post3['is_activated'],
         })
         post2 = self.database.route.find_one({'_id': route_id2['_id']})
         self.database.delete_route({'_id': route_id2['_id']})
@@ -129,7 +129,7 @@ class BaseTest(unittest.TestCase):
                          'insertion failed')
         self.assertEqual(post2['communities'], post3['communities'],
                          'insertion failed')
-        self.assertEqual(post2['is_activated'], False, 'activation failed')
+        self.assertEqual(post2['is_activated'], post3['is_activated'], 'activation failed')
 
 if __name__ == '__main__':
     unittest.main()
