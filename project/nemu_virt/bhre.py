@@ -2,57 +2,55 @@
 Black Hole Routing Experiment
 '''
 
-InitNemu(session='blackholerouting',\
-	     workspace='/home/amelie/Documents/pdp-blackhole/project/nemu_virt/',\
-		 hdcopy=True)
+# Define a session for InitNemu
+# Be careful to don't have a directory with the same name
+SESSION = 'blackhole'
 
-VHostConf('debian', display='sdl', vga='std', enable_kvm=None, localtime=None, k='fr', m='4G', cpu='kvm64')
+# Define a workspace for InitNemu
+# We set it with our local directory nemu_virt
+WORKSPACE = '.'
+
+# Define where the debian image is located
+# On cremi, is on /net/stockage/amerisi/bhre/blackholerouting/fs/debian8.img
+DEBIAN_IMAGE = 'blackholerouting/fs/debian8.img'
+
+InitNemu(session=SESSION, workspace=WORKSPACE, hdcopy=True)
+
+VHostConf('debian', display='sdl', vga='std', enable_kvm=None, localtime=None,
+		  k='fr', m='4G', cpu='kvm64')
 
 VHost('attacker', conf='debian',
-	hds=[VFs('/home/amelie/Documents/pdp-blackhole/project/nemu_virt/blackholing/fs/debian8.img',\
-			 'cow', tag='attacker.img')],
-	nics=[
-	VNic(hw='0a:0a:0a:00:01:01'),
-	VNic(hw='0a:0a:0a:00:01:02'),
-	VNic(hw='0c:0c:0c:00:01:01')])
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='attacker.img')],
+	  nics=[
+		  VNic(hw='0a:0a:0a:00:01:01'),
+		  VNic(hw='0a:0a:0a:00:01:02'),
+		  VNic(hw='0c:0c:0c:00:01:01')])
 
 VHost('border-router', conf='debian',
-	hds=[VFs('/home/amelie/Documents/pdp-blackhole/project/nemu_virt/blackholing/fs/debian8.img',\
-			 'cow', tag='ce-bgp.img')],
-	nics=[
-	VNic(hw='0a:0a:0a:00:02:01'),
-	VNic(hw='0a:0a:0a:00:02:02'),
-	VNic(hw='0c:0c:0c:00:02:02')])
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='ce-bgp.img')],
+	  nics=[
+		  VNic(hw='0a:0a:0a:00:02:01'),
+		  VNic(hw='0a:0a:0a:00:02:02'),
+		  VNic(hw='0c:0c:0c:00:02:02')])
 
 VHost('route-server', conf='debian',
-	hds=[VFs('/home/amelie/Documents/pdp-blackhole/project/nemu_virt/blackholing/fs/debian8.img',\
-			 'cow', tag='route-server.img')],
-	nics=[
-	VNic(hw='0a:0a:0a:00:03:01'),
-	VNic(hw='0c:0c:0c:00:03:03')])
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img')],
+	  nics=[
+		  VNic(hw='0a:0a:0a:00:03:01'),
+		  VNic(hw='0c:0c:0c:00:03:03')])
 
 VHost('target', conf='debian',
-	hds=[VFs('/home/amelie/Documents/pdp-blackhole/project/nemu_virt/blackholing/fs/debian8.img',\
-			 'cow', tag='web-server.img')],
+	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='web-server.img')],
 	nics=[
-	VNic(hw='0a:0a:0a:00:04:01'),
-	VNic(hw='0c:0c:0c:00:04:04')])
+		VNic(hw='0a:0a:0a:00:04:01'),
+		VNic(hw='0c:0c:0c:00:04:04')])
 
 VHost('client', conf='debian',
-	hds=[VFs('/home/amelie/Documents/pdp-blackhole/project/nemu_virt/blackholing/fs/debian8.img',\
-			 'cow', tag='client.img')],
+	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='client.img')],
 	nics=[
-	VNic(hw='0a:0a:0a:00:05:01'),
-	VNic(hw='0a:0a:0a:00:05:02'),
-	VNic(hw='0c:0c:0c:00:05:05')])
-
-
-'''
-VRouter('box', nics=[VNic(), VNic()], services=[Service('ipforward'), Service('ifup', '1:192.168.0.1'), Service('gateway', 0),
-	Service('masquerade', ipsrc='192.168.0.0/24'),
-	Service('dnsmasq', domain='local', net='192.168.0.0/24', start='192.168.0.10', end='192.168.0.20', ifaces=[1])],
-	enable_kvm=None, localtime=None, k='fr', display='sdl', vga='std')
-'''
+		VNic(hw='0a:0a:0a:00:05:01'),
+		VNic(hw='0a:0a:0a:00:05:02'),
+		VNic(hw='0c:0c:0c:00:05:05')])
 
 VSwitch('sw1', niface=3)
 SetIface("sw1:0", proto='udp', port=11001, lport=11002)
@@ -99,4 +97,3 @@ Link(client='target:1', core='slirp4')
 
 VSlirp('slirp5', net='192.168.5.0/24')
 Link(client='client:2', core='slirp5')
-
