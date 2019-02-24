@@ -1,11 +1,34 @@
-{% extends "base_generic.html" %}
+{% extends 'adminlte/base.html' %}
 {% load static %}
+
+<head>
+{% block title_outer %}
+<title>{% block title %}Route Manager{% endblock %}</title>
+{% endblock %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+</head>
+
+{% block nav_header %}
+    {% include 'adminlte/lib/_main_header.html' %}
+{% endblock %}
+
+<header>
+{% block content_header %}
+    <section class="content-header">
+        <h1>Route Manager</h1>
+    </section>
+{% endblock %}
+</header>
 
 {% block content %}
 
-<h1>Route Manager</h1>
-<br>
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
+{% endblock %}
 
+<br>
 <h2>Announce a new Network :</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
@@ -18,13 +41,13 @@
     <tr>
     <th scope="col">Action</th>
     <form action="" method="POST">{% csrf_token %}
-        <th scope="col">Status <button type="submit" type="text" name="active_sort">^</button></th>
-        <th scope="col">Network <button type="submit" type="text" name="net_sort">^</button></th>
-        <th scope="col">Next_hop <button type="submit" type="text" name="hop_sort">^</button></th>
-        <th scope="col">Communities <button type="submit" type="text" name="com_sort">^</button></th>
-        <th scope="col">Created_at <button type="submit" type="text" name="create_sort">^</button></th>
-        <th scope="col">Modified_at <button type="submit" type="text" name="modi_sort">^</button></th>
-        <th scope="col">Last_activation <button type="submit" type="text" name="last_sort">^</button></th>
+        <th scope="col">Status <button type="submit" type="checkbox" name="active_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Network <button type="submit" type="text" name="net_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Next_hop <button type="submit" type="text" name="hop_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Communities <button type="submit" type="text" name="com_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Created_at <button type="submit" type="text" name="create_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Modified_at <button type="submit" type="text" name="modi_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Last_activation <button type="submit" type="text" name="last_sort" class="btn btn-default btn-xs">^</button></th>
     </form>
     </tr>
     {% for r in data %}
@@ -32,26 +55,30 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <td>
-                    <button type="submit" type="text" name="id_delete" value="{{ r.id }}">Delete</button>
+                    <button type="submit" type="text" name="id_delete" value="{{ r.id }}" class="btn btn-default">Delete</button>
                     <br>
                     <br>
-                    <button type="submit" type="text" name="id_modify" value="{{ r.id }}">Modify</button>
+                    <button type="submit" type="text" name="id_modify" value="{{ r.id }}" class="btn btn-default">Modify</button>
                 </td>
                 {% if r.is_activated %}
-                    <td><button type="submit" type="text" name="id1" value="{{ r.id }}">O</button></td>
+                    <td><button type="submit" type="text" name="id1" value="{{ r.id }}" class="btn btn-default">O</button></td>
                 {% else %}
-                    <td><button type="submit" type="text" name="id2" value="{{ r.id }}">X</button></td>
+                    <td><button type="submit" type="text" name="id2" value="{{ r.id }}" class="btn btn-default">X</button></td>
                 {% endif %}
-                    <td><input type="text" name="ip" value="{{r.ip}}"></td> 
-                    <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td> 
-                    <td><input type="text" name="communities" value="{{r.communities}}"></td> 
-                    <td>{{r.created_at}}</td> 
-                    <td>{{r.modified_at}}</td> 
-                    <td>{{r.last_activation}}</td> 
+                    <td><input type="text" name="ip" value="{{r.ip}}" ></td>
+                    <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td>
+                    <td><input type="text" name="communities" value="{{r.communities}}"></td>
+                    <td>{{r.created_at}}</td>
+                    <td>{{r.modified_at}}</td>
+                    <td>{{r.last_activation}}</td>
             </form>
         </tr>
     {% endfor %}
 </table>
 
 <br>
+{% endblock %}
+
+{% block nav_footer %}
+    {% include 'adminlte/lib/_main_footer.html' %}
 {% endblock %}
