@@ -1,0 +1,17 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        {% block footer_right %}
+            <b>Version</b> {% block version %}0.3{% endblock %}
+        {% endblock %}
+    </div>
+
+    {% block footer_left %}
+    {% block legal %}
+    Programmation project:
+    <strong>
+        "Routage vers trou noir piloté à distance"
+    </strong>
+    .2018/2019
+    {% endblock %}
+    {% endblock %}
+</footer>

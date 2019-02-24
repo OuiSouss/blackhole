@@ -1,0 +1,65 @@
+{% load adminlte_helpers %}
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        {% block user_panel %}{% endblock %}
+        
+        {% block form %}
+            <form type="get" action="." style="margin: 0">
+                <input  id="search_box" type="text" name="search_box"  placeholder="Search..." ><button id="search_submit" type="submit" >Search</button>
+            </form>
+        {% endblock %}
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        {% block nav_links_ul %}
+        <ul class="sidebar-menu">
+            {% block nav_links_outer %}
+            <li class="header">{% block nav_heading %}MENU{% endblock %}</li>
+
+            {% block nav_links %}
+                <li>
+                    <a href="{% url 'dashboard'%}?next={{request.path}}">
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/">
+                        <i class="fa fa-legal"></i> <span>Admin</span>
+                    </a>
+                </li>
+                 <li>
+                    <a href="#">
+                        <i class="fa fa-ban"></i> <span>Delete selected</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-get-pocket"></i> <span>Import/Export</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-download"></i> Import
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-upload"></i> Export
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endblock nav_links %}
+            {% endblock nav_links_outer %}
+        </ul>
+        {% endblock nav_links_ul %}
+    </section>
+    <!-- /.sidebar -->
+</aside>
