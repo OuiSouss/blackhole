@@ -29,5 +29,5 @@ urlpatterns = [
 
     path('dashboard/', views.index, name='dashboard'),
     path('', views.home),
-
+    path('', include('django.contrib.auth.urls')),
 ]

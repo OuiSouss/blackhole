@@ -13,12 +13,12 @@ tr:nth-child(even) {
 }
 
 th[scope="col"] {
-    background-color: #696969;
+    background-color: #257BBB;
     color: #fff;
 }
 
 th[scope="row"] {
-    background-color: #d7d9f2;
+    background-color: #72818B;
 }
 
 caption {
@@ -31,11 +31,10 @@ table {
     border: 2px solid rgb(200, 200, 200);
     letter-spacing: 1px;
     font-family: sans-serif;
-    font-size: .8rem;
+    font-size: small;
 }
 
-body {
-    padding-left: 30px;
+input {
+    background-color: #fff;
 }
-
 

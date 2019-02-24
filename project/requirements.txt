@@ -7,7 +7,12 @@ chardet==3.0.4
 Click==7.0
 coverage==4.5.2
 Django==2.1.5
+<<<<<<< HEAD
 docutils==0.14
+=======
+django-adminlte2==0.4.1
+django-bootstrap4==0.0.7
+>>>>>>> frontend : begin with adminlte
 exabgp==4.0.10
 Flask==1.0.2
 Flask-RESTful==0.3.7
