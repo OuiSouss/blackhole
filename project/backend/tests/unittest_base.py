@@ -1,7 +1,6 @@
 """
  Units tests for the database
 """
-import sys
 import unittest
 from backend.database.funct_base import MongoDB
 
