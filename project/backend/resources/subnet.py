@@ -3,13 +3,12 @@ subnet.py
 ===================
 REST API /api/subnet
 """
-from flask import jsonify
+from flask import jsonify, abort
 from flask_restful import Resource, reqparse, fields, marshal_with
-from bson import ObjectId
 from backend.database.funct_base import MongoDB
 
 subnets_fields = {
-    'id': fields.Integer,
+    'id': fields.String,
     'ip': fields.String,
     'next_hop': fields.String,
     'communities': fields.List(fields.String),
@@ -38,48 +37,61 @@ class Subnet(Resource):
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
-            required=True, help='The community', action='append'
+            action='append'
         )
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
-            'id', dest='id', location=['form', 'json'], required=True,
-            help='The ID',
+            'is_activated', dest='is_activated', location=['form', 'json'],
+            required=True, help='The activation',
         )
         self.mongo_db = MongoDB('Route')
         super(Subnet, self).__init__()
 
-    def get(self):
+    def get(self, subnet_id):
         """
         get GET Method
 
-        GET /api/subnet
+        GET /api/subnet/<subnet_id>
+        Abort with 404 if the subnet is not in database
 
-        :return: List of subnets stored on database
-        :rtype: list
+        :param subnet_id: id of a subnet in str format
+        :type subnet_id: str
+        :return: The subnet with subnet_id
+        :rtype: dict
         """
-        items = self.mongo_db.get_all_routes()
-        for i in items:
-            _id = i['_id']
-            del i['_id']
-            i['id'] = _id
-        return jsonify(items)
+        subnet = self.mongo_db.get_route_by_id({'_id' : subnet_id})
+        if subnet is None:
+            abort(404,
+                  message='Cannot find a route with id : {}'.format(subnet_id))
+        _id = subnet['_id']
+        del subnet['_id']
+        subnet['id'] = subnet_id
+        return jsonify(subnet)
 
     @marshal_with(subnets_fields)
-    def put(self):
+    def put(self, subnet_id):
         """
         put PUT Method
 
-        PUT api/subnet?id=<id>&ip=<ip>&next_hop=<next_hop>&\
-            communities=<communities>&is_activated=<is_activated>
+        PUT api/subnet/<object_id:subnet_id>/
 
+        {
+            ip: <ip>
+            next_hop: <next_hop>
+            communities: <communities>
+            is_activated: <is_activated>
+        }
+
+        :param subnet_id: id of a subnet in str format
+        :type subnet_id: str
         :return: The updated subnet
         :rtype: dict, HTTP status
         """
+        subnet = self.mongo_db.get_route_by_id({'_id' : subnet_id})
+        if subnet is None:
+            abort(404,
+                  message='Cannot find a route with id : {}'.format(subnet_id))
         put_parser = self.general_parser.copy()
-        put_parser.add_argument(
-            'id', dest='id', location=['form', 'json'], required=True,
-            help='The ID',
-        )
         put_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
             required=True, help='The activation',
@@ -88,37 +100,34 @@ class Subnet(Resource):
         is_activated = True
         if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
-        subnet = {
-            '_id': ObjectId(args.id),
-            'ip': args.ip,
-            'next_hop': args.next_hop,
-            'communities': args.communities,
-            'is_activated': is_activated,
-        }
+        subnet['ip'] = args.ip
+        subnet['next_hop'] = args.next_hop
+        subnet['communities'] = args.communities
+        subnet['is_activated'] = is_activated
         subnet = self.mongo_db.put_route(subnet)
         return subnet, 200
 
     @marshal_with(subnets_fields)
-    def patch(self):
+    def patch(self, subnet_id):
         """
         patch PATCH Method
 
-        PATCH api/subnet?id=<id>&is_activated=<is_activated>
+        PATCH api/subnet/<object_id:subnet_id>/
+
+        {
+            is_activated: <is_activated>
+        }
 
         :return: The updated subnet
         :rtype: dict, HTTP status
         """
         patch_parser = self.simple_parser.copy()
-        patch_parser.add_argument(
-            'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation',
-        )
         args = patch_parser.parse_args()
         is_activated = True
         if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
         subnet = {
-            '_id': ObjectId(args.id),
+            '_id': subnet_id,
             'is_activated': is_activated
         }
         subnet = self.mongo_db.update_route(subnet)
@@ -126,11 +135,10 @@ class Subnet(Resource):
 
 
     @marshal_with(subnets_fields)
-    def delete(self):
+    def delete(self, subnet_id):
         """
         delete DELETE Method
 
-        DELETE api/subnet?id=<id>
+        DELETE api/subnet/<object_id:subnet_id>
         """
-        args = self.simple_parser.parse_args()
-        self.mongo_db.delete_route({'_id' : ObjectId(args.id)})
+        self.mongo_db.delete_route({'_id' : subnet_id})

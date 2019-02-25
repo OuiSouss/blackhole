@@ -13,5 +13,5 @@ api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 
 # Route
-api.add_resource(Subnet, '/subnet')
-api.add_resource(Subnets, '/subnet/subnets')
+api.add_resource(Subnet, '/subnet/<object_id:subnet_id>')
+api.add_resource(Subnets, '/subnets')

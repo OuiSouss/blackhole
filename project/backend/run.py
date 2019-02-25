@@ -5,6 +5,7 @@ Run the application
 """
 from flask import Flask
 from backend.mongo_json_encoder import MongoJSONEncoder, ObjectIdConverter
+
 def create_app():
     """
     create_app Configure applicationt on /api
@@ -20,7 +21,7 @@ def create_app():
     app.debug = True
 
     app.json_encoder = MongoJSONEncoder
-    app.url_map.converters['objectid'] = ObjectIdConverter
+    app.url_map.converters['object_id'] = ObjectIdConverter
 
     from backend.app import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
