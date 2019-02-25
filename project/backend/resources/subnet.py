@@ -65,7 +65,7 @@ class Subnet(Resource):
                   message='Cannot find a route with id : {}'.format(subnet_id))
         _id = subnet['_id']
         del subnet['_id']
-        subnet['id'] = subnet_id
+        subnet['id'] = _id
         return jsonify(subnet)
 
     @marshal_with(subnets_fields)
