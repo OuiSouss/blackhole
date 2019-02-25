@@ -1,7 +1,7 @@
 """
  Units tests for the database
 """
-
+import sys
 import unittest
 from backend.database.funct_base import MongoDB
 
@@ -15,6 +15,7 @@ class BaseTest(unittest.TestCase):
          Test initialization
         """
         self.database = MongoDB('Test')
+        self.database.delete_all_route()
 
     def test_add_route(self):
         """
@@ -51,6 +52,7 @@ class BaseTest(unittest.TestCase):
         route1_id = self.database.add_route(post)
         route2_id = self.database.add_route(post2)
         post3 = self.database.get_all_routes()
+        self.assertFalse(len(post3) > 2, 'Database was not empty before this function')
         self.database.delete_route({'_id': route1_id})
         self.database.delete_route({'_id': route2_id})
         for r in post3:
@@ -112,15 +114,15 @@ class BaseTest(unittest.TestCase):
             'ip': 'test_ip',
             'next_hop': 'test_nexthop2',
             'communities': 'test_commu2',
-            'is_activated ' : False
+            'is_activated': False,
         }
         put = self.database.route.find_one({'_id': route_id})
         route_id2 = self.database.put_route({
             '_id': put['_id'],
-            'ip' : post3['ip'],
+            'ip': post3['ip'],
             'communities': post3['communities'],
-            'next_hop' :  post3['next_hop'],
-            'is_activated': post3['is_activated'],
+            'next_hop':  post3['next_hop'],
+            'is_activated': post3['is_activated']
         })
         post2 = self.database.route.find_one({'_id': route_id2['_id']})
         self.database.delete_route({'_id': route_id2['_id']})
