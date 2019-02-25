@@ -25,6 +25,17 @@ class MongoDB:
         else:
             self.route = self.database.Test
 
+    def get_route_by_id(self, get):
+        """
+        get_route_by_id Get a route with a specific id
+
+        :param get: A dictionnary with _id and its value
+        :type get: dict
+        """
+        route = self.route.find_one(get)
+        return route
+
+
     def get_all_routes(self):
         """
         Get all of the routes stored in the database
@@ -62,6 +73,12 @@ class MongoDB:
         """
         route_id = delete['_id']
         self.route.delete_many({'_id': route_id})
+
+    def delete_all_route(self):
+        """
+        Delete all routes in the database
+        """
+        self.route.delete_many({})
 
     def update_route(self, patch):
         """

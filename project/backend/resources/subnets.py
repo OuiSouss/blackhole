@@ -1,5 +1,5 @@
 """
-subnet.py
+subnets.py
 ===================
 REST API /api/subnets
 """
@@ -8,7 +8,7 @@ from flask_restful import Resource, reqparse, fields, marshal_with
 from backend.database.funct_base import MongoDB
 
 subnets_fields = {
-    'id': fields.Integer,
+    'id': fields.String,
     'ip': fields.String,
     'next_hop': fields.String,
     'communities': fields.List(fields.String),
@@ -20,7 +20,7 @@ subnets_fields = {
 
 class Subnets(Resource):
     """
-    Subnet class to provide GET, POST methods.
+    Subnets class to provide GET, POST methods.
     """
 
     def __init__(self):
@@ -35,12 +35,7 @@ class Subnets(Resource):
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
-            required=True, help='The community', action='append'
-        )
-        self.simple_parser = reqparse.RequestParser()
-        self.simple_parser.add_argument(
-            'id', dest='id', location=['form', 'json'], required=True,
-            help='The ID',
+            action='append'
         )
         self.mongo_db = MongoDB('Route')
         super(Subnets, self).__init__()
@@ -67,7 +62,13 @@ class Subnets(Resource):
         """
         post POST Method
 
-        POST api/subnets?ip=<ip>&next_hop=<next_hop>&communities=<communities>
+        POST api/subnets
+
+        {
+            ip: <ip>
+            next_hop: <next_hop>
+            communities: <communities>
+        }
 
         :return: The created subnet
         :rtype: dict, HTTP status
