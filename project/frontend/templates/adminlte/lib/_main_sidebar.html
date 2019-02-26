@@ -5,7 +5,7 @@
     <section class="sidebar">
         <!-- Sidebar user panel -->
         {% block user_panel %}{% endblock %}
-        
+
         {% block form %}
             <form type="get" action="." style="margin: 0">
                 <input  id="search_box" type="text" name="search_box"  placeholder="Search..." ><button id="search_submit" type="submit" >Search</button>
@@ -21,37 +21,37 @@
             {% block nav_links %}
                 <li>
                     <a href="{% url 'dashboard'%}?next={{request.path}}">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <em class="fa fa-dashboard"></em> <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="/admin/">
-                        <i class="fa fa-legal"></i> <span>Admin</span>
+                        <em class="fa fa-legal"></em> <span>Admin</span>
                     </a>
                 </li>
                  <li>
                     <a href="#">
-                        <i class="fa fa-ban"></i> <span>Delete selected</span>
+                        <em class="fa fa-ban"></em> <span>Delete selected</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-get-pocket"></i> <span>Import/Export</span>
+                        <em class="fa fa-get-pocket"></em> <span>Import/Export</span>
                         <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
+                            <em class="fa fa-angle-left pull-right"></em>
                         </span>
                     </a>
                     <ul class="treeview-menu">
                         <li>
                             <a href="#">
-                                <i class="fa fa-download"></i> Import
+                                <em class="fa fa-download"></em> Import
                             </a>
                         </li>
                     </ul>
                     <ul class="treeview-menu">
                         <li>
                             <a href="#">
-                                <i class="fa fa-upload"></i> Export
+                                <em class="fa fa-upload"></em> Export
                             </a>
                         </li>
                     </ul>
