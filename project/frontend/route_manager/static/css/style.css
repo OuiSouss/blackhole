@@ -8,17 +8,18 @@ td {
     text-align: center;
 }
 
-tr:nth-child(even) {
-    background-color: #eee;
-}
-
 th[scope="col"] {
     background-color: #257BBB;
     color: #fff;
 }
 
-th[scope="row"] {
-    background-color: #72818B;
+
+tr.table-enabled {
+    background-color: #A9F5A9;
+}
+
+tr.table-disabled {
+    background-color: #F5A9A9;
 }
 
 caption {
@@ -37,4 +38,3 @@ table {
 input {
     background-color: #fff;
 }
-
