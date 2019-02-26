@@ -10,6 +10,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
 </head>
 
+{% block nav_header %}
+    {% include 'adminlte/lib/_main_header.html' %}
+{% endblock %}
+
 <header>
 {% block content_header %}
     <section class="content-header">
@@ -47,8 +51,13 @@
     </form>
     </tr>
     {% for r in data %}
-        <tr>
-            <form action="" method="POST">{% csrf_token %}
+        {% if r.is_activated %}
+            <tr class="table-enabled">
+        {% else %}
+            <tr class="table-disabled">
+        {% endif %}
+            <form action="" method="POST">
+                {% csrf_token %}
                 <td>
                     <button type="submit" type="text" name="id_delete" value="{{ r.id }}" class="btn btn-default">Delete</button>
                     <br>
@@ -70,5 +79,10 @@
         </tr>
     {% endfor %}
 </table>
+
 <br>
+{% endblock %}
+
+{% block nav_footer %}
+    {% include 'adminlte/lib/_main_footer.html' %}
 {% endblock %}
