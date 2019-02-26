@@ -160,6 +160,28 @@ def index(request):
             route_manager.request_json.enable_disable_route(
                 str(request.POST['id2']), True)
             return redirect(settings.DASHBOARD_URL)
+        if 'id_to_delete' in request.POST:
+            for key, values in request.POST.lists():
+                if key=='listed_id':
+                    for value in values:
+                        route_manager.request_json.delete_route(
+                            str(value))
+            return redirect(settings.DASHBOARD_URL)
+        if 'id_to_disable' in request.POST:
+            for key, values in request.POST.lists():
+                if key=='listed_id':
+                    for value in values:
+                        route_manager.request_json.enable_disable_route(
+                            str(value), False)
+            return redirect(settings.DASHBOARD_URL)
+        if 'id_to_enable' in request.POST:
+            for key, values in request.POST.lists():
+                if key=='listed_id':
+                    for value in values:
+                        route_manager.request_json.enable_disable_route(
+                            str(value), True)
+            return redirect(settings.DASHBOARD_URL)
+
     form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
         'data' : json_data,

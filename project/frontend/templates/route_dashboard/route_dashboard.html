@@ -22,6 +22,7 @@
 {% endblock %}
 </header>
 
+<body>
 {% block content %}
 
 {% block css %}
@@ -39,35 +40,39 @@
 <h2>Announced networks :</h2>
 <table>
     <tr>
+    <th scope="col"></th>
     <th scope="col">Action</th>
     <form action="" method="POST">{% csrf_token %}
-        <th scope="col">Status <button type="submit" type="checkbox" name="active_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Network <button type="submit" type="text" name="net_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Next_hop <button type="submit" type="text" name="hop_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Communities <button type="submit" type="text" name="com_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Created_at <button type="submit" type="text" name="create_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Modified_at <button type="submit" type="text" name="modi_sort" class="btn btn-default btn-xs">^</button></th>
-        <th scope="col">Last_activation <button type="submit" type="text" name="last_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Status <button type="submit" name="active_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Network <button type="submit" name="net_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Next_hop <button type="submit" name="hop_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Communities <button type="submit" name="com_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Created_at <button type="submit" name="create_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Modified_at <button type="submit" name="modi_sort" class="btn btn-default btn-xs">^</button></th>
+        <th scope="col">Last_activation <button type="submit" name="last_sort" class="btn btn-default btn-xs">^</button></th>
     </form>
     </tr>
+    <form id="list" action="" method="POST">{% csrf_token %}</form>
     {% for r in data %}
         {% if r.is_activated %}
             <tr class="table-enabled">
         {% else %}
             <tr class="table-disabled">
         {% endif %}
-            <form action="" method="POST">
-                {% csrf_token %}
+            <form action="" method="POST">{% csrf_token %}
                 <td>
-                    <button type="submit" type="text" name="id_delete" value="{{ r.id }}" class="btn btn-default">Delete</button>
+                    <input type="checkbox" class="row-select" name="listed_id" value="{{ r.id }}" form="list">
+                </td>
+                <td>
+                    <button type="submit" name="id_delete" value="{{ r.id }}" class="btn btn-default">Delete</button>
                     <br>
                     <br>
-                    <button type="submit" type="text" name="id_modify" value="{{ r.id }}" class="btn btn-default">Modify</button>
+                    <button type="submit" name="id_modify" value="{{ r.id }}" class="btn btn-default">Modify</button>
                 </td>
                 {% if r.is_activated %}
-                    <td><button type="submit" type="text" name="id1" value="{{ r.id }}" class="btn btn-default">O</button></td>
+                    <td><button type="submit" name="id1" value="{{ r.id }}" class="btn btn-default">O</button></td>
                 {% else %}
-                    <td><button type="submit" type="text" name="id2" value="{{ r.id }}" class="btn btn-default">X</button></td>
+                    <td><button type="submit" name="id2" value="{{ r.id }}" class="btn btn-default">X</button></td>
                 {% endif %}
                     <td><input type="text" name="ip" value="{{r.ip}}" ></td>
                     <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td>
@@ -76,12 +81,15 @@
                     <td>{{r.modified_at}}</td>
                     <td>{{r.last_activation}}</td>
             </form>
-        </tr>
+            </tr>
     {% endfor %}
+    <button type="submit" name="id_to_delete" class="btn btn-default" form="list">Delete routes selected</button>
+    <button type="submit" name="id_to_enable" class="btn btn-default" form="list">Enable routes selected</button>
+    <button type="submit" name="id_to_disable" class="btn btn-default" form="list">Disable routes selected</button>
 </table>
-
 <br>
 {% endblock %}
+</body>
 
 {% block nav_footer %}
     {% include 'adminlte/lib/_main_footer.html' %}
