@@ -33,16 +33,10 @@
 {% endblock %}
 	</div>
 
-
-
-
-
-
-
 	<!-- si l'utilisateur est authentifié -->
 	{% if user.is_authenticated %}
 		<hr>
-		<ol>
+		<ul>
 		<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
 		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->
 		{# if not "/accounts/change_password/" in request.get_full_path #}
@@ -61,15 +55,13 @@
 
 
 		<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-		</ol>
+		</ul>
 	{% endif %}
 
 	<!-- Sinon on peut lui proposer de se connecter.
 	Mais s'il n'est pas connecté alors il sera forcément dans la page login.
 	Et n'auras pas besoin qu'on lui propose cette option
 	 -->
-
-
 
     </div>
   </div>
