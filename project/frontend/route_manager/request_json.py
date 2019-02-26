@@ -30,9 +30,8 @@ def put_route(ident, ip, next_hop, communities):
     :param communities: the communities of the route.
     :type communities: String
     """
-    requests.put(settings.API_URL,
+    requests.put(settings.API_URL_SINGLE+"/"+ident,
                  json={
-                     'id': ident,
                      'ip': ip,
                      'communities': communities,
                      'next_hop': next_hop,
@@ -45,8 +44,16 @@ def delete_route(ident):
     :param ident: the id of the route who will be delete.
     :type ident: String
     """
-    requests.delete(settings.API_URL,
-                    json={'id': ident})
+    requests.delete(settings.API_URL_SINGLE+"/"+ident)
+
+def get_one_route(ident):
+    """
+    GET method
+
+    :param ident: the id of the route who will be get.
+    :type ident: String
+    """
+    requests.get(settings.API_URL_SINGLE+"/"+ident)
 
 def enable_disable_route(ident, boolean):
     """
@@ -57,7 +64,6 @@ def enable_disable_route(ident, boolean):
     :param boolean: check if we want to disable (False) or enable (True).
     :type boolean: bool
     """
-    requests.patch(settings.API_URL,
+    requests.patch(settings.API_URL_SINGLE+"/"+ident,
                    json={
-                       'id': ident,
                        'is_activated': boolean})
