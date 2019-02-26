@@ -22,7 +22,8 @@ def json_sort(json, key_col):
     Used by a sorting function, regular sort (by string)
 
     :param request: json dict
-    :return: specifc value from json dict, the key is specified by a previous function
+    :return: specifc value from json dict, the key is specified by a \
+        previous function
     :return: returns 0 if the json is incorrect
     """
 
@@ -36,7 +37,8 @@ def json_ip_sort(json, key_col):
     Used by a sorting function, custom sort (by ip adress)
 
     :param request: json dict
-    :return: specifc value from json dict, the key is specified by a previous function
+    :return: specifc value from json dict, the key is specified by a \
+        previous function
     :return: returns 0 if the json is incorrect
     """
 
@@ -60,19 +62,27 @@ def sort_switcher(request, json_data):
     """
 
     if 'net_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_ip_sort(elem, 'ip')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_ip_sort(elem, 'ip')))
     elif 'hop_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_ip_sort(elem, 'next_hop')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_ip_sort(elem, 'next_hop')))
     elif 'com_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'communities')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_sort(elem, 'communities')))
     elif 'create_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'created_at')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_sort(elem, 'created_at')))
     elif 'modi_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'modified_at')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_sort(elem, 'modified_at')))
     elif 'last_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'last_activation')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_sort(elem,
+                                                       'last_activation')))
     elif 'active_sort' in request:
-        json_data = sorted(json_data, key=lambda elem : (json_sort(elem, 'is_activated')))
+        json_data = sorted(json_data,
+                           key=lambda elem: (json_sort(elem, 'is_activated')))
     return json_data
 
 def not_auth(request):
