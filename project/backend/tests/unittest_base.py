@@ -51,7 +51,8 @@ class BaseTest(unittest.TestCase):
         route1_id = self.database.add_route(post)
         route2_id = self.database.add_route(post2)
         post3 = self.database.get_all_routes()
-        self.assertFalse(len(post3) > 2, 'Database was not empty before this function')
+        self.assertFalse(len(post3) > 2,
+                         'Database was not empty before this function')
         self.database.delete_route({'_id': route1_id})
         self.database.delete_route({'_id': route2_id})
         for r in post3:
@@ -130,7 +131,8 @@ class BaseTest(unittest.TestCase):
                          'insertion failed')
         self.assertEqual(post2['communities'], post3['communities'],
                          'insertion failed')
-        self.assertEqual(post2['is_activated'], post3['is_activated'], 'activation failed')
+        self.assertEqual(post2['is_activated'], post3['is_activated'],
+                         'activation failed')
 
 if __name__ == '__main__':
     unittest.main()
