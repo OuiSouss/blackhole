@@ -2,12 +2,14 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from route_manager.forms import PostForm
+
 """
 Tests for the frontend
 
 Elements tested :
 - login/logout
-
+- form validation (add route)
 """
 
 
@@ -153,4 +155,100 @@ class BadLogInTest(TestCase):
         # attempt to access restricted content, should refuse and redirect
         response = self.client.post(url_destination, self.credentials)
         self.assertEqual(response.status_code, 302)
+
+
+class RouteManagerTest(TestCase):
+    #clear && python3 manage.py test blackhole_ui.tests.RouteManagerTest
+
+    def test_form_add_route(self):
+
+        form_data = {}
+        form_data['ip'] = '192.168.1.1'
+        form_data['community'] = '1234x'
+        form_data['next_hop'] = '0.0.0.0'
+
+        form = PostForm(data = form_data)
+        self.assertTrue(form.is_valid())
+
+
+    def get_incorrect_ip_adress_list(self):
+        wrong_ip_adress_list = []
+        wrong_ip_adress_list.clear()
+        wrong_ip_adress_list.append('wrong')
+        wrong_ip_adress_list.append('0.0.0.0.0')
+        wrong_ip_adress_list.append('0.0.0')
+        wrong_ip_adress_list.append('A.B.C.D')
+        wrong_ip_adress_list.append('300.300.300.300')
+        wrong_ip_adress_list.append('265.168.1.1')
+        wrong_ip_adress_list.append('192.265.1.1')
+        wrong_ip_adress_list.append('192.168.265.1')
+        wrong_ip_adress_list.append('192.168.1.265')
+        wrong_ip_adress_list.append('')
+        wrong_ip_adress_list.append(None)
+        return wrong_ip_adress_list
+
+
+    def test_form_add_route_incorrect_ip(self):
+
+        wrong_ip_list = self.get_incorrect_ip_adress_list()
+
+        form_data = {}
+        form_data['community'] = '1234x'
+        form_data['next_hop'] = '0.0.0.0'
+
+        for wrong_ip in wrong_ip_list:    
+            form_data['ip'] = wrong_ip
+            form = PostForm(data = form_data)
+
+            # Testing impossible cases
+            # the form must not become valid
+            if(form.is_valid()):
+                # If a wrong value is accepted as correct
+                # Then an assert is triggered
+                print(">> accepted wrong_ip : ", wrong_ip)
+                self.assertFalse(form.is_valid())
+
+
+    def test_form_add_route_incorrect_community(self):
+
+        wrong_community_list = []
+        wrong_community_list.append(None)
+        wrong_community_list.append('')
+
+        form_data = {}
+        form_data['ip'] = '192.168.1.1'
+        form_data['next_hop'] = '0.0.0.0'
+
+        for wrong_community in wrong_community_list:    
+            form_data['community'] = wrong_community
+            form = PostForm(data = form_data)
+
+            # Testing impossible cases
+            # the form must not become valid
+            if(form.is_valid()):
+                # If a wrong value is accepted as correct
+                # Then an assert is triggered
+                print(">> accepted community : ", wrong_community)
+                self.assertFalse(form.is_valid())
+
+
+    def test_form_add_route_incorrect_next_hop(self):
+
+        wrong_next_hop_list = self.get_incorrect_ip_adress_list()
+
+        form_data = {}
+        form_data['ip'] = '192.168.1.1'
+        form_data['community'] = '1234x'
+
+        for wrong_next_hop in wrong_next_hop_list:    
+            form_data['next_hop'] = wrong_next_hop
+            form = PostForm(data = form_data)
+
+            # Testing impossible cases
+            # the form must not become valid
+            if(form.is_valid()):
+                # If a wrong value is accepted as correct
+                # Then an assert is triggered
+                print(">> accepted next_hop : ", wrong_next_hop)
+                self.assertFalse(form.is_valid())
 
