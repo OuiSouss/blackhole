@@ -23,9 +23,16 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 
 # Redirect to login url
 AUTH_URL = '/accounts/login/'
+# DEPRECATED
 
 # Redirect to dashboard url
 DASHBOARD_URL = '/dashboard/'
+
+# Redirect to login url
+LOGIN_URL = '/login/'
+
+# Redirect to login url
+LOGOUT_URL = '/logout/'
 
 # Redirects to change password url
 CHANGE_PASSWORD = 'change_password'

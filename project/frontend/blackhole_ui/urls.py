@@ -22,12 +22,10 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-
-    path('accounts/change_password/', views.change_password,
-         name='change_password'),
-
+    path('accounts/', include('django.contrib.auth.urls')),# DEPRECATED
+    path('', include('django.contrib.auth.urls')),# APPROVED
+    path('accounts/change_password/', views.change_password, name='change_password'),
     path('dashboard/', views.index, name='dashboard'),
     path('', views.home),
-    path('', include('django.contrib.auth.urls')),
+    
 ]
