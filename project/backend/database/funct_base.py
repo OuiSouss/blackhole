@@ -4,6 +4,7 @@ Database on MongoDB
 
 from datetime import datetime
 from pymongo import MongoClient
+from settings import get_uri
 
 class MongoDB:
     """
@@ -16,7 +17,7 @@ class MongoDB:
 	    :param collection_name: The name of the collection in the database
 	    :type collection_name: string
         """
-        mongo_db = 'admin:admin45@ds127115.mlab.com:27115/route_base'
+        mongo_db = get_uri()
         mongo_connection = 'mongodb://' + mongo_db
         self.client = MongoClient(mongo_connection)
         self.database = self.client.route_base
