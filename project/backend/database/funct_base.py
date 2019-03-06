@@ -4,7 +4,7 @@ Database on MongoDB
 
 from datetime import datetime
 from pymongo import MongoClient
-from settings import get_uri
+from backend.database.settings import get_uri
 
 class MongoDB:
     """
