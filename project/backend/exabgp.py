@@ -5,7 +5,7 @@
 from sys import stdout, stdin
 from time import sleep
 
-def annouce_routes(post):
+def announce_routes(post):
     """
     Announce a list of routes to add for ExaBGP
     :param post: A dictionnary with _id and its value
@@ -14,20 +14,26 @@ def annouce_routes(post):
     """
     response = {}
     for route in post:
-        stdout.write('announce route {} next-hop {} community {} \n'.format(route['ip'], route['nexthop'], route['communities']))
+        stdout.write('announce route {} next-hop {} community {} \n'\
+                     .format(route['ip'],
+                             route['nexthop'],
+                             route['communities']))
         stdout.flush()
         sleep(1)
         response.update(stdin.read())
     return response
 
-def annouce_one_route(post):
+def announce_one_route(post):
     """
     Announce a route to send to ExaBGP
     :param post: A dictionnary with _id and its value
     :type post: dict
     :return: The ExaBGP's response
     """
-    stdout.write('announce route {} next-hop {} community {} \n'.format(post['ip'], post['nexthop'], post['communities']))
+    stdout.write('announce route {} next-hop {} community {} \n'\
+                 .format(post['ip'],
+                         post['nexthop'],
+                         post['communities']))
     stdout.flush()
     sleep(1)
     response = stdin.read()
@@ -71,7 +77,10 @@ def update_routes(patch):
     response = {}
     for route in patch:
         stdout.write('update start \n')
-        stdout.write('announce route {} next-hop {} community {} \n'.format(route['ip'], route['nexthop'], route['communities']))
+        stdout.write('announce route {} next-hop {} community {} \n'\
+                     .format(route['ip'],
+                             route['nexthop'],
+                             route['communities']))
         stdout.write('update end \n')
         stdout.flush()
         sleep(1)
@@ -86,7 +95,10 @@ def update_one_route(patch):
     :return:  The ExaBGP's response
     """
     stdout.write('update start \n')
-    stdout.write('announce route {} next-hop {} community {} \n'.format(patch['ip'], patch['nexthop'], patch['communities']))
+    stdout.write('announce route {} next-hop {} community {} \n'\
+                 .format(patch['ip'],
+                         patch['nexthop'],
+                         patch['communities']))
     stdout.write('update end \n')
     stdout.flush()
     sleep(1)

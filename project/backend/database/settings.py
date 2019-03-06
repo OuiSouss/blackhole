@@ -9,4 +9,3 @@ URI_DB = 'admin:admin45@ds127115.mlab.com:27115/route_base'
 def get_uri():
     """Get the URI"""
     return URI_DB
-    
