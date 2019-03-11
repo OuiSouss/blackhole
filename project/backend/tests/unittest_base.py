@@ -16,6 +16,24 @@ class BaseTest(unittest.TestCase):
         self.database = MongoDB('Test')
         self.database.delete_all_route()
 
+    def test_get_route_by_id(self):
+        """
+         Tests if the route has successfully been got to the database
+        """
+        post = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(post)
+        post2 = self.database.get_route_by_id({'_id': route_id})
+        self.database.delete_route({'_id': route_id})
+        self.assertEqual(post2['ip'], post['ip'], 'insertion failed')
+        self.assertEqual(post2['next_hop'], post['next_hop'],
+                         'insertion failed')
+        self.assertEqual(post2['communities'], post['communities'],
+                         'insertion failed')
+
     def test_add_route(self):
         """
          Tests if the route has successfully been added to the database
