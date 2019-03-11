@@ -33,7 +33,7 @@ class MongoDB:
         :param get: A dictionnary with _id and its value
         :type get: dict
         """
-        route = self.route.find_one(get)
+        route = self.route.find_one({'_id' : get['_id']})
         return route
 
 
