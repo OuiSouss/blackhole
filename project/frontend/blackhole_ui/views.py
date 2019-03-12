@@ -181,8 +181,8 @@ def index(request):
                         route_manager.request_json.enable_disable_route(
                             str(value), True)
             return redirect(settings.DASHBOARD_URL)
-
-    form = PostForm()
+    else:
+        form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
         'data' : json_data,
         'form': form,

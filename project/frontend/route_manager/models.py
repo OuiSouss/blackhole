@@ -7,6 +7,6 @@ class Post(models.Model):
     """
     New route model.
     """
-    ip = models.GenericIPAddressField()
-    next_hop = models.GenericIPAddressField()
+    ip = models.GenericIPAddressField(protocol='IPv4')
+    next_hop = models.GenericIPAddressField(protocol='IPv4')
     community = models.CharField(max_length=100)
