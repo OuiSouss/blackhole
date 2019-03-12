@@ -48,9 +48,11 @@
                             </a>
                         </li>
                     </ul>
+                    <form id="exporting" action="" method="POST">{% csrf_token %}</form>
+                    <input type="hidden" name="export" form="exporting">
                     <ul class="treeview-menu">
                         <li>
-                            <a href="#">
+                            <a href="#" onClick="document.getElementById('exporting').submit();">
                                 <em class="fa fa-upload"></em> Export
                             </a>
                         </li>

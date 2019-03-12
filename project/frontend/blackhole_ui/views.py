@@ -14,6 +14,7 @@ import requests
 from requests.exceptions import ConnectionError
 from route_manager.forms import PostForm
 import route_manager.request_json
+import json
 
 
 
@@ -180,6 +181,11 @@ def index(request):
                     for value in values:
                         route_manager.request_json.enable_disable_route(
                             str(value), True)
+            return redirect(settings.DASHBOARD_URL)
+        if 'export' in request.POST:
+            exportfile=open('data.json', 'w')
+            json.dump(json_data, exportfile)
+            exportfile.close()
             return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
