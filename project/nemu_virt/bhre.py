@@ -34,7 +34,8 @@ VHost('border-router', conf='debian',
 		  VNic(hw='0c:0c:0c:00:02:02')])
 
 VHost('route-server', conf='debian',
-	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img')],
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img'),
+		   VFs('../../project', type='virtio', tag='project')],
 	  nics=[
 		  VNic(hw='0a:0a:0a:00:03:01'),
 		  VNic(hw='0c:0c:0c:00:03:03')])
@@ -97,3 +98,5 @@ Link(client='target:1', core='slirp4')
 
 VSlirp('slirp5', net='192.168.5.0/24')
 Link(client='client:2', core='slirp5')
+
+StartNemu()
