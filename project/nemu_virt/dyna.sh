@@ -1,11 +1,11 @@
 #!/bin/bash
 
-
 DYNA=dynamips
 CISCO_IMAGE=c7200-jk9s-mz.124-13b.image
 IDLE_PC=0x6077c0d8
 R1_cfg=R1_startup_config.cfg
 R2_cfg=R2_startup_config.cfg
+BR_cfg=border_router_startup_config.cfg
 
 echo "lauching router 1"
 
@@ -18,3 +18,9 @@ echo "lauching router 2"
 $DYNA -P 7200 --idle-pc $IDLE_PC -i 2 -X -T 2002 \
  -p 1:PA-FE-TX -s 1:0:udp:10005:127.0.0.1:10004 -p 2:PA-FE-TX -s 2:0:udp:10009:127.0.0.1:10008 \
  $CISCO_IMAGE -C $R2_cfg &
+
+echo "launching border router"
+
+$DYNA -P 7200 --idle-pc $IDLE_PC -i 3 -X -T 2003 \
+ -p 1:PA-FE-TX -s 1:0:udp:11010:127.0.0.1:11009 -p 2:PA-FE-TX -s 2:0:udp:11016:127.0.0.1:11015 \
+ $CISCO_IMAGE -C $BR_cfg &

@@ -26,13 +26,6 @@ VHost('attacker', conf='debian',
 		  VNic(hw='0a:0a:0a:00:01:02'),
 		  VNic(hw='0c:0c:0c:00:01:01')])
 
-VHost('border-router', conf='debian',
-	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='ce-bgp.img')],
-	  nics=[
-		  VNic(hw='0a:0a:0a:00:02:01'),
-		  VNic(hw='0a:0a:0a:00:02:02'),
-		  VNic(hw='0c:0c:0c:00:02:02')])
-
 VHost('route-server', conf='debian',
 	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img'),
 		   VFs('../../project', type='virtio', tag='project')],
@@ -79,16 +72,11 @@ Link(client='attacker:1', core='sw2:1')
 Link(client='client:0', core='sw2:0')
 Link(client='client:1', core='sw1:1')
 
-Link(client='border-router:0', core='sw3:0')
 Link(client='route-server:0', core='sw3:1')
 Link(client='target:0', core='sw4:0')
-Link(client='border-router:1', core='sw4:1')
 
 VSlirp('slirp1', net='192.168.1.0/24')
 Link(client='attacker:2', core='slirp1')
-
-VSlirp('slirp2', net='192.168.2.0/24')
-Link(client='border-router:2', core='slirp2')
 
 VSlirp('slirp3', net='192.168.3.0/24')
 Link(client='route-server:1', core='slirp3')
