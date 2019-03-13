@@ -183,6 +183,56 @@ class APIbackendTest(TestCase):
     test_next_hop = '0.0.0.0'
     test_community = 'XYZ'
 
+    # Class variables : performances
+    amount = 128
+
+    # clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.perf_route_creation
+    def perf_route_creation(self):
+        """
+        Performance test
+        Route creation
+        """
+
+        print("\n")
+        for i in range(0, self.amount):
+            # print("creation : ", i)
+            self.add_default_route()
+
+    # clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.perf_route_deletion
+    def perf_route_deletion(self):
+        """
+        Performance test
+        Route deletion
+        """
+
+        print("\n")
+        for i in range(0, self.amount):
+            # print("deletion : ", i)
+            self.delete_default_route()
+
+    def perf_route_destruction(self):
+        """
+        Performance test
+        Route deletion but more violent and less slow
+        """
+
+        print("\n")
+        json_data = []
+        try:
+            response = requests.get(settings.API_URL)
+            json_data = response.json()
+            self.assertGreaterEqual(len(json_data), 0) # there must be data, can't be None
+
+        except ConnectionError:
+            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+
+        # find the routes to delete
+        for route in json_data:
+            if(route['ip'] == self.test_ip and route['next_hop'] == self.test_next_hop):
+                route_id = str(route['id'])
+                route_manager.request_json.delete_route(route_id)
+
+
     def setUp(self):
         """
         Setup the correct credentials and authenticate the user
@@ -239,8 +289,6 @@ class APIbackendTest(TestCase):
         self.assertEqual(before_len, after_len)# identical dashboard
         self.assertNotEqual(before_len, during_len)# dashboard + war
 
-
-
     def get_route_amount(self):
         """
         Intermediate testing function
@@ -255,7 +303,6 @@ class APIbackendTest(TestCase):
         except ConnectionError:
             raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
         return len(json_data)
-
 
     def add_default_route(self):
         """
@@ -272,7 +319,6 @@ class APIbackendTest(TestCase):
         # form POST
         route = form.save(commit=False)
         route_manager.request_json.post_new_route(route)
-
 
     def delete_default_route(self):
         """
@@ -298,7 +344,7 @@ class APIbackendTest(TestCase):
                 testing_route_deleted = True
                 route_manager.request_json.delete_route(route_id)
                 break
-        self.assertTrue(testing_route_deleted)
+        self.assertTrue(testing_route_deleted,"")
 
     # clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.test_add_delete_routes
     def test_add_delete_routes(self):
@@ -324,6 +370,9 @@ class APIbackendTest(TestCase):
         # print(initial_amount, " => ", after_addition_amount, " => ", after_deletion_amount)
         self.assertEqual(initial_amount + 1, after_addition_amount)
         self.assertEqual(after_addition_amount - 1, after_deletion_amount)
+
+
+
 
     # TODO : test functions to do
 
