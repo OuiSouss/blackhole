@@ -181,7 +181,7 @@ class APIbackendTest(TestCase):
     # Class variables : route elements
     test_ip = '0.0.0.0/0'
     test_next_hop = '0.0.0.0'
-    test_community = 'ABC'
+    test_community = 'XYZ'
 
     def setUp(self):
         """
@@ -239,17 +239,29 @@ class APIbackendTest(TestCase):
         self.assertEqual(before_len, after_len)# identical dashboard
         self.assertNotEqual(before_len, during_len)# dashboard + war
 
-    # TODO => trouver un moyen de supprimer les routes de tests (après les avoir crées)
-    #clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.test_add_delete_routes
-    def test_add_delete_routes(self):
-        """
-        Test to add a route then delete it
-        """
 
-        # before adding route
-        response = self.client.get(settings.DASHBOARD_URL, follow=True)
 
-        # form creation and validation
+    def get_route_amount(self):
+        """
+        Intermediate testing function
+        clarify the process of getting the amount of routes
+        """
+        json_data = []
+        try:
+            response = requests.get(settings.API_URL)
+            json_data = response.json()
+            self.assertGreaterEqual(len(json_data), 0) # there must be data, can't be None
+
+        except ConnectionError:
+            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+        return len(json_data)
+
+
+    def add_default_route(self):
+        """
+        Intermediate testing function
+        clarify the process of form creation, validation and route creation
+        """
         form_data = {
             'ip': self.test_ip,
             'next_hop': self.test_next_hop,
@@ -261,7 +273,14 @@ class APIbackendTest(TestCase):
         route = form.save(commit=False)
         route_manager.request_json.post_new_route(route)
 
-        # get current routes
+
+    def delete_default_route(self):
+        """
+        Intermediate testing function
+        clarify the process of deleting the test route
+        """
+
+        # get the list of routes
         json_data = []
         try:
             response = requests.get(settings.API_URL)
@@ -271,60 +290,43 @@ class APIbackendTest(TestCase):
         except ConnectionError:
             raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
 
-        # target the test route (to remove it later)
-        # print("\n\n", json_data, "\n\n")
+        # find the route to delete
+        testing_route_deleted = False
         for route in json_data:
-            if(route['ip'] == self.test_ip
-               and route['next_hop'] == self.test_next_hop
-               and route['community'] == self.test_community):
+            if(route['ip'] == self.test_ip and route['next_hop'] == self.test_next_hop):
+                route_id = str(route['id'])
+                testing_route_deleted = True
+                route_manager.request_json.delete_route(route_id)
+                break
+        self.assertTrue(testing_route_deleted)
 
-                print("\n", route['id'], "\n")
+    # clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.test_add_delete_routes
+    def test_add_delete_routes(self):
+        """
+        Test to add a temporary route then delete it
+        """
 
+        # get current routes : before adding the new route
+        initial_amount = self.get_route_amount()
 
-        #   ~   ~   ~       [ USELESS ]     ~   ~   ~   #
+        # adding the test route
+        self.add_default_route()
 
-        # before_len = len(response.content)
-        # ajout de la route
-        # response = self.client.post(settings.DASHBOARD_URL, follow=True, data=form_data)
-        # response = self.client.post(settings.DASHBOARD_URL, follow=True, data=None)
+        # get current routes : after adding the test route
+        after_addition_amount = self.get_route_amount()
 
-        # après ajout de la route
-        # response = self.client.get(settings.DASHBOARD_URL, follow=True)
-        # after_len = len(response.content)
+        # removing the test route
+        self.delete_default_route()
 
-        # print(response.content)
+        # get current routes : after removing the test route
+        after_deletion_amount = self.get_route_amount()
 
-        # self.assertGreater(after_len, before_len)# dashboard + nouvelle route
-        # self.assertEqual(after_len, before_len)
-
-        # before = after
-
-        # requests.get(settings.API_URL)
-        # response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
-        # print("\n\n\n", response, response.context['user'].is_authenticated, "\n\n\n")
-
-        # requests.get(settings.API_URL)
-        # response = self.client.post(settings.DASHBOARD_URL, self.credentials, follow=True)
-        # print("\n\n\n", response, response.context['user'].is_authenticated, "\n\n\n")
-
-        # try:
-        #     response = requests.get(settings.API_URL)
-        #     json_data = response.json()
-        #     if request.method == 'POST':
-        #         form = PostForm(request.POST)
-        #         if form.is_valid():
-        #             route = form.save(commit=False)
-        #             route_manager.request_json.post_new_route(route)
-
-        # except ConnectionError as exception:
-        #     raise AssertionError("\n>>> Backend API unreachable, consider enabling it")
-
-
-
-
+        # print(initial_amount, " => ", after_addition_amount, " => ", after_deletion_amount)
+        self.assertEqual(initial_amount + 1, after_addition_amount)
+        self.assertEqual(after_addition_amount - 1, after_deletion_amount)
 
     # TODO : test functions to do
-    #def test_delete_routes(self):
+
     #def test_activate_routes(self):
     #def test_desactivate_routes(self):
     #def test_modify_routes(self):
