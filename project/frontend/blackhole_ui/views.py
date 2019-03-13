@@ -45,7 +45,14 @@ def json_ip_sort(json, key_col):
 
     try:
         ip = json[key_col]
-        return tuple(int(part) for part in ip.split('.'))
+        mask = ''
+        ip_no_mask = ''
+        for a in range(len(ip)):
+            if((ip[a] != '/') and (mask == '')):
+                ip_no_mask = ip_no_mask[:a] + ip[a]
+            else:
+                mask = ip[a]
+        return tuple(int(part) for part in ip_no_mask.split('.'))
     except KeyError:
         return 0
 
@@ -67,7 +74,7 @@ def sort_switcher(request, json_data):
                                key=lambda elem: (json_ip_sort(elem, 'ip')))
         else:
             json_data = sorted(json_data,
-                               key=lambda elem: (json_ip_sort(elem, 'ip')))
+                               key=lambda elem: (json_ip_sort(elem, 'ip')), reverse=True)
     elif 'hop_sort' in request:
         if str(request['hop_sort']) == '1':
             json_data = sorted(json_data,
