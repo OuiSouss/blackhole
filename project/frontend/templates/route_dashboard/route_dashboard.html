@@ -193,16 +193,21 @@
                             <button type="submit" name="id_delete" value="{{ r.id }}" class="btn btn-warning">Delete</button>
                             <br>
                             <br>
-                            <button type="submit" name="id_modify" value="{{ r.id }}" class="btn btn-info">Modify</button>
+                            <button type="submit" id="button{{ r.id }}" disabled="disabled" name="id_modify" value="{{ r.id }}" class="btn btn-info">Modify</button>
                         </td>
+                        <td>
                         {% if r.is_activated %}
-                            <td><button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button></td>
+                            <button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button>
                         {% else %}
-                            <td><button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td>
+                            <button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>    
                         {% endif %}
-                            <td><input type="text" name="ip" value="{{r.ip}}" ></td> 
-                            <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td> 
-                            <td><input type="text" name="communities" value="{{r.communities}}"></td> 
+                            <br>
+                            <br>
+                            <input type="checkbox" onchange="document.getElementById('input{{ r.id }}').disabled = !this.checked;document.getElementById('input{{ r.id }}2').disabled = !this.checked;document.getElementById('input{{ r.id }}3').disabled = !this.checked;document.getElementById('button{{ r.id }}').disabled = !this.checked;" name='visto' id='visto'>
+                            </td>
+                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}" name="ip" value="{{r.ip}}" ></td> 
+                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}2" name="next_hop" value="{{r.next_hop}}"></td> 
+                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}3" name="communities" value="{{r.communities}}"></td> 
                             <td>{{r.created_at}}</td> 
                             <td>{{r.modified_at}}</td> 
                             <td>{{r.last_activation}}</td>
