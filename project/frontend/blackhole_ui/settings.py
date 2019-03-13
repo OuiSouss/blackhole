@@ -22,8 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL = '/dashboard/'
 
 # Redirect to login url
-AUTH_URL = '/accounts/login/'
-# DEPRECATED
+AUTH_URL = '/login/'
 
 # Redirect to dashboard url
 DASHBOARD_URL = '/dashboard/'
