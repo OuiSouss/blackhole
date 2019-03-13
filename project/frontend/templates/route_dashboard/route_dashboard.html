@@ -30,90 +30,116 @@
 {% endblock %}
 
 <br>
-<h2>Announce a new Network :</h2>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Create</button>
-    </form>
+<div class="box">
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h2>Announce a new Network :</h2>
+        </div>
+        <div class="box-body">
+            <br>
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-primary">Create</button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
 <br>
 
-<h2>Announced networks :</h2>
-<table id="network" class="table table-bordered">
-    <thead>
-    <tr>
-    <th scope="col"></th>
-    <th scope="col">Action</th>
-    <form action="" method="POST">{% csrf_token %}
-        <th scope="col">Status  {% if sort.active_sort %}
-                                    <button type="submit" name="active_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                {% else %}
-                                    <button type="submit" name="active_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Network {% if sort.net_sort %}
-                                    <button type="submit" name="net_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                {% else %}
-                                    <button type="submit" name="net_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Next_hop {% if sort.hop_sort %}
-                                    <button type="submit" name="hop_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                 {% else %}
-                                    <button type="submit" name="hop_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                 {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Communities {% if sort.com_sort %}
-                                        <button type="submit" name="com_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                    {% else %}
-                                        <button type="submit" name="com_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                    {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Created_at  {% if sort.create_sort %}
-                                        <button type="submit" name="create_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                    {% else %}
-                                        <button type="submit" name="create_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                    {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Modified_at {% if sort.modi_sort %}
-                                        <button type="submit" name="modi_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                    {% else %}
-                                        <button type="submit" name="modi_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                    {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-        <th scope="col">Last_activation {% if sort.last_sort %}
-                                            <button type="submit" name="last_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                                        {% else %}
-                                        <button type="submit" name="last_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                                        {% endif %}
-            <i class="glyphicon glyphicon-sort"></i></th>
-    </form>
-    </tr>
-    </thead>
-    <tbody>
-    <form id="list" action="" method="POST">{% csrf_token %}</form>
-    {% for r in data %}
-        {% if r.is_activated %}
-            <tr class="table-enabled">
-        {% else %}
-            <tr class="table-disabled">
-        {% endif %}
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h2>Announced networks :</h2>
+    </div>
+    <div class="box-body">
+        <table id="network" class="table ">
+            <thead>
+            <tr>
+            <th scope="col"></th>
+            <th scope="col">Action</th>
             <form action="" method="POST">{% csrf_token %}
-                <td>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" name="listed_id" value="{{ r.id }}" form="list">
-                    </div>
-                </td>
-                <td>
-                    <button type="submit" name="id_delete" value="{{ r.id }}" class="btn btn-warning">Delete</button>
-                    <br>
-                    <br>
-                    <button type="submit" name="id_modify" value="{{ r.id }}" class="btn btn-info">Modify</button>
-                </td>
+                <th scope="col">Status {% if '1' in sort.active_sort %}
+                                            <button type="submit" name="active_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                        {% else %}
+                                            {% if '2' in sort.active_sort %}
+                                                <button type="submit" name="active_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="active_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Network {% if '1' in sort.net_sort %}
+                                            <button type="submit" name="net_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                        {% else %}
+                                            {% if '2' in sort.net_sort %}
+                                                <button type="submit" name="net_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="net_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Next_hop {% if '1' in sort.hop_sort %}
+                                            <button type="submit" name="hop_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                        {% else %}
+                                            {% if '2' in sort.hop_sort %}
+                                                <button type="submit" name="hop_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="hop_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Communities {% if '1' in sort.com_sort %}
+                                                <button type="submit" name="com_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                            {% else %}
+                                            {% if '2' in sort.com_sort %}
+                                                <button type="submit" name="com_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="com_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Created_at {% if '1' in sort.create_sort %}
+                                                <button type="submit" name="create_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                            {% else %}
+                                            {% if '2' in sort.create_sort %}
+                                                <button type="submit" name="create_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="create_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Modified_at {% if '1' in sort.modi_sort %}
+                                                <button type="submit" name="modi_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                            {% else %}
+                                            {% if '2' in sort.modi_sort %}
+                                                <button type="submit" name="modi_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="modi_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+                <th scope="col">Last_activation {% if '1' in sort.last_sort %}
+                                                    <button type="submit" name="last_sort" value="2" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                                {% else %}
+                                            {% if '2' in sort.last_sort %}
+                                                <button type="submit" name="last_sort" value="1" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                            {% else %}
+                                                <button type="submit" name="last_sort" value="1"class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-sort"></i></button>
+                                            {% endif %}
+                                        {% endif %}
+                </th>
+            </form>
+            </tr>
+            </thead>
+            <tbody>
+            <form id="list" action="" method="POST">{% csrf_token %}</form>
+            {% for r in data %}
                 {% if r.is_activated %}
-                    <td><button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button></td>
+                    <tr class="table-enabled">
                 {% else %}
-                    <td><button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td>
+                    <tr class="table-disabled">
                 {% endif %}
+<<<<<<< HEAD
 <<<<<<< HEAD
                     <td><input type="text" name="ip" value="{{r.ip}}" ></td>
                     <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td>
@@ -139,6 +165,44 @@
     </tfoot>
 </table>
 <br>
+=======
+                    <form action="" method="POST">{% csrf_token %}
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="listed_id" value="{{ r.id }}" form="list">
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" name="id_delete" value="{{ r.id }}" class="btn btn-warning">Delete</button>
+                            <br>
+                            <br>
+                            <button type="submit" name="id_modify" value="{{ r.id }}" class="btn btn-info">Modify</button>
+                        </td>
+                        {% if r.is_activated %}
+                            <td><button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button></td>
+                        {% else %}
+                            <td><button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td>
+                        {% endif %}
+                            <td><input type="text" name="ip" value="{{r.ip}}" ></td> 
+                            <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td> 
+                            <td><input type="text" name="communities" value="{{r.communities}}"></td> 
+                            <td>{{r.created_at}}</td> 
+                            <td>{{r.modified_at}}</td> 
+                            <td>{{r.last_activation}}</td>
+                    </form>
+                    </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <button type="submit" name="id_to_delete" class="btn btn-default" form="list">Delete routes selected</button>
+            <button type="submit" name="id_to_enable" class="btn btn-default" form="list">Enable routes selected</button>
+            <button type="submit" name="id_to_disable" class="btn btn-default" form="list">Disable routes selected</button>
+            </tfoot>
+        </table>
+        <br>
+    </div>
+</div>
+>>>>>>> frontend : sort network with mask and reverse + graphical update
 {% endblock %}
 </body>
 
