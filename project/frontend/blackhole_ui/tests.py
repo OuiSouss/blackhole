@@ -2,8 +2,10 @@
 Tests for the frontend
 
 Elements tested :
-- login/logout
-- form validation (add route)
+- Authentication (correct) => LogInTest
+- Authentication (incorrect) => BadLogInTest
+- Backend API (from frontend) => APIbackendTest
+- Route Manager (form validation) => RouteManagerTest
 """
 
 
@@ -14,7 +16,12 @@ import requests
 from requests.exceptions import ConnectionError
 
 from route_manager.forms import PostForm
+import route_manager.request_json
 
+from django.test import Client
+
+
+#clear && python3 manage.py test blackhole_ui.tests.LogInTest
 class LogInTest(TestCase):
     """
     Login test when correct credentials are provided
@@ -95,6 +102,7 @@ class LogInTest(TestCase):
         self.assertFalse(response.context['user'].is_authenticated)
 
 
+#clear && python3 manage.py test blackhole_ui.tests.BadLogInTest
 class BadLogInTest(TestCase):
     """
     Login test when wrong credentials are provided
@@ -165,38 +173,157 @@ class APIbackendTest(TestCase):
     Test backend API
     """
 
+    # Class variables : authentication
+    username = 'testuser2'
+    password = 'secret2'
+    client = Client()
+
+    # Class variables : route elements
+    test_ip = '0.0.0.0/0'
+    test_next_hop = '0.0.0.0'
+    test_community = 'ABC'
+
+    def setUp(self):
+        """
+        Setup the correct credentials and authenticate the user
+        The user is added to the temporary database
+        Therefore allowing the database to recognize him
+        """
+        self.credentials = {
+            'username': self.username,
+            'password': self.password}
+        User.objects.create_user(**self.credentials)
+        self.client.post(settings.LOGIN_URL, {'username': self.username, 'password': self.password})
+
     def test_reachable_api(self):
         """
         Test if the API is reachable
-
-        Exception when unavailable :
-        <class 'requests.exceptions.ConnectionError'>
-
-        The standard "ConnectionError" doesnt work
         """
         try:
             requests.get(settings.API_URL)
-
         except ConnectionError:
             raise AssertionError("\n>>> Backend API unreachable, consider enabling it")
 
-
     def test_get_routes(self):
         """
-        Test to get the routes
+        Test to get the available routes
         """
 
         try:
             response = requests.get(settings.API_URL)
             json_data = response.json()
-
-            self.assertGreaterEqual(len(json_data), 0)
+            self.assertGreaterEqual(len(json_data), 0) # there must be data, can't be None
 
         except ConnectionError:
-            raise AssertionError("\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+
+    def test_add_empty_route(self):
+        """
+        Test to create a route with no information
+        It's supposed to be impossible and no route should be created
+        """
+
+        # before route creation
+        response = self.client.get(settings.DASHBOARD_URL, follow=True)
+        before_len = len(response.content)
+
+        # route creation
+        response = self.client.post(settings.DASHBOARD_URL, follow=True, data=None)
+        during_len = len(response.content)
+
+        # after route creation
+        response = self.client.get(settings.DASHBOARD_URL, follow=True)
+        after_len = len(response.content)
+
+        # checking that nothing changed
+        self.assertEqual(before_len, after_len)# identical dashboard
+        self.assertNotEqual(before_len, during_len)# dashboard + war
+
+    # TODO => trouver un moyen de supprimer les routes de tests (après les avoir crées)
+    #clear ; python3 manage.py test blackhole_ui.tests.APIbackendTest.test_add_delete_routes
+    def test_add_delete_routes(self):
+        """
+        Test to add a route then delete it
+        """
+
+        # before adding route
+        response = self.client.get(settings.DASHBOARD_URL, follow=True)
+
+        # form creation and validation
+        form_data = {
+            'ip': self.test_ip,
+            'next_hop': self.test_next_hop,
+            'community': self.test_community}
+        form = PostForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+        # form POST
+        route = form.save(commit=False)
+        route_manager.request_json.post_new_route(route)
+
+        # get current routes
+        json_data = []
+        try:
+            response = requests.get(settings.API_URL)
+            json_data = response.json()
+            self.assertGreaterEqual(len(json_data), 0) # there must be data, can't be None
+
+        except ConnectionError:
+            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+
+        # target the test route (to remove it later)
+        # print("\n\n", json_data, "\n\n")
+        for route in json_data:
+            if(route['ip'] == self.test_ip
+               and route['next_hop'] == self.test_next_hop
+               and route['community'] == self.test_community):
+
+                print("\n", route['id'], "\n")
 
 
-    #def test_add_routes(self):
+        #   ~   ~   ~       [ USELESS ]     ~   ~   ~   #
+
+        # before_len = len(response.content)
+        # ajout de la route
+        # response = self.client.post(settings.DASHBOARD_URL, follow=True, data=form_data)
+        # response = self.client.post(settings.DASHBOARD_URL, follow=True, data=None)
+
+        # après ajout de la route
+        # response = self.client.get(settings.DASHBOARD_URL, follow=True)
+        # after_len = len(response.content)
+
+        # print(response.content)
+
+        # self.assertGreater(after_len, before_len)# dashboard + nouvelle route
+        # self.assertEqual(after_len, before_len)
+
+        # before = after
+
+        # requests.get(settings.API_URL)
+        # response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        # print("\n\n\n", response, response.context['user'].is_authenticated, "\n\n\n")
+
+        # requests.get(settings.API_URL)
+        # response = self.client.post(settings.DASHBOARD_URL, self.credentials, follow=True)
+        # print("\n\n\n", response, response.context['user'].is_authenticated, "\n\n\n")
+
+        # try:
+        #     response = requests.get(settings.API_URL)
+        #     json_data = response.json()
+        #     if request.method == 'POST':
+        #         form = PostForm(request.POST)
+        #         if form.is_valid():
+        #             route = form.save(commit=False)
+        #             route_manager.request_json.post_new_route(route)
+
+        # except ConnectionError as exception:
+        #     raise AssertionError("\n>>> Backend API unreachable, consider enabling it")
+
+
+
+
+
+    # TODO : test functions to do
     #def test_delete_routes(self):
     #def test_activate_routes(self):
     #def test_desactivate_routes(self):
@@ -209,14 +336,19 @@ class RouteManagerTest(TestCase):
     Test elements of the route manager
     """
 
+    correct_ip = '192.168.1.1/30'
+    correct_next_hop = '0.0.0.0'
+    correct_community = '1234x'
+
+
     def test_form_add_route(self):
         """
         Test the form to add a route, with correct elements
         """
         form_data = {}
-        form_data['ip'] = '192.168.1.1'
-        form_data['community'] = '1234x'
-        form_data['next_hop'] = '0.0.0.0'
+        form_data['ip'] = self.correct_ip
+        form_data['next_hop'] = self.correct_next_hop
+        form_data['community'] = self.correct_community
 
         form = PostForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -237,10 +369,16 @@ class RouteManagerTest(TestCase):
         wrong_ip_adress_list.append('192.265.1.1')
         wrong_ip_adress_list.append('192.168.265.1')
         wrong_ip_adress_list.append('192.168.1.265')
+        wrong_ip_adress_list.append('192.168.1.1/33')
+        wrong_ip_adress_list.append('192.168.1.1/123')
+        wrong_ip_adress_list.append('192.168.1.1/01')
+        #wrong_ip_adress_list.append('192.168.1.1/0') # Currently "accepted", wont be in the future
+        wrong_ip_adress_list.append('192.168.1.1//24')
+        wrong_ip_adress_list.append('192.168.1.1 /23')
+        wrong_ip_adress_list.append('192.168.1.1/ 24')
         wrong_ip_adress_list.append('')
         wrong_ip_adress_list.append(None)
         return wrong_ip_adress_list
-
 
 
     def test_form_add_route_incorrect_ip(self):
@@ -251,8 +389,8 @@ class RouteManagerTest(TestCase):
         wrong_ip_list = self.get_incorrect_ip_adress_list()
 
         form_data = {}
-        form_data['community'] = '1234x'
-        form_data['next_hop'] = '0.0.0.0'
+        form_data['next_hop'] = self.correct_next_hop
+        form_data['community'] = self.correct_community
 
         for wrong_ip in wrong_ip_list:
             form_data['ip'] = wrong_ip
@@ -263,7 +401,7 @@ class RouteManagerTest(TestCase):
             if form.is_valid():
                 # If a wrong value is accepted as correct
                 # Then an assert is triggered
-                print(">> accepted wrong_ip : ", wrong_ip)
+                print("\n\n>>> accepted wrong_ip : ", wrong_ip)
                 self.assertFalse(form.is_valid())
 
 
@@ -277,8 +415,8 @@ class RouteManagerTest(TestCase):
         wrong_community_list.append('')
 
         form_data = {}
-        form_data['ip'] = '192.168.1.1'
-        form_data['next_hop'] = '0.0.0.0'
+        form_data['ip'] = self.correct_ip
+        form_data['next_hop'] = self.correct_next_hop
 
         for wrong_community in wrong_community_list:
             form_data['community'] = wrong_community
@@ -289,7 +427,7 @@ class RouteManagerTest(TestCase):
             if form.is_valid():
                 # If a wrong value is accepted as correct
                 # Then an assert is triggered
-                print(">> accepted community : ", wrong_community)
+                print("\n\n>>> accepted community : ", wrong_community)
                 self.assertFalse(form.is_valid())
 
 
@@ -301,8 +439,8 @@ class RouteManagerTest(TestCase):
         wrong_next_hop_list = self.get_incorrect_ip_adress_list()
 
         form_data = {}
-        form_data['ip'] = '192.168.1.1'
-        form_data['community'] = '1234x'
+        form_data['ip'] = self.correct_ip
+        form_data['community'] = self.correct_community
 
         for wrong_next_hop in wrong_next_hop_list:
             form_data['next_hop'] = wrong_next_hop
@@ -313,5 +451,5 @@ class RouteManagerTest(TestCase):
             if form.is_valid():
                 # If a wrong value is accepted as correct
                 # Then an assert is triggered
-                print(">> accepted next_hop : ", wrong_next_hop)
+                print("\n\n>>> accepted next_hop : ", wrong_next_hop)
                 self.assertFalse(form.is_valid())
