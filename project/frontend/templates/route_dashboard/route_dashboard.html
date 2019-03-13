@@ -44,20 +44,48 @@
     <th scope="col"></th>
     <th scope="col">Action</th>
     <form action="" method="POST">{% csrf_token %}
-        <th scope="col">Status <button type="submit" name="active_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Network <button type="submit" name="net_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Next_hop <button type="submit" name="hop_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Communities <button type="submit" name="com_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Created_at <button type="submit" name="create_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Modified_at <button type="submit" name="modi_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
-        <th scope="col">Last_activation <button type="submit" name="last_sort" class="btn btn-default btn-xs">^</button>
-            <i class="fa fa-fw fa-sort"></i></th>
+        <th scope="col">Status  {% if sort.active_sort %}
+                                    <button type="submit" name="active_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                {% else %}
+                                    <button type="submit" name="active_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Network {% if sort.net_sort %}
+                                    <button type="submit" name="net_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                {% else %}
+                                    <button type="submit" name="net_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Next_hop {% if sort.hop_sort %}
+                                    <button type="submit" name="hop_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                 {% else %}
+                                    <button type="submit" name="hop_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                 {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Communities {% if sort.com_sort %}
+                                        <button type="submit" name="com_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="com_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                    {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Created_at  {% if sort.create_sort %}
+                                        <button type="submit" name="create_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="create_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                    {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Modified_at {% if sort.modi_sort %}
+                                        <button type="submit" name="modi_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="modi_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                    {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
+        <th scope="col">Last_activation {% if sort.last_sort %}
+                                            <button type="submit" name="last_sort" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                        {% else %}
+                                        <button type="submit" name="last_sort" value="1" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                        {% endif %}
+            <i class="glyphicon glyphicon-sort"></i></th>
     </form>
     </tr>
     </thead>

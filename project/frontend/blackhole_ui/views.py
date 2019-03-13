@@ -61,29 +61,55 @@ def sort_switcher(request, json_data):
     :return: json_data
     :rtype: dict
     """
-
     if 'net_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_ip_sort(elem, 'ip')))
+        if str(request['net_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_ip_sort(elem, 'ip')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_ip_sort(elem, 'ip')))
     elif 'hop_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_ip_sort(elem, 'next_hop')))
+        if str(request['hop_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_ip_sort(elem, 'next_hop')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_ip_sort(elem, 'next_hop')), reverse=True)
     elif 'com_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_sort(elem, 'communities')))
+        if str(request['com_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'communities')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'communities')), reverse=True)
     elif 'create_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_sort(elem, 'created_at')))
+        if str(request['create_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'created_at')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'created_at')), reverse=True)
     elif 'modi_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_sort(elem, 'modified_at')))
+        if str(request['modi_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'modified_at')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'modified_at')), reverse=True)
     elif 'last_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_sort(elem,
-                                                       'last_activation')))
+        if str(request['last_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'last_activation')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'last_activation')), reverse=True)
     elif 'active_sort' in request:
-        json_data = sorted(json_data,
-                           key=lambda elem: (json_sort(elem, 'is_activated')))
+        if str(request['active_sort']) == '1':
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'is_activated')))
+        else:
+            json_data = sorted(json_data,
+                               key=lambda elem: (json_sort(elem, 'is_activated')), reverse=True)
     return json_data
 
 def not_auth(request):
@@ -192,6 +218,7 @@ def index(request):
     return render(request, settings.TEMPLATE_DASHBOARD, {
         'data' : json_data,
         'form': form,
+        'sort' : request.POST,
     })
 
 def change_password(request):
