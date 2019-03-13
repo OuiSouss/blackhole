@@ -28,10 +28,10 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
 {% endblock %}
-
 <br>
-<div class="box">
-    <div class="box box-solid box-primary">
+<div class="row">
+<div class="col-md-5">         
+    <div class="box box-solid box-primary ">
         <div class="box-header with-border">
             <h2>Announce a new Network :</h2>
         </div>
@@ -44,6 +44,23 @@
             <br>
         </div>
     </div>
+</div>
+<div class="col-md-2"> 
+</div>
+<div class="col-md-5">         
+    <div class="box box-solid box-primary ">
+        <div class="box-header with-border">
+            <h2>Log :</h2>
+        </div>
+        <div class="box-body">
+            <br>
+                {{response}}
+            <br>
+                {{request}}
+            <br>
+        </div>
+    </div>
+</div>
 </div>
 <br>
 

@@ -226,6 +226,8 @@ def index(request):
         'data' : json_data,
         'form': form,
         'sort' : request.POST,
+        'response' : response,
+        'request' : request,
     })
 
 def change_password(request):
