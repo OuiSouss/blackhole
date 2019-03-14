@@ -16,7 +16,12 @@ from route_manager.forms import PostForm
 import route_manager.request_json
 import json
 
-
+def check_community(community):
+    community_changed = ''
+    for a in range(len(community)):
+            if((community[a] != '/') and (community[a] != '\"') and (community[a] != '\'') and (community[a] != '[') and (community[a] != ']')):
+                community_changed = community_changed[:a] + community[a]
+    return community_changed
 
 def json_sort(json, key_col):
     """
@@ -184,7 +189,7 @@ def index(request):
                 str(request.POST['id_modify']),
                 str(request.POST['ip']),
                 str(request.POST['next_hop']),
-                str(request.POST['communities']))
+                check_community(str(request.POST['communities'])))
             return redirect(settings.DASHBOARD_URL)
         if 'id1' in request.POST:
             route_manager.request_json.enable_disable_route(
