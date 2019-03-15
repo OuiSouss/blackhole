@@ -225,6 +225,19 @@ def index(request):
             json.dump(json_data, exportfile)
             exportfile.close()
             return redirect(settings.DASHBOARD_URL)
+        if 'import' in request.POST:
+            try:
+                importfile=open(str(request.POST['import']), 'r')
+            except FileNotFoundError as exception:
+                return render(request, 'error/Error404.html', {'exception' : exception})
+            json_file = json.load(importfile)
+            for to_import in json_file:
+                 requests.post(settings.API_URL,
+                     json={
+                      'ip': to_import['ip'],
+                      'communities': check_community(to_import['communities']),
+                      'next_hop': to_import['next_hop']})
+            return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
