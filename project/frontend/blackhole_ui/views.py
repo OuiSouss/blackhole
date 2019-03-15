@@ -176,7 +176,10 @@ def index(request):
         form = PostForm(request.POST)
         if form.is_valid():
             route = form.save(commit=False)
-            route_manager.request_json.post_new_route(route)
+            route_manager.request_json.post_new_route(
+                str(route.ip),
+                str(route.next_hop),
+                check_community(str(route.community)))
             return redirect(settings.DASHBOARD_URL)
 
         json_data = sort_switcher(request.POST, json_data)
@@ -232,11 +235,10 @@ def index(request):
                 return render(request, 'error/Error404.html', {'exception' : exception})
             json_file = json.load(importfile)
             for to_import in json_file:
-                 requests.post(settings.API_URL,
-                     json={
-                      'ip': to_import['ip'],
-                      'communities': check_community(to_import['communities']),
-                      'next_hop': to_import['next_hop']})
+                 route_manager.request_json.post_new_route(
+                      to_import['ip'],
+                      to_import['next_hop'],
+                      check_community(to_import['communities']))
             return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
