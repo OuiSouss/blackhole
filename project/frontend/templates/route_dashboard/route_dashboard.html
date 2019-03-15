@@ -263,9 +263,9 @@
                                 </label>
                             </td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}"
-                                    name="ip" value="{{r.ip}}"></td>
+                                    name="ip" value="{{r.ip}}" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$"></td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}2"
-                                    name="next_hop" value="{{r.next_hop}}"></td>
+                                    name="next_hop" value="{{r.next_hop}}" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"></td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}3"
                                     name="communities" value="{{r.communities}}"></td>
                             <td>{{r.created_at}}</td>
