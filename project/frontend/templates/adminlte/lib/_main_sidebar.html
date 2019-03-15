@@ -35,8 +35,10 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li>
-                            <a href="#">
+                    <form id="importing" action="" method="POST">{% csrf_token %}</form>
+                        <li id="import_file" >
+                            <input id="the_file" type="file" name="import" form="importing" onchange="this.form.submit()" style="display:none;" />
+                            <a href="#" onClick="document.getElementById('the_file').click();">
                                 <em class="fa fa-download"></em> Import
                             </a>
                         </li>
