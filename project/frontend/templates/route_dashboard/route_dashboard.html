@@ -255,9 +255,12 @@
                                 {% endif %}
                                 <br>
                                 <br>
-                                <input type="checkbox"
-                                    onchange="document.getElementById('input{{ r.id }}').disabled = !this.checked;document.getElementById('input{{ r.id }}2').disabled = !this.checked;document.getElementById('input{{ r.id }}3').disabled = !this.checked;document.getElementById('button{{ r.id }}').disabled = !this.checked;"
+                                <!-- Rounded switch -->
+                                <label class="switch">
+                                <input type="checkbox" onchange="document.getElementById('input{{ r.id }}').disabled = !this.checked;document.getElementById('input{{ r.id }}2').disabled = !this.checked;document.getElementById('input{{ r.id }}3').disabled = !this.checked;document.getElementById('button{{ r.id }}').disabled = !this.checked;"
                                     name='visto' id='visto'>
+                                <span class="slider round"></span>
+                                </label>
                             </td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}"
                                     name="ip" value="{{r.ip}}"></td>
