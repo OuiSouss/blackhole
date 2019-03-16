@@ -16,6 +16,8 @@ from route_manager.forms import PostForm
 import route_manager.request_json
 import json
 
+requestlist = ''
+
 def check_community(community):
     community_changed = ''
     for a in range(len(community)):
@@ -160,68 +162,81 @@ def index(request):
     :param request: the request page
     :return: dashboard for authenticated, login page for anonymous
     """
+    global requestlist
+    log_length = 500
 
     # AUTHENTIFICATION
     if not_auth(request):
         return redirect(settings.AUTH_URL)
     # AUTHENTIFICATION
-
+    
     try:
         response = requests.get(settings.API_URL)
     except ConnectionError as exception:
         return render(request, 'error/Error503.html',
                       {'exception' : exception})
+    if len(requestlist) > log_length:
+        requestlist = ''
+    requestlist = requestlist[:] + 'Get all:' + str(response) + ' '
     json_data = response.json()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             route = form.save(commit=False)
-            route_manager.request_json.post_new_route(
-                str(route.ip),
-                str(route.next_hop),
-                check_community(str(route.community)))
+            response_actual = route_manager.request_json.post_new_route(
+                              str(route.ip),
+                              str(route.next_hop),
+                              check_community(str(route.community)))
+            requestlist = requestlist[:] + 'Post:' + str(response_actual)
             return redirect(settings.DASHBOARD_URL)
 
         json_data = sort_switcher(request.POST, json_data)
         if 'id_delete' in request.POST:
-            route_manager.request_json.delete_route(
-                str(request.POST['id_delete']))
+            response_actual = route_manager.request_json.delete_route(
+                              str(request.POST['id_delete']))
+            requestlist = requestlist[:] + 'Delete ' + str(request.POST['id_delete']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_modify' in request.POST:
-            route_manager.request_json.put_route(
-                str(request.POST['id_modify']),
-                str(request.POST['ip']),
-                str(request.POST['next_hop']),
-                check_community(str(request.POST['communities'])))
+            response_actual = route_manager.request_json.put_route(
+                              str(request.POST['id_modify']),
+                              str(request.POST['ip']),
+                              str(request.POST['next_hop']),
+                              check_community(str(request.POST['communities'])))
+            requestlist = requestlist[:] + 'Modify ' + str(request.POST['id_modify']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id1' in request.POST:
-            route_manager.request_json.enable_disable_route(
-                str(request.POST['id1']), False)
+            response_actual = route_manager.request_json.enable_disable_route(
+                              str(request.POST['id1']), False)
+            requestlist = requestlist[:] + 'Disable ' + str(request.POST['id1']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id2' in request.POST:
-            route_manager.request_json.enable_disable_route(
-                str(request.POST['id2']), True)
+            response_actual = route_manager.request_json.enable_disable_route(
+                              str(request.POST['id2']), True)
+            requestlist = requestlist[:] + 'Enable ' + str(request.POST['id2']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_delete' in request.POST:
             for key, values in request.POST.lists():
                 if key=='listed_id':
                     for value in values:
-                        route_manager.request_json.delete_route(
-                            str(value))
+                        response_actual = route_manager.request_json.delete_route(
+                                          str(value))
+                        requestlist = requestlist[:] + 'Delete ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_disable' in request.POST:
             for key, values in request.POST.lists():
                 if key=='listed_id':
                     for value in values:
-                        route_manager.request_json.enable_disable_route(
-                            str(value), False)
+                        response_actual = route_manager.request_json.enable_disable_route(
+                                          str(value), False)
+                        requestlist = requestlist[:] + 'Disable ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_enable' in request.POST:
             for key, values in request.POST.lists():
                 if key=='listed_id':
                     for value in values:
-                        route_manager.request_json.enable_disable_route(
-                            str(value), True)
+                        response_actual = route_manager.request_json.enable_disable_route(
+                                          str(value), True)
+                        requestlist = requestlist[:] + 'Enable ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'export' in request.POST:
             exportfile=open('data.json', 'w')
@@ -235,10 +250,11 @@ def index(request):
                 return render(request, 'error/Error404.html', {'exception' : exception})
             json_file = json.load(importfile)
             for to_import in json_file:
-                 route_manager.request_json.post_new_route(
-                      to_import['ip'],
-                      to_import['next_hop'],
-                      check_community(to_import['communities']))
+                 response_actual = route_manager.request_json.post_new_route(
+                                   to_import['ip'],
+                                   to_import['next_hop'],
+                                   check_community(to_import['communities']))
+                 requestlist = requestlist[:] + 'Post:' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
@@ -246,8 +262,7 @@ def index(request):
         'data' : json_data,
         'form': form,
         'sort' : request.POST,
-        'response' : response,
-        'request' : request,
+        'response' : requestlist,
     })
 
 def change_password(request):
