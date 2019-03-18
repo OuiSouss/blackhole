@@ -1,28 +1,26 @@
 """
-exabgp.py
-===================
-REST API /api/exabgp
+Class ExaBGP
 """
 
 from sys import stdout
 from io import StringIO
 from time import sleep
-from flask_restful import Resource
 
-class ExaBGP(Resource):
+class ExaBGP:
     """
     ExaBGP class to provide methods to send routes to ExaBGP.
     """
-    def __init__(self, output_file_path):
-        self.output = output_file_path
+    def __init__(self):
+        """
+        """
+        self.output = 'output.txt'
         self.input = StringIO()
-        super(ExaBGP, self).__init__('output.txt')
 
     def exabgp_response(self, file_d):
         """
         Simulation of an ExaBGP's response
         """
-        stin = StringIO()
+        stin = self.input
         stin.write('yes')
         response = stin.getvalue()
         if response == '':
@@ -81,7 +79,7 @@ class ExaBGP(Resource):
         sleep(1)
         response = self.exabgp_response(out)
         out.close()
-        return response+'\n'
+        return response
 
     def withdraw_routes(self, delete):
         """
@@ -100,7 +98,7 @@ class ExaBGP(Resource):
         out.close()
         return responses
 
-    def withdraw_one_routes(self, delete):
+    def withdraw_one_route(self, delete):
         """
         Announce a route to delete for ExaBGP.
         :param delete: A dictionnary with _id and its value
