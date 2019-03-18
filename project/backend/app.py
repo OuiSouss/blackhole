@@ -8,7 +8,7 @@ from flask_restful import Api
 
 from backend.resources.subnet import Subnet
 from backend.resources.subnets import Subnets
-#from backend.resources.exabgp import ExaBGP
+from backend.resources.exabgp import Exabgp
 
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
@@ -16,4 +16,4 @@ api = Api(api_bp)
 # Route
 api.add_resource(Subnet, '/subnet/<object_id:subnet_id>')
 api.add_resource(Subnets, '/subnets')
-#api.add_resource(ExaBGP, '/exabgp')
+api.add_resource(Exabgp, '/exabgp')
