@@ -6,6 +6,7 @@ REST API /api/subnets
 from flask import jsonify
 from flask_restful import Resource, reqparse, fields, marshal_with
 from backend.database.funct_base import MongoDB
+from backend.funct_exabgp import ExaBGP
 
 subnets_fields = {
     'id': fields.String,
@@ -38,6 +39,7 @@ class Subnets(Resource):
             action='append'
         )
         self.mongo_db = MongoDB('Route')
+        self.exabgp = ExaBGP()
         super(Subnets, self).__init__()
 
 
@@ -79,5 +81,9 @@ class Subnets(Resource):
             'next_hop': args.next_hop,
             'communities': args.communities,
         }
-        self.mongo_db.add_route(subnet)
+        response = self.exabgp.announce_one_route(subnet)
+        if response != 'yes':
+            return subnet, 404
+        subnet_id = self.mongo_db.add_route(subnet)
+        subnet['id'] = subnet_id
         return subnet, 201
