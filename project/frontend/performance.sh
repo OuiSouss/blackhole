@@ -11,4 +11,6 @@
 #python3 manage.py test blackhole_ui.tests.APIbackendTest.perf_route_destruction > /dev/null 2> tmp.txt
 #cat tmp.txt | grep "Ran" | cut -c15-
 
+#python3 manage.py test blackhole_ui.tests.APIbackendTest.delete_random
+
 #rm tmp.txt
