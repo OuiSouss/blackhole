@@ -1,0 +1,19 @@
+[Unit]
+Description=ExaBGP
+Requires=network.target
+After=network.target
+ConditionPathExists=/etc/exabgp/exabgp.conf
+
+[Service]
+Type=simple
+User=nobody
+Environment=exabgp_daemon_daemonize=false
+Environment=ETC=/etc
+WorkingDirectory=/tmp
+ExecStart=/usr/local/bin/exabgp /etc/exabgp/exabgp.conf
+ExecStartPost=/bin/bash -c 'pgrep exabgp > /tmp/exabgp.pid'
+ExecStop=/bin/kill -SIGTERM $MAINPID
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
