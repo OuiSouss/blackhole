@@ -20,33 +20,45 @@ VHostConf('debian', display='sdl', vga='std', enable_kvm=None, localtime=None,
 		  k='fr', m='4G', cpu='kvm64')
 
 VHost('attacker', conf='debian',
-	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='attacker.img')],
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='attacker.img'),
+	       VFs('./interfaces/', type='virtio', tag='interfaces'),
+	       VFs('./bird/', type='virtio', tag='bird')],
 	  nics=[
 		  VNic(hw='0a:0a:0a:00:01:01'),
 		  VNic(hw='0a:0a:0a:00:01:02'),
 		  VNic(hw='0c:0c:0c:00:01:01')])
 
 VHost('border-router', conf='debian',
-	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='ce-bgp.img')],
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='ce-bgp.img'),
+	       VFs('./interfaces/', type='virtio', tag='interfaces'),
+	       VFs('./bird/', type='virtio', tag='bird')],
 	  nics=[
 		  VNic(hw='0a:0a:0a:00:02:01'),
 		  VNic(hw='0a:0a:0a:00:02:02'),
 		  VNic(hw='0c:0c:0c:00:02:02')])
 
 VHost('route-server', conf='debian',
-	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img')],
+	  hds=[VFs(DEBIAN_IMAGE, 'cow', tag='route-server.img'),
+	       VFs('./interfaces/', type='virtio', tag='interfaces'),
+	       VFs('./bird/', type='virtio', tag='bird'),
+		   VFs('../exabgp/', type='virtio', tag='exabgp'),
+		   VFs('../../project', type='virtio', tag='project')],
 	  nics=[
 		  VNic(hw='0a:0a:0a:00:03:01'),
 		  VNic(hw='0c:0c:0c:00:03:03')])
 
 VHost('target', conf='debian',
-	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='web-server.img')],
+	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='web-server.img'),
+	       VFs('./interfaces/', type='virtio', tag='interfaces'),
+	       VFs('./bird/', type='virtio', tag='bird')],
 	nics=[
 		VNic(hw='0a:0a:0a:00:04:01'),
 		VNic(hw='0c:0c:0c:00:04:04')])
 
 VHost('client', conf='debian',
-	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='client.img')],
+	hds=[VFs(DEBIAN_IMAGE, 'cow', tag='client.img'),
+	       VFs('./interfaces/', type='virtio', tag='interfaces'),
+	       VFs('./bird/', type='virtio', tag='bird')],
 	nics=[
 		VNic(hw='0a:0a:0a:00:05:01'),
 		VNic(hw='0a:0a:0a:00:05:02'),
@@ -97,3 +109,5 @@ Link(client='target:1', core='slirp4')
 
 VSlirp('slirp5', net='192.168.5.0/24')
 Link(client='client:2', core='slirp5')
+
+StartNemu()
