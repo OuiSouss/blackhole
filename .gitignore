@@ -31,3 +31,4 @@ reports/pdp-blackhole-report-realease.tar.xz
 **/nemu_virt/c7200*
 **/nemu_virt/dynamips_log.txt
 **/nemu_virt/ilt*
+**/output.txt
