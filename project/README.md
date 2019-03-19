@@ -1,4 +1,4 @@
-# Important : Activer l'environnement virtual au préalable
+# Important : Activer l'environnement virtuel au préalable
 
 ## Installer les dépendances du projet
 
@@ -48,3 +48,6 @@ ll ne sera possible de se connecter que si un utilisateur a été créé. Pour p
 
 Le fichier [settings.py](frontend/blackhole_ui/settings.py) permet de configurer les constantes utilisées par Django.
 
+# La virtualisation
+
+Se reporter au [Readme du dossier nemu_virt](nemu_virt/README.md)
