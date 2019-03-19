@@ -35,3 +35,4 @@ reports/pdp-blackhole-report-realease.tar.xz
 **/pdp.code-workspace
 project/nemu_virt/dyna.sh
 project/nemu_virt/bhre.py
+**/data.json
