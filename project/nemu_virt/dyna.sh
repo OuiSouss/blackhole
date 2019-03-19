@@ -5,7 +5,6 @@ CISCO_IMAGE=c7200-jk9s-mz.124-13b.image
 IDLE_PC=0x6077c0d8
 R1_cfg=R1_startup_config.cfg
 R2_cfg=R2_startup_config.cfg
-BR_cfg=border_router_startup_config.cfg
 
 echo "lauching router 1"
 
