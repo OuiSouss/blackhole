@@ -177,57 +177,9 @@
                     {% for r in data %}
                     {% if r.is_activated %}
                     <tr class="table-enabled">
-<<<<<<< HEAD
-                {% else %}
+                    {% else %}
                     <tr class="table-disabled">
-                {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <td><input type="text" name="ip" value="{{r.ip}}" ></td>
-                    <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td>
-                    <td><input type="text" name="communities" value="{{r.communities}}"></td>
-                    <td>{{r.created_at}}</td>
-                    <td>{{r.modified_at}}</td>
-=======
-                    <td><input type="text" name="ip" value="{{r.ip}}" ></td> 
-                    <td><input type="text" name="next_hop" value="{{r.next_hop}}"></td> 
-                    <td><input type="text" name="communities" value="{{r.communities}}"></td> 
-                    <td>{{r.created_at}}</td> 
-                    <td>{{r.modified_at}}</td> 
->>>>>>> frontend : enable/disable/delete selected routes
-                    <td>{{r.last_activation}}</td>
-            </form>
-            </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <button type="submit" name="id_to_delete" class="btn btn-default" form="list">Delete routes selected</button>
-    <button type="submit" name="id_to_enable" class="btn btn-default" form="list">Enable routes selected</button>
-    <button type="submit" name="id_to_disable" class="btn btn-default" form="list">Disable routes selected</button>
-    </tfoot>
-</table>
-<br>
-=======
-                    <form action="" method="POST">{% csrf_token %}
-                        <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" name="listed_id" value="{{ r.id }}" form="list">
-                            </div>
-                        </td>
-                        <td>
-                            <button type="submit" name="id_delete" value="{{ r.id }}" class="btn btn-warning">Delete</button>
-                            <br>
-                            <br>
-                            <button type="submit" id="button{{ r.id }}" disabled="disabled" name="id_modify" value="{{ r.id }}" class="btn btn-info">Modify</button>
-                        </td>
-                        <td>
-                        {% if r.is_activated %}
-                            <button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i></button>
-=======
->>>>>>> frontend : better announce form
-                        {% else %}
-                    <tr class="table-disabled">
-                        {% endif %}
+                    {% endif %}
                         <form action="" method="POST">{% csrf_token %}
                             <td>
                                 <div class="custom-control custom-switch">
@@ -255,15 +207,20 @@
                                 <br>
                                 <!-- Rounded switch -->
                                 <label class="switch">
-                                <input type="checkbox" onchange="document.getElementById('input{{ r.id }}').disabled = !this.checked;document.getElementById('input{{ r.id }}2').disabled = !this.checked;document.getElementById('input{{ r.id }}3').disabled = !this.checked;document.getElementById('button{{ r.id }}').disabled = !this.checked;"
-                                    name='visto' id='visto'>
-                                <span class="slider round"></span>
+                                    <input type="checkbox"
+                                        onchange="document.getElementById('input{{ r.id }}').disabled = !this.checked;document.getElementById('input{{ r.id }}2').disabled = !this.checked;document.getElementById('input{{ r.id }}3').disabled = !this.checked;document.getElementById('button{{ r.id }}').disabled = !this.checked;"
+                                        name='visto' id='visto'>
+                                    <span class="slider round"></span>
                                 </label>
                             </td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}"
-                                    name="ip" value="{{r.ip}}" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$"></td>
+                                    name="ip" value="{{r.ip}}"
+                                    pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$">
+                            </td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}2"
-                                    name="next_hop" value="{{r.next_hop}}" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"></td>
+                                    name="next_hop" value="{{r.next_hop}}"
+                                    pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$">
+                            </td>
                             <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}3"
                                     name="communities" value="{{r.communities}}"></td>
                             <td>{{r.created_at}}</td>
@@ -285,13 +242,8 @@
             <br>
         </div>
     </div>
-<<<<<<< HEAD
-</div>
->>>>>>> frontend : sort network with mask and reverse + graphical update
-{% endblock %}
-=======
+    </div>
     {% endblock %}
->>>>>>> frontend : better announce form
 </body>
 
 <script>
