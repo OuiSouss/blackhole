@@ -18,6 +18,7 @@ def create_app():
     """
     app = Flask(__name__)
     app.debug = True
+    app.config['BUNDLE_ERRORS'] = True
 
     app.json_encoder = MongoJSONEncoder
     app.url_map.converters['object_id'] = ObjectIdConverter

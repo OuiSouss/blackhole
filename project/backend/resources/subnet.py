@@ -30,11 +30,11 @@ class Subnet(Resource):
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
             'ip', dest='ip', location=['form', 'json'], required=True,
-            help='The IP',
+            help='An IP is required',
         )
         self.general_parser.add_argument(
             'next_hop', dest='next_hop', location=['form', 'json'],
-            required=True, help='The next hop',
+            required=True, help='A next hop is required',
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
@@ -43,7 +43,7 @@ class Subnet(Resource):
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation',
+            required=True, help='The activation field is required',
         )
         self.exabgp = ExaBGP('output.txt')
         self.mongo_db = MongoDB('Route')
@@ -96,17 +96,19 @@ class Subnet(Resource):
         put_parser = self.general_parser.copy()
         put_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation',
+            required=True, help='The activation field is required',
         )
         args = put_parser.parse_args()
         is_activated = True
         if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
+        communities = args.communities
+        if communities is None:
+            communities = []
         subnet['ip'] = args.ip
         subnet['next_hop'] = args.next_hop
-        subnet['communities'] = args.communities
+        subnet['communities'] = communities
         subnet['is_activated'] = is_activated
-        subnet = self.mongo_db.put_route(subnet)
         response = self.exabgp.update_one_route(subnet)
         if response != 'yes':
             abort(404,
