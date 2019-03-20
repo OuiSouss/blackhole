@@ -10,10 +10,11 @@ class ExaBGP:
     """
     ExaBGP class to provide methods to send routes to ExaBGP.
     """
-    def __init__(self):
+    def __init__(self, output_file_path):
         """
+        Initialization
         """
-        self.output = 'output.txt'
+        self.output = output_file_path
         self.input = StringIO()
 
     def exabgp_response(self, file_d):
@@ -35,33 +36,13 @@ class ExaBGP:
         :type cmd: str
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "a")
+        out = open(self.output, "w")
         stdout.write(cmd+'\n')
         stdout.flush()
         sleep(1)
         response = self.exabgp_response(out)
         out.close()
         return response
-
-    def announce_routes(self, post):
-        """
-        Announce a list of routes to add for ExaBGP
-        :param post: A dictionnary with _id and its value
-        :type post: dict
-        :return: A list contains all of the ExaBGP's responses
-        """
-        responses = []
-        out = open(self.output, "a")
-        for route in post:
-            stdout.write('announce route {} next-hop {} community {} \n'\
-                         .format(route['ip'],
-                                 route['next_hop'],
-                                 route['communities']))
-            stdout.flush()
-            sleep(1)
-            responses.append(self.exabgp_response(out))
-        out.close()
-        return responses
 
     def announce_one_route(self, post):
         """
@@ -70,7 +51,7 @@ class ExaBGP:
         :type post: dict
         :return: The ExaBGP's response
         """
-        out = open(self.output, "a")
+        out = open(self.output, "w")
         stdout.write('announce route {} next-hop {} community {} \n'\
                      .format(post['ip'],
                              post['next_hop'],
@@ -81,23 +62,6 @@ class ExaBGP:
         out.close()
         return response
 
-    def withdraw_routes(self, delete):
-        """
-        Announce a list of routes to delete for ExaBGP
-        :param delete: A dictionnary with _id and its value
-        :type delete: dict
-        :return: A list contains all of the ExaBGP's responses
-        """
-        responses = []
-        out = open(self.output, "a")
-        for route in delete:
-            stdout.write('withdraw route {}\n'.format(route['ip']))
-            stdout.flush()
-            sleep(1)
-            responses.append(self.exabgp_response(out))
-        out.close()
-        return responses
-
     def withdraw_one_route(self, delete):
         """
         Announce a route to delete for ExaBGP.
@@ -105,35 +69,13 @@ class ExaBGP:
         :type delete: dict
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "a")
+        out = open(self.output, "w")
         stdout.write('withdraw route {}\n'.format(delete['ip']))
         stdout.flush()
         sleep(1)
         response = self.exabgp_response(out)
         out.close()
         return response
-
-    def update_routes(self, patch):
-        """
-        Announce a list of routes to update for ExaBGP
-        :param patch: A dictionnary with _id and its value
-        :type patch: dict
-        :return: A list contains all of the ExaBGP's responses
-        """
-        responses = []
-        out = open(self.output, "a")
-        for route in patch:
-            stdout.write('update start \n')
-            stdout.write('announce route {} next-hop {} community {} \n'\
-                        .format(route['ip'],
-                                route['next_hop'],
-                                route['communities']))
-            stdout.write('update end \n')
-            stdout.flush()
-            sleep(1)
-            responses.append(self.exabgp_response(out))
-            out.close()
-        return responses
 
     def update_one_route(self, patch):
         """
@@ -142,7 +84,7 @@ class ExaBGP:
         :type patch: dict
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "a")
+        out = open(self.output, "w")
         stdout.write('update start \n')
         stdout.write('announce route {} next-hop {} community {} \n'\
                      .format(patch['ip'],
