@@ -39,7 +39,7 @@ class Subnets(Resource):
             action='append'
         )
         self.mongo_db = MongoDB('Route')
-        self.exabgp = ExaBGP()
+        self.exabgp = ExaBGP('output.txt')
         super(Subnets, self).__init__()
 
 

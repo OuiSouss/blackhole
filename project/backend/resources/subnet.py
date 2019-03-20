@@ -45,7 +45,7 @@ class Subnet(Resource):
             'is_activated', dest='is_activated', location=['form', 'json'],
             required=True, help='The activation',
         )
-        self.exabgp = ExaBGP()
+        self.exabgp = ExaBGP('output.txt')
         self.mongo_db = MongoDB('Route')
         super(Subnet, self).__init__()
 

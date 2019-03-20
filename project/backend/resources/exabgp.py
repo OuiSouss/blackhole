@@ -23,7 +23,7 @@ class Exabgp(Resource):
         Initialization of Exabgp class.
         """
         self.general_parser = reqparse.RequestParser()
-        self.exabgp = ExaBGP()
+        self.exabgp = ExaBGP('output.txt')
         super(Exabgp, self).__init__()
 
     def get(self):
