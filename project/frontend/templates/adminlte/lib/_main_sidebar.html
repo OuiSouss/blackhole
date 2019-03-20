@@ -42,16 +42,18 @@
                                 <em class="fa fa-download"></em> Import
                             </a>
                         </li>
-                    </ul>
-                    <form id="exporting" action="" method="POST">{% csrf_token %}</form>
-                    <input type="hidden" name="export" form="exporting">
+                    </ul>              
                     <ul class="treeview-menu">
                         <li>
-                            <a href="#" onClick="document.getElementById('exporting').submit();">
+                            <a href="#" onClick="document.getElementById('alert').style.display='block';">
                                 <em class="fa fa-upload"></em> Export
                             </a>
                         </li>
                     </ul>
+                    <form id="exporting" action="" method="POST">{% csrf_token %}</form>
+                    <div class="alert alert-info" style="display: none;" id="alert">
+                        <strong>Path:</strong><br><input type="input" name="export" form="exporting" value="../data.json" class="path" onchange="this.form.submit()">
+                    </div>
                 </li>
             {% endblock nav_links %}
             {% endblock nav_links_outer %}

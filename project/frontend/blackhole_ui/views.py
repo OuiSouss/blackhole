@@ -186,14 +186,14 @@ def index(request):
                               str(route.ip),
                               str(route.next_hop),
                               check_community(str(route.community)))
-            requestlist = requestlist[:] + 'Post:' + str(response_actual)
+            requestlist = requestlist[:] + '| Post:' + str(response_actual)
             return redirect(settings.DASHBOARD_URL)
 
         json_data = sort_switcher(request.POST, json_data)
         if 'id_delete' in request.POST:
             response_actual = route_manager.request_json.delete_route(
                               str(request.POST['id_delete']))
-            requestlist = requestlist[:] + 'Delete ' + str(request.POST['id_delete']) + ': ' + str(response_actual) + ' '
+            requestlist = requestlist[:] + '| Delete ' + str(request.POST['id_delete']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_modify' in request.POST:
             response_actual = route_manager.request_json.put_route(
@@ -201,17 +201,17 @@ def index(request):
                               str(request.POST['ip']),
                               str(request.POST['next_hop']),
                               check_community(str(request.POST['communities'])))
-            requestlist = requestlist[:] + 'Modify ' + str(request.POST['id_modify']) + ': ' + str(response_actual) + ' '
+            requestlist = requestlist[:] + '| Modify ' + str(request.POST['id_modify']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id1' in request.POST:
             response_actual = route_manager.request_json.enable_disable_route(
                               str(request.POST['id1']), False)
-            requestlist = requestlist[:] + 'Disable ' + str(request.POST['id1']) + ': ' + str(response_actual) + ' '
+            requestlist = requestlist[:] + '| Disable ' + str(request.POST['id1']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id2' in request.POST:
             response_actual = route_manager.request_json.enable_disable_route(
                               str(request.POST['id2']), True)
-            requestlist = requestlist[:] + 'Enable ' + str(request.POST['id2']) + ': ' + str(response_actual) + ' '
+            requestlist = requestlist[:] + '| Enable ' + str(request.POST['id2']) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_delete' in request.POST:
             for key, values in request.POST.lists():
@@ -219,7 +219,7 @@ def index(request):
                     for value in values:
                         response_actual = route_manager.request_json.delete_route(
                                           str(value))
-                        requestlist = requestlist[:] + 'Delete ' + str(value) + ': ' + str(response_actual) + ' '
+                        requestlist = requestlist[:] + '| Delete ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_disable' in request.POST:
             for key, values in request.POST.lists():
@@ -227,7 +227,7 @@ def index(request):
                     for value in values:
                         response_actual = route_manager.request_json.enable_disable_route(
                                           str(value), False)
-                        requestlist = requestlist[:] + 'Disable ' + str(value) + ': ' + str(response_actual) + ' '
+                        requestlist = requestlist[:] + '| Disable ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'id_to_enable' in request.POST:
             for key, values in request.POST.lists():
@@ -235,10 +235,10 @@ def index(request):
                     for value in values:
                         response_actual = route_manager.request_json.enable_disable_route(
                                           str(value), True)
-                        requestlist = requestlist[:] + 'Enable ' + str(value) + ': ' + str(response_actual) + ' '
+                        requestlist = requestlist[:] + '| Enable ' + str(value) + ': ' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'export' in request.POST:
-            exportfile=open('data.json', 'w')
+            exportfile=open(str(request.POST['export']), 'w')
             json.dump(json_data, exportfile)
             exportfile.close()
             return redirect(settings.DASHBOARD_URL)
@@ -253,12 +253,12 @@ def index(request):
                                    to_import['ip'],
                                    to_import['next_hop'],
                                    check_community(to_import['communities']))
-                 requestlist = requestlist[:] + 'Post:' + str(response_actual) + ' '
+                 requestlist = requestlist[:] + '| Post:' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'command_bgp' in request.POST:
             print(request.POST)
             response_actual = route_manager.request_json.post_command_bgp(str(request.POST['command_bgp']))
-            requestlist = requestlist[:] + 'ExaBGP:' + str(response_actual) + ' '
+            requestlist = requestlist[:] + '| ExaBGP:' + str(response_actual) + ' '
     else:
         form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
