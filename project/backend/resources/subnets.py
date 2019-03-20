@@ -28,11 +28,11 @@ class Subnets(Resource):
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
             'ip', dest='ip', location=['form', 'json'], required=True,
-            help='The IP',
+            help='An IP is required',
         )
         self.general_parser.add_argument(
             'next_hop', dest='next_hop', location=['form', 'json'],
-            required=True, help='The next hop',
+            required=True, help='A next hop is required',
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
@@ -76,10 +76,13 @@ class Subnets(Resource):
         :rtype: dict, HTTP status
         """
         args = self.general_parser.parse_args()
+        communities = args.communities
+        if communities is None:
+            communities = []
         subnet = {
             'ip': args.ip,
             'next_hop': args.next_hop,
-            'communities': args.communities,
+            'communities': communities,
         }
         response = self.exabgp.announce_one_route(subnet)
         if response != 'yes':
