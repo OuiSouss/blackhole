@@ -177,7 +177,6 @@ def index(request):
                       {'exception' : exception})
     if len(requestlist) > log_length:
         requestlist = ''
-    requestlist = requestlist[:] + 'Get all:' + str(response) + ' '
     json_data = response.json()
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -256,6 +255,10 @@ def index(request):
                                    check_community(to_import['communities']))
                  requestlist = requestlist[:] + 'Post:' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
+        if 'command_bgp' in request.POST:
+            print(request.POST)
+            response_actual = route_manager.request_json.post_command_bgp(str(request.POST['command_bgp']))
+            requestlist = requestlist[:] + 'ExaBGP:' + str(response_actual) + ' '
     else:
         form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {

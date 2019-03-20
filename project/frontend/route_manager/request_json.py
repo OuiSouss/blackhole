@@ -16,6 +16,14 @@ def post_new_route(ip, next_hop, communities):
                       'communities': communities,
                       'next_hop': next_hop})
 
+def post_command_bgp(command):
+    """
+    POST method
+
+    //TODO
+    """
+    return requests.post(settings.API_BGP_URL+"/"+command)
+
 def put_route(ident, ip, next_hop, communities):
     """
     PUT method

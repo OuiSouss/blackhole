@@ -56,12 +56,11 @@
         <div class="box-body">
             <div class="form-group">
             <form action="#" method="post">{% csrf_token %}
-	        <select class="form-control" name="type_bgp">
-		    <option>ExaBGP Commands</option>
+	        <select class="form-control" name="command_bgp">
 		    <option value="reload">Reload</option>
 		    <option value="reset">Reset</option>
                     <option value="restart">Restart</option>
-                    <option value="neightbor">Show neightbor summary</option>
+                    <option value="show_neightbor_summary">Show neightbor summary</option>
                     <option value="shutdown">Shutdown</option>
                     <option value="version">Version</option>
 	        </select>
