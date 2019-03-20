@@ -51,13 +51,13 @@ cd backend/database
 curl -i http://127.0.0.1:5000/api/subnets -X GET
 
 # POST : Créer une route
-curl -i http://127.0.0.1:5000/api/subnet/id -X POST "ip=1.13.12.1&next_hop=45.56.1.2&communities=45:4&communities=63:45"
+curl -i http://127.0.0.1:5000/api/subnets -X POST -d "ip=1.13.12.1&next_hop=45.56.1.2&communities=45:4&communities=63:45"
 
 # DELETE : Supprimer une route selon son ID
-curl -i http://127.0.0.1:5000/api/subnet/id -X DELETE
+curl -i http://127.0.0.1:5000/api/subnet/<id_number>  -X DELETE
 ```
 # GET : Relancer ExaBGP
-curl -i http://127.0.0.1:5000/api/exabgp -X GET "command=retart"
+curl -i http://127.0.0.1:5000/api/exabgp -X GET -d "command=restart"
 
 # Frontend
 
