@@ -30,7 +30,7 @@
     {% endblock %}
     <br>
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div class="box box-solid box-primary ">
                 <div class="box-header with-border">
                     <h2>Announce a new Network :</h2>
@@ -48,9 +48,32 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-6">
+        <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h2>ExaBGP :</h2>
         </div>
-        <div class="col-md-5">
+        <div class="box-body">
+            <div class="form-group">
+            <form action="#" method="post">{% csrf_token %}
+	        <select class="form-control" name="type_bgp">
+		    <option>ExaBGP Commands</option>
+		    <option value="reload">Reload</option>
+		    <option value="reset">Reset</option>
+                    <option value="restart">Restart</option>
+                    <option value="neightbor">Show neightbor summary</option>
+                    <option value="shutdown">Shutdown</option>
+                    <option value="version">Version</option>
+	        </select>
+	        <button type="submit" class="save btn btn-primary">Send</button>
+            </form>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+    <br>
+
             <div class="box box-solid box-primary ">
                 <div class="box-header with-border">
                     <h2>Log :</h2>
@@ -61,8 +84,6 @@
                     <br>
                 </div>
             </div>
-        </div>
-    </div>
     <br>
 
     <div class="box box-solid box-primary">
