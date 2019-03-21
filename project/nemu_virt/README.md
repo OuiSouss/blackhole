@@ -39,8 +39,9 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
     0x60653ab4 (count=36)
     0x6077bf24 (count=40)
     0x6077c0d8 (count=74)
+    Restart the emulator with "--idle-pc=0x80340d80" (for example)
     ```
-    Prendre le count le plus grand pour limiter l'usage du cpu.
+    Prendre l'idle-pc conseiller. Cela devrait permettre de limiter les routeurs en utilisation à environ 5-10% des processeurs.
 
 2. Lancer le [script dyna](./dyna.sh)
     ```bash
@@ -61,6 +62,7 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
 6. Dans chaque machine, il faut configurer les interfaces réseau. Pour cela, le dossier [interfaces](./interfaces) possède toutes les configurations. Il sufit de monter le dossier interfaces sur chaque VM puis de copier le fichier correspondant à la machine dans **/etc/network/**
     ```bash
     # Depuis le home de root
+    mkdir interfaces
     mount -t 9p interfaces interfaces/
     cp interfaces/<fichier nom vm> /etc/network/interfaces
     /etc/init.d/networking restart
@@ -70,6 +72,7 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
 9. Installer dans toutes les machines sauf le **route-server**, `bird`. Pour cela, la même procédure que le point 6 est à faire.
     ```bash
     # Depuis le home de root
+    mkdir bird
     mount -t 9p bird bird/
     cp bird/<fichier nom vm> /etc/bird/bird.conf
     mkdir /run/bird; bird;
@@ -84,6 +87,7 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
 11. Executer Exabgp en plaçant les fichiers dans la VM **route-server** comme suit :
     ```bash
     # Depuis le home de root
+    mkdir exabgp
     mount -t 9p exabgp exabgp/
     cp exabgp/app.py /etc/exabgp/app.py
     cp exabgp/exabgp.conf /etc/exabgp/exabgp.conf

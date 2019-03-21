@@ -2,7 +2,7 @@
 
 DYNA=dynamips
 CISCO_IMAGE=c7200-jk9s-mz.124-13b.image
-IDLE_PC=0x6077c0d8
+IDLE_PC=0x608724c0
 R1_cfg=R1_startup_config.cfg
 R2_cfg=R2_startup_config.cfg
 
