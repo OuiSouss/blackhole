@@ -10,7 +10,6 @@ Django==2.1.5
 django-adminlte2==0.4.1
 django-bootstrap4==0.0.7
 docutils==0.14
-exabgp==4.0.10
 Flask==1.0.2
 Flask-RESTful==0.3.7
 idna==2.8
