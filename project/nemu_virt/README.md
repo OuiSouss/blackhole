@@ -7,7 +7,7 @@
 
 Lors d'une première execution se référer à la dernière partie de ce fichier.
 
-## Lancement Rapide
+## Lancement Rapide pour tous les lancements sauf le premier
 1. Executer le script [dyna.sh](./dyna.sh)
 2. Lancer les VMs : `nemu -f bhre.py -i`
 3. Dans les VM sauf **route-server** démarrer Bird : `mkdir /run/bird; bird`
@@ -69,7 +69,7 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
     ```
 7. Vérifier la connectivité entre les paires de voisins
 8. Activer l'IP forwarding sur le **border-router**.
-9. Installer dans toutes les machines sauf le **route-server**, `bird`. Pour cela, la même procédure que le point 6 est à faire.
+9. Installer dans toutes les machines sauf le **route-server**, `apt install bird`. Ensuite, la même procédure que le point 6 est à faire pour récupérer les fichiers de configuration.
     ```bash
     # Depuis le home de root
     mkdir bird
