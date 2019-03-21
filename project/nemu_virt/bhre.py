@@ -12,7 +12,7 @@ WORKSPACE = '.'
 
 # Define where the debian image is located
 # On cremi, is on /net/stockage/amerisi/bhre/blackholerouting/fs/debian8.img
-DEBIAN_IMAGE = 'blackholerouting/fs/debian8.img'
+DEBIAN_IMAGE = '/net/stockage/amerisi/bhre/blackholerouting/fs/debian8.img'
 
 InitNemu(session=SESSION, workspace=WORKSPACE, hdcopy=True)
 
