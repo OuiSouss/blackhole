@@ -68,21 +68,21 @@
             </form>
             </div>
         </div>
-    </div>
+        </div>
         </div>
     </div>
     <br>
 
-            <div class="box box-solid box-primary ">
-                <div class="box-header with-border">
-                    <h2>Log :</h2>
-                </div>
-                <div class="box-body">
-                    <br>
-                    {{response}}
-                    <br>
-                </div>
-            </div>
+    <div class="box box-solid box-primary ">
+        <div class="box-header with-border">
+            <h2>Log :</h2>
+        </div>
+        <div class="box-body">
+            <br>
+            {{response}}
+            <br>
+        </div>
+    </div>
     <br>
 
     <div class="box box-solid box-primary">
@@ -93,7 +93,11 @@
             <table id="network" class="table ">
                 <thead>
                     <tr>
-                        <th scope="col"></th>
+                        <th scope="col">
+                            <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" onClick="select_all(this)">
+                            </div>
+                        </th>
                         <th scope="col">Action</th>
                         <form action="" method="POST">{% csrf_token %}
                             <th scope="col">Status
@@ -264,10 +268,6 @@
     </div>
     {% endblock %}
 </body>
-
-<script>
-
-</script>
 
 {% block nav_footer %}
 {% include 'adminlte/lib/_main_footer.html' %}

@@ -62,3 +62,12 @@
     </section>
     <!-- /.sidebar -->
 </aside>
+
+<script language="JavaScript">
+function select_all(source) {
+  checkboxes = document.getElementsByName('listed_id');
+  for(var i=0, n=checkboxes.length;i<checkboxes.length;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
