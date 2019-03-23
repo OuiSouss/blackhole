@@ -6,6 +6,10 @@
 **/*.out
 **/*.pdf
 **/*.toc
+**/*.fdb_latexmk
+**/*.fls
+**/*.pyg
+**/*.synctex.gz
 **/__pycache__/
 **/venv
 **/VirtualEnv

@@ -1,0 +1,45 @@
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+\label{sec:intro}
+
+Depuis quelques années, les attaques par déni de services sont de plus en plus fréquentes. Ces attaques ont pour but de surcharger un serveur, afin d'empêcher les utilisateurs légitimes d'utiliser ses services. Ces attaques inondent le réseau d'une infrastructure en surchargeant le trafic internet par un surplus de donnée. Pour ce projet, on considère les attaques par déni de services distribué (DDoS). L'attaquant doit obtenir l'accès à plusieurs machines connectées au réseau pour les utiliser lors de la compromission du serveur ciblé. Il existe différents types de vecteurs d'attaque comme expliqué dans le document de l'ANSSI \cite{Ans15} :
+
+\begin{itemize}
+    \item \textbf{Attaque sur la couche application} :
+
+    Le but est d'épuiser les ressources de la cible en ciblant la couche où les pages web sont générées sur le serveur. Une requête HTTP est facile à exécuter mais forger la réponse peut être difficile pour le serveur. En effet, il doit potentiellement exécuter des requêtes sur une base de donnée ou charger plusieurs fichiers. Étant donné que l'attaque s'effectue sur la couche application, il peut s'avérer difficile de détecter le trafic malveillant. Par exemple, l'attaque HTTP Flood consiste donc à envoyer au serveur de multiples requêtes sur différentes URL du serveur via différentes machines.
+
+    \item \textbf{Attaque sur les protocoles} :
+
+    Le but est d'interrompre le service en utilisant toutes les tables d'état libre d'une application web du serveur ou des ressources intermédiaires comme les pare-feux. Ce type d'attaque utilise les faiblesses des couches réseau et transport. L'exemple principal est l'attaque SYN Flood qui exploite le protocole TCP au moment du handshake. Elle envoie au serveur cible un grand nombre de requêtes TCP SYN, "Initial Connection Request", en usurpant l'adresse IP d'une victime pour générer des paquets SYN-ACK en réponse vers le serveur cible. Le serveur se retrouve donc à attendre des données sur une connexion qui n'en donnera jamais.
+
+    \item \textbf{Attaque volumétrique} : Le but est de créer une congestion en occupant toute la bande passante réseau disponible afin de rendre un ou plusieurs services inaccessibles. Ce type d'attaque cherche donc à générer un grand nombre de paquets par seconde ou d'envoyer un grand nombre de données. Un exemple d'attaque est le DNS Amplification qui envoie une requête DNS à un serveur avec une adresse IP usurpée.
+\end{itemize}
+
+\vspace{2em}
+
+En 2018, lors du premier semestre, le nombre d'attaque DDoS a diminué de 13\% mais cela reste tout de même minime car on recense en plus de 400 000 chaque mois. C'est pourquoi, il faut protéger son réseau de ce type d'attaque. Pour ce faire, il existe plusieurs contre-mesures comme préciser dans le document de l'ANSSI \cite{Ans15}. Mais, dans le cadre de ce projet, nous ne nous intéressons qu'à la technique de routage vers trou noir piloté à distance, autrement dit Remotely triggered blackhole filtering (RTBH), expliquée dans notre document principal \cite{Sys05} ainsi que dans le RFC 5635 \cite{Rfcrtbh09}. Cette technique consiste à écarter tout trafic indésirable qui rentre dans un réseau protégé. Le challenge de cette méthode est de détecter rapidement les attaques, mais, nous ne sommes pas en charge de le faire. Cela sera fait par un autre groupe de travail.
+
+Le principe consiste à utiliser des protocoles de routage afin de mettre à jour les tables de routage présents à la frontière du réseau. Pour ce faire, le protocole \hyperref[sec:BGP]{BGP} est utilisé \cite{Rfcbgp06}.
+
+Il existe plusieurs moyens d'y arriver pour minimiser les dégâts :
+
+\begin{itemize}
+    \item \textbf{Destination des paquets} : 
+    
+    Le but est de rediriger tout le trafic destiné à une adresse IP du réseau à protéger vers un trou noir. Cette méthode permet de partager via \hyperref[sec:BGP]{BGP} une route statique au serveur de route. Ensuite, le serveur de route se charge d'envoyer une demande de mise à jour en utilisant iBGP aux routeurs de frontière. Cette mise à jour consiste à modifier le "next-hop", adresse IP de la prochaine machine vers laquelle il faut se diriger, par une autre route statique qui a été configurer pour pointer vers l'interface \textit{null}. Voir la figure \ref{fig:destination_based} présentant un schéma général de cette contre-mesure. Malheureusement, cette technique empêche les clients légitimes de communiquer avec le serveur.
+
+    \item \textbf{Source des paquets} : 
+    
+    A contrario du point précédent, on choisi de baser la décision de routage vers le trou noir, sur l'adresse IP de la source. Cela permettra donc au clients légitimes de pouvoir discuter avec le serveur alors même que les attaquants seront dirigés vers un trou noir. Le RTBH par la source s'utilise conjointement avec l'unicast Reverse Path Forwarding (uRPF). L'uRPF évite l'usurpation de l'adresse IP. En effet, à chaque fois qu'un routeur reçoit un paquet IP, il vérifie qu'il y a une entrée dans la table de routage correspondant à cette adresse IP source. En Loose Mode, si la vérification échoue ou que l'entrée pointe vers l'interface \textit{null0}, le paquet écarter. Pour cette méthode, il suffit donc de configurer l'uRPF en Loose Mode et de s'assurer que la vérification échoue en insérant une route pour cette adresse IP source avec un next-hop pointant vers \textit{null0}. Par conséquent, on utilise un serveur de route qui envoi des paquets de mise à jour iBGP. Comme expliqué précédemment, cette fois-ci le client peut toujours discuter avec le serveur alors que les attaquants sont envoyés vers le trou noir. Voir la figure schématisant ces explication \ref{fig:source_based}.
+    
+    \item \textbf{Communauté BGP} : 
+    
+    La redirection vers un trou noir basé sur les \hyperref[sec:BGP]{communautés BGP} permet un meilleur contrôle des paquets que l'on laisse tomber. On utilise le serveur de route pour configurer différente communauté BGP et les transmettre à tout les routeurs de frontière. Les routeurs de frontière ont la possibilité de fonctionner sur la mise à jour des valeurs de community ou non. Cela permet de se baser sur les valeurs des communautés pour modifier les next-hop rendant plus sélective la suppression des paquets.
+\end{itemize}
+
+\vspace{2em}
+
+Notre objectif principal est de créer une API RESTful permettant à un administrateur réseau de réaliser toutes ces méthodes via une interface web. C'est pourquoi, nous devons vous présentez les principes à respecter sur lesquels se base une API REST ainsi que les schémas présentant les méthodes RTBH vu précédemment. Puis, nous vous présenteront tous les existants qui nous rendront la tâche aisée, dont le projet de l'année dernière \cite{PMCB18} et une application web Erco \cite{Erc16}. Suite à cela, nous vous présenterons quelques récits utilisateurs permettant de définir nos besoins. Nous assaisonnerons ceux-ci par une spécification des tests que l'on devra mettre en place.
+
