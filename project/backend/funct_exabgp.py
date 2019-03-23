@@ -2,47 +2,28 @@
 Class ExaBGP
 """
 
-from sys import stdout
-from io import StringIO
-from time import sleep
+import requests
+from flask import abort
 
 class ExaBGP:
     """
     ExaBGP class to provide methods to send routes to ExaBGP.
     """
-    def __init__(self, output_file_path):
+    def __init__(self, url_exabgp):
         """
         Initialization
         """
-        self.output = output_file_path
-        self.input = StringIO()
+        self.url_exabgp = url_exabgp
 
-    def exabgp_response(self, file_d):
-        """
-        Simulation of an ExaBGP's response
-        """
-        stin = self.input
-        stin.write('yes')
-        response = stin.getvalue()
-        if response == '':
-            response = 'No response'
-        file_d.write(response + '\n')
-        return response
-
-    def action(self, cmd):
+    def action(self, command):
         """
         Execute a command to ExaBGP
         :param cmd: Command to execute. Can be shutdown, reload, retart only.
         :type cmd: str
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "w")
-        stdout.write(cmd+'\n')
-        stdout.flush()
-        sleep(1)
-        response = self.exabgp_response(out)
-        out.close()
-        return response
+        response = requests.post(self.url_exabgp, data={'command' : command})
+        return response.status_code
 
     def announce_one_route(self, post):
         """
@@ -51,16 +32,32 @@ class ExaBGP:
         :type post: dict
         :return: The ExaBGP's response
         """
-        out = open(self.output, "w")
-        stdout.write('announce route {} next-hop {} community {} \n'\
+        if post['communities'] is None:
+            command = 'announce route {} next-hop {} \n'\
+                     .format(post['ip'],
+                             post['next_hop'])
+        else:
+            command = 'announce route {} next-hop {} community {} \n'\
                      .format(post['ip'],
                              post['next_hop'],
-                             post['communities']))
-        stdout.flush()
-        sleep(1)
-        response = self.exabgp_response(out)
-        out.close()
-        return response
+                             post['communities'])
+
+        response = requests.post(self.url_exabgp, data={'command' : command})
+        return response.status_code
+
+    def announces_routes(self, post):
+        """
+        Announce routes to send to ExaBGP
+        :param post: A dictionnary with routes
+        :type post: dict
+        :return: The ExaBGP's response
+        """
+        for route in post:
+            if route['is_activated'] is True:
+                response = self.announce_one_route(route)
+                if response != 200:
+                    abort(404, message='')
+        return 200
 
     def withdraw_one_route(self, delete):
         """
@@ -69,13 +66,17 @@ class ExaBGP:
         :type delete: dict
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "w")
-        stdout.write('withdraw route {}\n'.format(delete['ip']))
-        stdout.flush()
-        sleep(1)
-        response = self.exabgp_response(out)
-        out.close()
-        return response
+        if delete['communities'] is None:
+            command = 'withdraw route {} next-hop {}\n'\
+                     .format(delete['ip'],
+                             delete['next_hop'])
+        else:
+            command = 'withdraw route {} next-hop {} community {} \n'\
+                     .format(delete['ip'],
+                             delete['next_hop'],
+                             delete['communities'])
+        response = requests.post(self.url_exabgp, data={'command' : command})
+        return response.status_code
 
     def update_one_route(self, patch):
         """
@@ -84,15 +85,11 @@ class ExaBGP:
         :type patch: dict
         :return:  The ExaBGP's response
         """
-        out = open(self.output, "w")
-        stdout.write('update start \n')
-        stdout.write('announce route {} next-hop {} community {} \n'\
-                     .format(patch['ip'],
-                             patch['next_hop'],
-                             patch['communities']))
-        stdout.write('update end \n')
-        stdout.flush()
-        sleep(1)
-        response = self.exabgp_response(out)
-        out.close()
+        response = self.withdraw_one_route(patch)
+        if response != 200:
+            abort(404, message='')
+        if patch['is_activated'] is True:
+            response = self.announce_one_route(patch)
+            if response != 200:
+                abort(404, message='')
         return response
