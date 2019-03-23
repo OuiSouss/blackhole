@@ -175,9 +175,14 @@ def index(request):
     except ConnectionError as exception:
         return render(request, 'error/Error503.html',
                       {'exception' : exception})
+    print(response)
     if len(requestlist) > log_length:
         requestlist = ''
-    json_data = response.json()
+    try:
+        json_data = response.json()
+    except ValueError as exception:
+        return render(request, 'error/Error409.html',
+                      {'exception' : exception})
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
