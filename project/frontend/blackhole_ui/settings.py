@@ -37,11 +37,11 @@ LOGOUT_URL = '/logout/'
 CHANGE_PASSWORD = 'change_password'
 
 # API url to manage routes
-API_URL = 'http://127.0.0.1:5000/api/subnets'
-API_URL_SINGLE = 'http://127.0.0.1:5000/api/subnet'
+API_URL = 'http://127.0.0.1:5555/api/subnets'
+API_URL_SINGLE = 'http://127.0.0.1:5555/api/subnet'
 
 # API url to manage exabgp
-API_BGP_URL = 'http://127.0.0.1:5000/api/exabgp'
+API_BGP_URL = 'http://127.0.0.1:5555/api/exabgp'
 
 #### TEMPLATES
 TEMPLATE_DASHBOARD = 'route_dashboard/route_dashboard.html'
