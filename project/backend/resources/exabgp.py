@@ -4,13 +4,15 @@ exabgp.py
 REST API /api/exabgp
 """
 from flask import abort
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from backend.funct_exabgp import ExaBGP
+from backend.resources.settings import URL_EXABGP
 
 exabgp_cmd = {
     'shutdown',
     'restart',
-    'reload'
+    'reload',
+    'reset'
 }
 
 class Exabgp(Resource):
@@ -22,27 +24,20 @@ class Exabgp(Resource):
         """
         Initialization of Exabgp class.
         """
-        self.general_parser = reqparse.RequestParser()
-        self.exabgp = ExaBGP('output.txt')
+        self.exabgp = ExaBGP(URL_EXABGP)
         super(Exabgp, self).__init__()
 
-    def get(self):
+    def get(self, command):
         """
         Execute a command on the list to ExaBGP
         """
-        cmd = self.general_parser.copy()
-        cmd.add_argument(
-            'command', dest='command', location=['form', 'json'], required=True,
-            help='The command',
-        )
-        arg = cmd.parse_args()
-        if arg['command'] not in exabgp_cmd:
+        if command not in exabgp_cmd:
             abort(404,
                   message='Command does not exist : {}'\
-                          .format(arg['command']))
-        response = self.exabgp.action(arg['command'])
-        if response != 'yes':
+                          .format(command))
+        response = self.exabgp.action(command)
+        if response != 200:
             abort(404,
                   message='Cannot launch command : {}'\
-                          .format(arg['command']))
+                          .format(command))
         return 200

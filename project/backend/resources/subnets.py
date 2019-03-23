@@ -7,6 +7,7 @@ from flask import jsonify
 from flask_restful import Resource, reqparse, fields, marshal_with
 from backend.database.funct_base import MongoDB
 from backend.funct_exabgp import ExaBGP
+from backend.resources.settings import URL_EXABGP
 
 subnets_fields = {
     'id': fields.String,
@@ -28,19 +29,20 @@ class Subnets(Resource):
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
             'ip', dest='ip', location=['form', 'json'], required=True,
-            help='An IP is required',
+            help='The IP',
         )
         self.general_parser.add_argument(
             'next_hop', dest='next_hop', location=['form', 'json'],
-            required=True, help='A next hop is required',
+            required=True, help='The next hop',
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
             action='append'
         )
         self.mongo_db = MongoDB('Route')
-        self.exabgp = ExaBGP('output.txt')
+        self.exabgp = ExaBGP(URL_EXABGP)
         super(Subnets, self).__init__()
+        response = self.exabgp.announces_routes(self.mongo_db.get_all_routes())
 
 
     def get(self):
@@ -76,16 +78,13 @@ class Subnets(Resource):
         :rtype: dict, HTTP status
         """
         args = self.general_parser.parse_args()
-        communities = args.communities
-        if communities is None:
-            communities = []
         subnet = {
             'ip': args.ip,
             'next_hop': args.next_hop,
-            'communities': communities,
+            'communities': args.communities,
         }
         response = self.exabgp.announce_one_route(subnet)
-        if response != 'yes':
+        if response != 200:
             return subnet, 404
         subnet_id = self.mongo_db.add_route(subnet)
         subnet['id'] = subnet_id
