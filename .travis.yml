@@ -1,7 +1,7 @@
 branches:
   only:
   - master
-  - development
+  - integrate_exabgp
 language: python
 python:
   - "3.5"
@@ -13,7 +13,9 @@ install:
 script:
   - nosetests project/backend/tests/*
   - cd project
-  - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/unittest_base.py
+  - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/*
+  - (cd backend; ./run.sh &)
+  - (cd frontend; ./run_tests.sh)
   - cd ..
   - bash generate-pylint-report.sh
   - sonar-scanner
