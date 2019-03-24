@@ -16,6 +16,7 @@ script:
   - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/*
   - (cd backend; ./run.sh &)
   - (cd frontend; ./run_tests.sh)
+  - coverage run --source=blackhole_ui,route_manager,templates  --omit=frontend/blackhole_ui/wsgi.py ./frontend/manage.py test tests.api_backend tests.bad_login tests.dashboard tests.login; coverage xml -o coverage_frontend.xml -i; coverage report -m
   - cd ..
   - bash generate-pylint-report.sh
   - sonar-scanner

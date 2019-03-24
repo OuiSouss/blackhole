@@ -6,6 +6,10 @@
 **/*.out
 **/*.pdf
 **/*.toc
+**/*.fdb_latexmk
+**/*.fls
+**/*.pyg
+**/*.synctex.gz
 **/__pycache__/
 **/venv
 **/VirtualEnv
@@ -23,7 +27,9 @@ reports/pdp-blackhole-report-realease.tar.xz
 **/bhre.tar
 **/nemu
 **/coverage.xml
+**/coverage_frontend.xml
 **/nosetests.xml
+**/htmlcov
 **/_minted-presentation/
 **/dynamips
 **/nemu_virt/blackhole*
