@@ -49,26 +49,26 @@
             </div>
         </div>
         <div class="col-md-6">
-        <div class="box box-solid box-primary">
-        <div class="box-header with-border">
-            <h2>ExaBGP :</h2>
-        </div>
-        <div class="box-body">
-            <div class="form-group">
-            <form action="#" method="post">{% csrf_token %}
-	        <select class="form-control" name="command_bgp">
-		    <option value="reload">Reload</option>
-		    <option value="reset">Reset</option>
-                    <option value="restart">Restart</option>
-                    <option value="show_neightbor_summary">Show neightbor summary</option>
-                    <option value="shutdown">Shutdown</option>
-                    <option value="version">Version</option>
-	        </select>
-	        <button type="submit" class="save btn btn-primary">Send</button>
-            </form>
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h2>ExaBGP :</h2>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <form action="#" method="post">{% csrf_token %}
+                            <select class="form-control" name="command_bgp">
+                                <option value="reload">Reload</option>
+                                <option value="reset">Reset</option>
+                                <option value="restart">Restart</option>
+                                <option value="show_neightbor_summary">Show neightbor summary</option>
+                                <option value="shutdown">Shutdown</option>
+                                <option value="version">Version</option>
+                            </select>
+                            <button type="submit" class="save btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-        </div>
         </div>
     </div>
     <br>
@@ -95,101 +95,101 @@
                     <tr>
                         <th scope="col">
                             <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" onClick="select_all(this)">
+                                <input type="checkbox" class="custom-control-input" onClick="select_all(this)">
                             </div>
                         </th>
                         <th scope="col">Action</th>
                         <form action="" method="POST">{% csrf_token %}
                             <th scope="col">Status
                                 {% if '1' in sort.active_sort %}
-                                <button type="submit" name="active_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="active_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.active_sort %}
-                                <button type="submit" name="active_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="active_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="active_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="active_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Network
                                 {% if '1' in sort.net_sort %}
-                                <button type="submit" name="net_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="net_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.net_sort %}
-                                <button type="submit" name="net_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="net_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="net_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="net_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Next_hop {% if '1' in sort.hop_sort %}
-                                <button type="submit" name="hop_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="hop_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.hop_sort %}
-                                <button type="submit" name="hop_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="hop_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="hop_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="hop_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Communities {% if '1' in sort.com_sort %}
-                                <button type="submit" name="com_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="com_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.com_sort %}
-                                <button type="submit" name="com_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="com_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="com_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="com_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Created_at {% if '1' in sort.create_sort %}
-                                <button type="submit" name="create_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="create_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.create_sort %}
-                                <button type="submit" name="create_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="create_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="create_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="create_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Modified_at {% if '1' in sort.modi_sort %}
-                                <button type="submit" name="modi_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="modi_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.modi_sort %}
-                                <button type="submit" name="modi_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="modi_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="modi_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="modi_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
                             <th scope="col">Last_activation {% if '1' in sort.last_sort %}
-                                <button type="submit" name="last_sort" value="2" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-up"></i></button>
+                                <button type="submit" name="last_sort" value="2" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-up"></em></button>
                                 {% else %}
                                 {% if '2' in sort.last_sort %}
-                                <button type="submit" name="last_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-arrow-down"></i></button>
+                                <button type="submit" name="last_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-arrow-down"></em></button>
                                 {% else %}
-                                <button type="submit" name="last_sort" value="1" class="btn btn-primary btn-xs"><i
-                                        class="glyphicon glyphicon-sort"></i></button>
+                                <button type="submit" name="last_sort" value="1" class="btn btn-primary btn-xs"><em
+                                        class="glyphicon glyphicon-sort"></em></button>
                                 {% endif %}
                                 {% endif %}
                             </th>
@@ -201,9 +201,9 @@
                     {% for r in data %}
                     {% if r.is_activated %}
                     <tr class="table-enabled">
-                    {% else %}
+                        {% else %}
                     <tr class="table-disabled">
-                    {% endif %}
+                        {% endif %}
                         <form action="" method="POST">{% csrf_token %}
                             <td>
                                 <div class="custom-control custom-switch">
@@ -221,11 +221,11 @@
                             </td>
                             <td>
                                 {% if r.is_activated %}
-                                <button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><i
-                                        class="glyphicon glyphicon-ok"></i></button>
+                                <button type="submit" name="id1" value="{{ r.id }}" class="btn btn-success"><em
+                                        class="glyphicon glyphicon-ok"></em></button>
                                 {% else %}
-                                <button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><i
-                                        class="glyphicon glyphicon-remove"></i></button>
+                                <button type="submit" name="id2" value="{{ r.id }}" class="btn btn-danger"><em
+                                        class="glyphicon glyphicon-remove"></em></button>
                                 {% endif %}
                                 <br>
                                 <br>
@@ -237,16 +237,20 @@
                                     <span class="slider round"></span>
                                 </label>
                             </td>
-                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}"
+                            <td>
+                                <input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}"
                                     name="ip" value="{{r.ip}}"
                                     pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$">
                             </td>
-                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}2"
+                            <td>
+                                <input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}2"
                                     name="next_hop" value="{{r.next_hop}}"
                                     pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$">
                             </td>
-                            <td><input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}3"
-                                    name="communities" value="{{r.communities}}"></td>
+                            <td>
+                                <input type="text" class="form-control" disabled="disabled" id="input{{ r.id }}3"
+                                    name="communities" value="{{r.communities}}">
+                            </td>
                             <td>{{r.created_at}}</td>
                             <td>{{r.modified_at}}</td>
                             <td>{{r.last_activation}}</td>

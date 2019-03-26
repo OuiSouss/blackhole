@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
 <head>
-  {% block title %}<title>Route Manager</title>{% endblock %}
-  <meta charset="utf-8">
+	{% block title %}<title>Route Manager</title>{% endblock %}
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
+
 <body>
-  <div class="container-fluid">
-      {% if user.is_authenticated %}
-          <hr>
-      {% endif %}
+	<div class="container-fluid">
+		{% if user.is_authenticated %}
+		<hr>
+		{% endif %}
 
-      {% block content %}
-      {% endblock %}
+		{% block content %}
+		{% endblock %}
 
-	<!-- si l'utilisateur est authentifié -->
-	{% if user.is_authenticated %}
+		<!-- si l'utilisateur est authentifié -->
+		{% if user.is_authenticated %}
 		<hr>
 		<ul>
-		<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
-		<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->
-		{# if not "/accounts/change_password/" in request.get_full_path #}
+			<!-- Alors on peut lui proposer de se déconnecter ou changer son mot de passe-->
+			<!-- Probleme : quand on pars du changePassword vers le dashboard, ça detecte mal-->
+			{# if not "/accounts/change_password/" in request.get_full_path #}
 			<!-- Mais on ne vas lui proposer-->
 			<!-- Si l'utilsiateur est déjà dans la bonne page -->
 			<li><a href="{% url 'change_password'%}?next={{request.path}}">Change password</a></li>
-		{# endif #}
+			{# endif #}
 
-		<!-- Alors on peut lui proposer de retourner au gestionnaire de route-->
-		<!-- Probleme : quand on pars du dashboard vers le login, ça detecte mal-->
-		{# if not "/dashboard/" in request.get_full_path #}
+			<!-- Alors on peut lui proposer de retourner au gestionnaire de route-->
+			<!-- Probleme : quand on pars du dashboard vers le login, ça detecte mal-->
+			{# if not "/dashboard/" in request.get_full_path #}
 			<!-- Mais on ne vas lui proposer-->
 			<!-- Si l'utilsiateur est déjà dans la bonne page -->
 			<li><a href="{% url 'dashboard'%}?next={{request.path}}">Dashboard</a></li>
-		{# endif #}
+			{# endif #}
 
 
-		<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+			<li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
 		</ul>
-	{% endif %}
+		{% endif %}
 
-	<!-- Sinon on peut lui proposer de se connecter.
+		<!-- Sinon on peut lui proposer de se connecter.
 	Mais s'il n'est pas connecté alors il sera forcément dans la page login.
 	Et n'auras pas besoin qu'on lui propose cette option
 	 -->
 
-  </div>
+	</div>
 </body>
 
 
 <!-- DEBUG -->
 {% if False %}
-	<br>
-	<br>
-	<strong>is_authenticated :</strong>
-	{{ user.is_authenticated }}<br>
+<br>
+<br>
+<strong>is_authenticated :</strong>
+{{ user.is_authenticated }}<br>
 
-	<strong>get_full_path :</strong>
-	{{ request.get_full_path }}<br>
+<strong>get_full_path :</strong>
+{{ request.get_full_path }}<br>
 
 
 
@@ -68,7 +71,3 @@
 
 
 </html>
-
-
-
-

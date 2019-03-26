@@ -7,7 +7,7 @@
         {% block user_panel %}{% endblock %}
 
         {% block form %}
-            
+
         {% endblock %}
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -17,44 +17,46 @@
             <li class="header">{% block nav_heading %}MENU{% endblock %}</li>
 
             {% block nav_links %}
-                <li>
-                    <a href="{% url 'dashboard'%}?next={{request.path}}">
-                        <em class="fa fa-dashboard"></em> <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/admin/">
-                        <em class="fa fa-legal"></em> <span>Admin</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <em class="fa fa-get-pocket"></em> <span>Import/Export</span>
-                        <span class="pull-right-container">
-                            <em class="fa fa-angle-left pull-right"></em>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'dashboard'%}?next={{request.path}}">
+                    <em class="fa fa-dashboard"></em> <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/">
+                    <em class="fa fa-legal"></em> <span>Admin</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <em class="fa fa-get-pocket"></em> <span>Import/Export</span>
+                    <span class="pull-right-container">
+                        <em class="fa fa-angle-left pull-right"></em>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
                     <form id="importing" action="" method="POST">{% csrf_token %}</form>
-                        <li id="import_file" >
-                            <input id="the_file" type="file" name="import" form="importing" onchange="this.form.submit()" style="display:none;" />
-                            <a href="#" onClick="document.getElementById('the_file').click();">
-                                <em class="fa fa-download"></em> Import
-                            </a>
-                        </li>
-                    </ul>              
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="#" onClick="document.getElementById('alert').style.display='block';">
-                                <em class="fa fa-upload"></em> Export
-                            </a>
-                        </li>
-                    </ul>
-                    <form id="exporting" action="" method="POST">{% csrf_token %}</form>
-                    <div class="alert alert-info" style="display: none;" id="alert">
-                        <strong>Path:</strong><br><input type="input" name="export" form="exporting" value="../data.json" class="path" onchange="this.form.submit()">
-                    </div>
-                </li>
+                    <li id="import_file">
+                        <input id="the_file" type="file" name="import" form="importing" onchange="this.form.submit()"
+                            style="display:none;" />
+                        <a href="#" onClick="document.getElementById('the_file').click();">
+                            <em class="fa fa-download"></em> Import
+                        </a>
+                    </li>
+                </ul>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="#" onClick="document.getElementById('alert').style.display='block';">
+                            <em class="fa fa-upload"></em> Export
+                        </a>
+                    </li>
+                </ul>
+                <form id="exporting" action="" method="POST">{% csrf_token %}</form>
+                <div class="alert alert-info" style="display: none;" id="alert">
+                    <strong>Path:</strong><br><input type="input" name="export" form="exporting" value="../data.json"
+                        class="path" onchange="this.form.submit()">
+                </div>
+            </li>
             {% endblock nav_links %}
             {% endblock nav_links_outer %}
         </ul>
@@ -64,10 +66,10 @@
 </aside>
 
 <script language="JavaScript">
-function select_all(source) {
-  checkboxes = document.getElementsByName('listed_id');
-  for(var i=0, n=checkboxes.length;i<checkboxes.length;i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
+    function select_all(source) {
+        checkboxes = document.getElementsByName('listed_id');
+        for (var i = 0, n = checkboxes.length; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
 </script>

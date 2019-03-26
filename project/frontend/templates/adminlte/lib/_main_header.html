@@ -19,39 +19,41 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 {% block header_dropdowns %}
-                    {% if request.user.is_authenticated %}
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{% static 'favicon.ico' %}" class="user-image" alt="User Image">
-                                <span class="hidden-xs">{% firstof request.user.get_short_name request.user.get_username %}</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% block user_header %}
-                                <li class="user-header">
-                                    <img src="{% static 'favicon.ico' %}" class="img-circle" alt="User Image">
-                                    <p>
-                                        {% firstof request.user.get_short_name request.user.get_username %}
-                                        <small>Member since {{ request.user.date_joined }}</small>
-                                    </p>
-                                </li>
-                                {% endblock %}
-
-                                <!-- Menu Footer-->
-                                {% block menu_footer %}
-                                <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="{% block change_password_url %}{% url 'change_password'%}?next={{request.path}}{% endblock %}"
-                                           class="btn btn-default btn-flat">{% trans 'Change password' %}</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="{% block logout_url %}{% logout_url %}{% endblock %}" class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
-                                </li>
-                                {% endblock %}
-
-                            </ul>
+                {% if request.user.is_authenticated %}
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{% static 'favicon.ico' %}" class="user-image" alt="User Image">
+                        <span
+                            class="hidden-xs">{% firstof request.user.get_short_name request.user.get_username %}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% block user_header %}
+                        <li class="user-header">
+                            <img src="{% static 'favicon.ico' %}" class="img-circle" alt="User Image">
+                            <p>
+                                {% firstof request.user.get_short_name request.user.get_username %}
+                                <small>Member since {{ request.user.date_joined }}</small>
+                            </p>
                         </li>
-                    {% endif %}
+                        {% endblock %}
+
+                        <!-- Menu Footer-->
+                        {% block menu_footer %}
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="{% block change_password_url %}{% url 'change_password'%}?next={{request.path}}{% endblock %}"
+                                    class="btn btn-default btn-flat">{% trans 'Change password' %}</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="{% block logout_url %}{% logout_url %}{% endblock %}"
+                                    class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                        {% endblock %}
+
+                    </ul>
+                </li>
+                {% endif %}
                 {% endblock header_dropdowns %}
             </ul>
         </div>
