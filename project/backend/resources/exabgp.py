@@ -12,7 +12,8 @@ exabgp_cmd = {
     'shutdown',
     'restart',
     'reload',
-    'reset'
+    'reset',
+    'version'
 }
 
 class Exabgp(Resource):
@@ -27,7 +28,7 @@ class Exabgp(Resource):
         self.exabgp = ExaBGP(URL_EXABGP)
         super(Exabgp, self).__init__()
 
-    def get(self, command):
+    def post(self, command):
         """
         Execute a command on the list to ExaBGP
         """
