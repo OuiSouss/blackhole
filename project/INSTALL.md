@@ -57,7 +57,7 @@ curl -i http://127.0.0.1:5555/api/subnets -X POST -d "ip=1.13.12.1&next_hop=45.5
 curl -i http://127.0.0.1:5555/api/subnet/<id_number>  -X DELETE
 ```
 # GET : Relancer ExaBGP
-curl -i http://127.0.0.1:5555/api/exabgp/restart -X GET
+curl -i http://127.0.0.1:5555/api/exabgp/restart -X POST
 
 # Frontend
 
