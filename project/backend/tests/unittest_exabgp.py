@@ -2,9 +2,8 @@
  Units tests for exabgp
 """
 import unittest
-import os
-from io import StringIO
 from backend.funct_exabgp import ExaBGP
+from backend.resources.settings import URL_EXABGP
 
 class ExaBGPTest(unittest.TestCase):
     """
@@ -15,63 +14,77 @@ class ExaBGPTest(unittest.TestCase):
         """
          Test initialization
         """
-        self.exabgp = ExaBGP('out_test_exabgp.txt')
-
-    def tearDown(self):
-        """
-        Clear after tests
-        """
-        os.remove('out_test_exabgp.txt')
+        self.exabgp = ExaBGP(URL_EXABGP)
 
     def test_action(self):
+        """
+         Tests if the command has successfully been activated on ExaBGP
+        """
         cmd = 'restart'
         response = self.exabgp.action(cmd)
-        out = open(self.exabgp.output, "r")
-        test = out.read()
-        out.close()
-        test = test.rstrip("\n")
-        self.assertEqual(response, 'yes', 'command failed')
-        self.assertEqual(response, test, 'command failed on file')
-	
+        self.assertEqual(response, 200, 'command failed')
+
     def test_announce_one_route(self):
+        """
+         Tests if the route has successfully been activated on ExaBGP
+        """
         post = {
-            'ip': 'test_ip',
-            'next_hop': 'test_nexthop',
-            'communities': 'test_commu'
+            'ip': '10.1.0.3',
+            'next_hop': '2.2.2.2',
+            'communities': '[45:65]'
+        }
+        post2 = {
+            'ip': '10.1.0.3',
+            'next_hop': '2.2.2.2',
+            'communities': None
         }
         response = self.exabgp.announce_one_route(post)
-        out = open(self.exabgp.output, "r")
-        test = out.read()
-        out.close()
-        test = test.rstrip("\n")
-        self.assertEqual(response, 'yes', 'command failed')
-        self.assertEqual(response, test, 'command failed on file')
+        self.exabgp.withdraw_one_route(post)
+        self.assertEqual(response, 200, 'announce failed')
+        response = self.exabgp.announce_one_route(post2)
+        self.exabgp.withdraw_one_route(post2)
+        self.assertEqual(response, 200, 'announce failed')
 
     def test_withdraw_one_route(self):
+        """
+         Tests if the route has successfully been withdrawn on ExaBGP
+        """
         post = {
-            'ip': 'test_ip'
+            'ip': '10.1.0.3',
+            'next_hop': '2.2.2.2',
+            'communities': '[45:65]'
         }
+        post2 = {
+            'ip': '10.1.0.3',
+            'next_hop': '2.2.2.2',
+            'communities': None
+        }
+        self.exabgp.announce_one_route(post)
         response = self.exabgp.withdraw_one_route(post)
-        out = open(self.exabgp.output, "r")
-        test = out.read()
-        out.close()
-        test = test.rstrip("\n")
-        self.assertEqual(response, 'yes', 'command failed')
-        self.assertEqual(response, test, 'command failed on file')
+        self.assertEqual(response, 200, 'withdraw failed')
+        self.exabgp.announce_one_route(post2)
+        response = self.exabgp.withdraw_one_route(post2)
+        self.assertEqual(response, 200, 'withdraw failed')
 
     def test_update_one_route(self):
+        """
+         Tests if the route has successfully been updated on ExaBGP
+        """
         post = {
-            'ip': 'test_ip',
-            'next_hop': 'test_nexthop',
-            'communities': 'test_commu'
+            'ip': '10.1.0.3',
+            'next_hop': '3.3.3.3',
+            'communities': '[45:65]'
         }
-        response = self.exabgp.update_one_route(post)
-        out = open(self.exabgp.output, "r")
-        test = out.read()
-        out.close()
-        test = test.rstrip("\n")
-        self.assertEqual(response, 'yes', 'command failed')
-        self.assertEqual(response, test, 'command failed on file')
+        self.exabgp.announce_one_route(post)
+        post2 = {
+            'ip': '10.1.0.3',
+            'next_hop': '2.2.2.2',
+            'is_activated': False,
+            'communities': None
+        }
+        response = self.exabgp.update_one_route(post2)
+        self.exabgp.withdraw_one_route(post)
+        self.assertEqual(response, 200, 'update failed')
 
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()
