@@ -28,7 +28,7 @@ def check_community(community):
     :return: cleaned community
     """
     community_changed = ''
-    for char in range(len(community)):
+    for char, _ in enumerate(community):
         if((community[char] != '/') and (community[char] != '\"')
            and (community[char] != '\'') and (community[char] != '[')
            and (community[char] != ']')):
@@ -72,7 +72,7 @@ def json_ip_sort(data_json, key_col):
         ip_addr = data_json[key_col]
         mask = ''
         ip_no_mask = ''
-        for char in range(len(ip_addr)):
+        for char, _ in enumerate(ip_addr):
             if((ip_addr[char] != '/') and (mask == '')):
                 ip_no_mask = ip_no_mask[:char] + ip_addr[char]
             else:

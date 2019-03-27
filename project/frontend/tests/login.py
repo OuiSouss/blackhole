@@ -29,7 +29,8 @@ class LogInTest(TestCase):
         Test if the user is authenticated after a successful login
         Test if the user is not anonymous after a successful login
         """
-        response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGIN_URL, self.credentials,
+                                    follow=True)
         self.assertTrue(response.context['user'].is_authenticated)
         self.assertFalse(response.context['user'].is_anonymous)
 
@@ -38,14 +39,16 @@ class LogInTest(TestCase):
         """
         Test if the user is active
         """
-        response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGIN_URL, self.credentials,
+                                    follow=True)
         self.assertTrue(response.context['user'].is_active)
 
 
     def test_access_restricted_content(self):
         """
         Test if the user cant access restricted element when anonymous
-        Test if the user can access restricted element but only when authenticated
+        Test if the user can access restricted element but only when
+        authenticated
         """
         url_destination = settings.DASHBOARD_URL
         url_login = settings.LOGIN_URL
@@ -56,7 +59,8 @@ class LogInTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
         # not authenticated already, but redirection should be successful
-        response = self.client.post(url_destination, self.credentials, follow=True)
+        response = self.client.post(url_destination, self.credentials,
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['user'].is_anonymous)
 
@@ -76,12 +80,14 @@ class LogInTest(TestCase):
         """
         Test if the user becomes anonymous after a logout
         """
-        response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGIN_URL, self.credentials,
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context['user'].is_anonymous)
         self.assertTrue(response.context['user'].is_authenticated)
 
-        response = self.client.post(settings.LOGOUT_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGOUT_URL, self.credentials,
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['user'].is_anonymous)
         self.assertFalse(response.context['user'].is_authenticated)

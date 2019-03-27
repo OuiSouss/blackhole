@@ -27,7 +27,8 @@ class BadLogInTest(TestCase):
         Test if the user is not authenticated after a failed login
         Test if the user is anonymous after a failed login
         """
-        response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGIN_URL,
+                                    self.credentials, follow=True)
         self.assertFalse(response.context['user'].is_authenticated)
         self.assertTrue(response.context['user'].is_anonymous)
 
@@ -36,14 +37,16 @@ class BadLogInTest(TestCase):
         """
         Test if the user is not active
         """
-        response = self.client.post(settings.LOGIN_URL, self.credentials, follow=True)
+        response = self.client.post(settings.LOGIN_URL,
+                                    self.credentials, follow=True)
         self.assertFalse(response.context['user'].is_active)
 
 
     def test_access_restricted_content(self):
         """
         Test if the user cant access restricted element when anonymous
-        Test if the user can access restricted element but only when authenticated
+        Test if the user can access restricted element but only when
+        authenticated
         """
         url_destination = settings.DASHBOARD_URL
         url_login = settings.LOGIN_URL
@@ -54,7 +57,8 @@ class BadLogInTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
         # not authenticated already, but redirection should be successful
-        response = self.client.post(url_destination, self.credentials, follow=True)
+        response = self.client.post(url_destination,
+                                    self.credentials, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['user'].is_anonymous)
 

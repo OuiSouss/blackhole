@@ -130,7 +130,3 @@ class RouteManagerTest(TestCase):
                 # Then an assert is triggered
                 print("\n\n>>> accepted next_hop : ", wrong_next_hop)
                 self.assertFalse(form.is_valid())
-
-
-
-
