@@ -1,6 +1,6 @@
 \chapter{Analyse de l'existant}
 
-Dans le cadre du projet, il nous avons besoin :
+Dans le cadre du projet, il nous avons besoin : 
 
 \begin{itemize}
     \item D'un serveur de route permettant de diffuser auprès des routeurs les mises à jour des routes.
@@ -19,7 +19,7 @@ Cet outil utilise le format JSON pour rendre les messages BGP plus agréables à
 \section{Django}
 \textbf{Version Django 2.1.5}
 
-Django \cite{Django03} est un framework utilisant le langage Python. Il a été développé pour facilité le travail des journaliste dans la ville de Lawrence dans le Kansas à partir de 2003 et s'est ouvert au public en 2005. Il est gratuit et open source, consacré au développement web. Il propose des bases simples et déjà implémentées par d'autres développeurs, comme une page pour l'authentification des utilisateurs ou de quoi gérer le site. Cela permet de grandement faciliter la tâche pour créer une interface web.
+Django \cite{Django03} est un framework utilisant le langage Python. Il a été développé pour facilité le travail des journaliste dans la ville de Lawrence dans le Kansas à partir de 2003 et s'est ouvert au public en 2005. Il est gratuit et open source, consacré au développement web. Il propose des bases simples et déjà implémentées par d'autres développeurs, comme une page pour l'authentification des utilisateurs ou de quoi gérer le site. Cela permet de grandement faciliter la tâche pour créer une interface web. 
 
 Nous l'utiliserons en tant que Front-End pour générer une interface utilisateur simple avec authentification. Elle permettra à l'administrateur de gérer les routes. Ces commandes seront ensuite traitées par le Back-End. Par conséquent, nous devons définir une \hyperref[sssec:ui]{interface utilisateur}. Ce choix nous paraît judicieux car l'apprentissage de l'utilisation de Django semble rapide.
 
@@ -33,7 +33,7 @@ Il nous permettra d'en générer une derrière l'interface utilisateur, ce qui p
 \section{Méthode de virtualisation avec NEmu}
 \href{https://gitlab.com/v-a/nemu}{NEmu} (Network Emulator for Mobile Universes) est un environnement de réseaux virtuels distribués, écrit en Pyhton. Il est destiné à l'enseignement et a été élaboré par une équipe de l'Université de Bordeaux. Il gère des machines virtuelles de type QEmu pour construire différentes topologies virtuelles. Ainsi, il possible de relier plusieurs machines entre elles, de simuler des switchs ou des routeurs. Il est également possible, de connecter deux réseaux virtuels différents sur deux machines physiques différentes, correspondant à deux sessions distinctes. On peut également créer plusieurs environnements virtuels, sans qu'ils ne connaissent l'existence les uns des autres.
 
-Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante. Cet outil est fondamental pour les tests d'acceptation que nous mettrons en place. En effet, il faut que l'on crée un environnement avec un attaquant, un client et un serveur, ainsi que deux routeurs de frontières.
+Ainsi nous pourrions facilement créer un, voire plusieurs ensembles de machine pour figurer un réseau et simuler l'envoie de paquet d'une machine attaquante. Cet outil est fondamental pour les tests d'acceptation que nous mettrons en place. En effet, il faut que l'on crée un environnement avec un attaquant, un client et un serveur, ainsi que deux routeurs de frontières.   
 
 \section{Erco}
 \textit{Apache License Version 2.0, January 2004}
@@ -44,7 +44,7 @@ Il permet l'ajout et la suppression de routes. Voici ce que nous propose la dém
 
 \begin{figure}[H]
 \caption{Démo de Erco : Annoncer un nouveau réseau}
-\fbox{\includegraphics[width=\textwidth]{./erco_demo_announce.png}}
+\fbox{\includegraphics[width=\textwidth]{erco_demo_announce.png}}
 \label{fig:erco_demo_announce}
 \end{figure}
 
@@ -74,7 +74,7 @@ Il leur a permis de développer une API restful permettant l'envoi des commandes
 \label{fig:meteor_route}
 \end{figure}
 
-Pour stocker les modifications concernant les routes, ils ont utilisé une base de données avec MongoDB. C'est également un logiciel open source.
+Pour stocker les modifications concernant les routes, ils ont utilisé une base de données avec MongoDB. C'est également un logiciel open source. 
 
 GNS3 et Nemu leur auront permis de créer un environnement virtuel pour tester leur implémentation. Un read.me est disponible pour configurer l'environnement, pour pouvoir nous même lancer les tests avec leurs travaux. Des installations au préalable doivent être effectuées.
 Pour la modification directement sur les routeurs, ils ont utilisés ExaBGP. Recevant les réponses en JSON, ils ont implementé un convertisseur en python pour les transformer en chaîne de caractère et ainsi pouvoir les envoyer sur les routeurs.
