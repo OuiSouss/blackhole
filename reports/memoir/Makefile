@@ -5,6 +5,8 @@ REPORT_TEX = report.tex
 REPORT_DEP = chapter-analyze.tex chapter-gantt.tex chapter-intro.tex
 REPORT_DEP += chapter-requirements.tex chapter-state-of-the-art.tex
 REPORT_DEP += chapter-tests.tex chapter-user-story.tex biblio.bib
+REPORT_DEP += chapter-archi.tex chapter-limitations.tex abstract.tex
+REPORT_DEP += chapter-virtualization.tex chapter-conclusion.tex
 
 all: $(REPORT_PDF)
 
@@ -15,7 +17,7 @@ $(REPORT_PDF): $(REPORT_TEX) $(REPORT_DEP) Makefile
 	pdflatex -shell-escape $<
 
 clean:
-	rm -f *~ *.nav *.snm *.toc *.out *.aux *.log *.bbl *.blg
+	rm -f *~ *.nav *.snm *.toc *.out *.aux *.log *.bbl *.blg *.fdb_latexmk *.fls
 	rm -r _minted-report
 	rm -f $(REPORT_PDF)
 

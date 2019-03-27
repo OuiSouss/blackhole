@@ -1,25 +1,46 @@
 \chapter{Limitations}
 
-Les limites de l'application
+\section{Limitation du Frontend}
+\paragraph{}Nous avons essayez de répondre au mieux aux différents besoin du cahier des charges. Malgré cela nous nous sommes heurté face à certains problème non résolu et certaines fonctionnalitées n'ont pas pu être implémentée.
+
+\subsection{Nombre de clients}
+\paragraph{}Nous n'avons pas pu gérer la gestion de plusieurs clients sur l'application. Plusieurs clients différents peuvent se connecter sur des comptes différents et agir en même temps sur l'api, malheureusement ce qui pause problème, c'est le fait que chaque client n'a pas conscience des autres et ne verra ce qui est fait par un autre que lorsque il recharge la page, ce qui recharge les données de l'api.
+
+\subsection{Gestion des erreurs}
+\paragraph{}Pour le moment, nous avons mis en oeuvre la gestion de quelques erreurs courantes:
+\begin{itemize}
+    \item Api déconnectée: Une exception permet de rediriger vers une page d'erreur si l'api n'est pas atteignable.
+    \item Erreur sur le format JSON: Une exception permet de rediriger vers une page d'erreur si les données reçu de l'api ne sont pas conformes.
+    \item Erreur d'import: Une exception permet de rediriger vers une page page d'erreur si le fichier d'import ne peut pas être ouvert.
+    \item Erreur de modification: Nous avons désactivé les boutons "modifier" en même temps que les "input" car il est impossible de modifier un input désactiver. 
+    \item Erreur de création: Pour éviter les erreurs de création, nous avons implémenté des validateurs pour que le format soit le bon. Pour le moment, nous ne récupérons pas les "Next\_hop" et les "communautés" implémentée donc la présence des validateurs est la seule sécurité.
+\end{itemize}
+
+\subsection{Page Non Dynamique}
+\paragraph{}Lors de chaque action, la page renvoie une requête traitée par notre view. A chaque passage dans le view, nous rechargeons les données en envoyant une requête GET à l'api. Nous ne savons pas si les données sont changées dans l'api entre 2 chargement des données. Nous avons implémenté une fonction pour obtenir une seule route de l'api mais nous n'avons pas eu le temps de l'appliquer.
+De plus, nous utilisons peu de javascript, les fonctions de tri pourraient être ajouté dans des scripts pour éviter de faire un tri dans le view et donc éviter de faire un nouveau GET. 
+
+\subsection{Vitesse d'exécution}
 
 
-% Pas de mise à jour en temps réel
-% Chaque opération nécessite une mise à jour de la page
 
-% Rapidité d'affichage des routes
-% Graph : 2.500 routes en une seconde
-% Graph : 240.000 routes en une minute
 
+\paragraph{}Lors de nos tests, nous avons pu vérifier la vitesse d'affichage de notre "Dashboard" en fonction du nombre routes présente dans nos données. Cela nous à démontré que si le nombre de route est trop grand, le chargement peut être assez long sachant que à chaque action on recharge les données.
+
+\subsection{Complexité}
 % Complexité linéaire, pas d'anomalies
 
+\subsection{Utilisation de la mémoire}
 % Faible utilisation d'espace mémoire
 % 3 string (ip, next_hop, community)
 % 3 dates (date_modif, date_creation, date_last_modif)
 % 1 booléen (is_active)
 
+\subsection{Fonctionnalitées}
 % Impossible de créer une route dans plusieurs communautés
 % Conversion bizarre "String <=> Liste" par l'API
 
+\subsection{Performance}
 % Lenteur d'exécution des opérations par l'intermédiaire de Django
 % Pas de parallélisme implicite. Nécessite librairies et implémentation
 
@@ -27,5 +48,9 @@ Les limites de l'application
 % Parallélisme simple en exécutant les commandes depuis plusieurs terminaux
 % Utilitaires de développement
 
+\section{Limitation du backend}
+% Les opérations API sont rapide (de l'ordre de 300ms)
+% Les opérations sur le frontend sont lentes (de l'ordre le la seconde)
+% Les opérations ExaBGP ont une vitesse indéterminnées (ont sait pas si c'est rapide ou pas)
 
 
