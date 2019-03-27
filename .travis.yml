@@ -2,24 +2,31 @@ branches:
   only:
   - master
   - integrate_exabgp
-language: python
-python:
-  - "3.5"
-  - "2.7"
 addons:
   sonarcloud:
     organisation: "ouisouss-github"
-install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then pip install -r project/requirements.txt; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install exabgp==3.4.26 flask; fi
-script:
-  - nosetests project/backend/tests/*
-  - cd project
-  - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/*
-  - (cd exabgp; mkdir /etc/exabgp; cp app.py /etc/exabgp/; exabgp exabgp.conf)
-  - (cd backend; ./run.sh &)
-  - (cd frontend; ./run_tests.sh)
-  - coverage run --source=blackhole_ui,route_manager,templates  --omit=frontend/blackhole_ui/wsgi.py ./frontend/manage.py test tests.api_backend tests.bad_login tests.dashboard tests.login; coverage xml -o coverage_frontend.xml -i; coverage report -m
-  - cd ..
-  - bash generate-pylint-report.sh
-  - sonar-scanner
+matrix:
+  include:
+    - language: python
+      python: 2.7
+      before_script:
+        - sudo pip install exabgp==3.4.26 Flask
+      script:
+        - cd project/exabgp
+        - sudo mkdir /etc/exabgp
+        - sudo cp app.py /etc/exabgp/app.py
+        - env exabgp.daemon.daemonize=false exabgp.log.destination=exabgp.log exabgp exabgp.conf &
+    - language: python
+      python: 3.5
+      before_script:
+        - pip install -r project/requirements.txt
+      script:
+        - nosetests project/backend/tests/*
+        - cd project
+        - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/*
+        - (cd backend; ./run.sh &)
+        - (cd frontend; ./run_tests.sh)
+        - coverage run --source=blackhole_ui,route_manager,templates  --omit=frontend/blackhole_ui/wsgi.py ./frontend/manage.py test tests.api_backend tests.bad_login tests.dashboard tests.login; coverage xml -o coverage_frontend.xml -i; coverage report -m
+        - cd ..
+        - bash generate-pylint-report.sh
+        - sonar-scanner
