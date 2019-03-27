@@ -10,8 +10,8 @@ addons:
   sonarcloud:
     organisation: "ouisouss-github"
 install:
-  - pip3 install -r project/requirements.txt
-  - pip install exabgp==3.4.26 flask
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then pip install -r project/requirements.txt; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install exabgp==3.4.26 flask; fi
 script:
   - nosetests project/backend/tests/*
   - cd project
