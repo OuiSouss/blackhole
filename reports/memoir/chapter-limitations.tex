@@ -1,0 +1,31 @@
+\chapter{Limitations}
+
+Les limites de l'application
+
+
+% Pas de mise à jour en temps réel
+% Chaque opération nécessite une mise à jour de la page
+
+% Rapidité d'affichage des routes
+% Graph : 2.500 routes en une seconde
+% Graph : 240.000 routes en une minute
+
+% Complexité linéaire, pas d'anomalies
+
+% Faible utilisation d'espace mémoire
+% 3 string (ip, next_hop, community)
+% 3 dates (date_modif, date_creation, date_last_modif)
+% 1 booléen (is_active)
+
+% Impossible de créer une route dans plusieurs communautés
+% Conversion bizarre "String <=> Liste" par l'API
+
+% Lenteur d'exécution des opérations par l'intermédiaire de Django
+% Pas de parallélisme implicite. Nécessite librairies et implémentation
+
+% Rapidité d'exécution des opérations sans l'intermédiaire de Django
+% Parallélisme simple en exécutant les commandes depuis plusieurs terminaux
+% Utilitaires de développement
+
+
+
