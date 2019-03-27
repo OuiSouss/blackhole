@@ -34,11 +34,11 @@ class Exabgp(Resource):
         """
         if command not in exabgp_cmd:
             abort(404,
-                  message='Command does not exist : {}'\
+                  description='Command does not exist : {}'\
                           .format(command))
         response = self.exabgp.action(command)
-        if response != 200:
-            abort(404,
-                  message='Cannot launch command : {}'\
-                          .format(command))
-        return 200
+        response = {
+            "response": response.text.strip('\n'),
+            "status": response.status_code
+        }
+        return response

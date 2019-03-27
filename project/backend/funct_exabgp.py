@@ -1,9 +1,10 @@
 """
 Class ExaBGP
 """
-
-import requests
+import os
+import subprocess
 from flask import abort
+import requests
 
 class ExaBGP:
     """
@@ -15,6 +16,25 @@ class ExaBGP:
         """
         self.url_exabgp = url_exabgp
 
+    def is_exabgp_running(self):
+        """
+        is_exabgp_running check is exabgp is running
+
+        :return: True if an instance of exabgp is find, false if not
+        :rtype: boolean
+        """
+
+        exabgp_pid = 0
+        try:
+            exabgp_pid = int(subprocess.check_output(['pgrep', 'exabgp'])\
+                             .decode('utf-8').rstrip())
+            os.kill(exabgp_pid, 0)
+        except subprocess.CalledProcessError:
+            return False
+        except OSError:
+            return False
+        return True
+
     def action(self, command):
         """
         Execute a command to ExaBGP
@@ -22,8 +42,10 @@ class ExaBGP:
         :type cmd: str
         :return:  The ExaBGP's response
         """
+        if not self.is_exabgp_running():
+            abort(503, description='ExaBGP is not running')
         response = requests.post(self.url_exabgp, data={'command' : command})
-        return response.status_code
+        return response
 
     def announce_one_route(self, post):
         """
@@ -32,6 +54,8 @@ class ExaBGP:
         :type post: dict
         :return: The ExaBGP's response
         """
+        if not self.is_exabgp_running():
+            abort(503, description='ExaBGP is not running')
         if post['communities'] is None:
             command = 'announce route {} next-hop {} \n'\
                      .format(post['ip'],
@@ -52,11 +76,13 @@ class ExaBGP:
         :type post: dict
         :return: The ExaBGP's response
         """
+        if not self.is_exabgp_running():
+            abort(503, description='ExaBGP is not running')
         for route in post:
             if route['is_activated'] is True:
                 response = self.announce_one_route(route)
                 if response != 200:
-                    abort(404, message='')
+                    abort(404, description='Can\'t announce route')
         return 200
 
     def withdraw_one_route(self, delete):
@@ -66,6 +92,8 @@ class ExaBGP:
         :type delete: dict
         :return:  The ExaBGP's response
         """
+        if not self.is_exabgp_running():
+            abort(503, description='ExaBGP is not running')
         if delete['communities'] is None:
             command = 'withdraw route {} next-hop {}\n'\
                      .format(delete['ip'],
@@ -85,11 +113,13 @@ class ExaBGP:
         :type patch: dict
         :return:  The ExaBGP's response
         """
+        if not self.is_exabgp_running():
+            abort(503, description='ExaBGP is not running')
         response = self.withdraw_one_route(patch)
         if response != 200:
-            abort(404, message='')
+            abort(404, description='Can\'t update route at withdraw time')
         if patch['is_activated'] is True:
             response = self.announce_one_route(patch)
             if response != 200:
-                abort(404, message='')
+                abort(404, description='Can\'t udpdate route at announce time')
         return response

@@ -42,7 +42,7 @@ class Subnets(Resource):
         self.mongo_db = MongoDB('Route')
         self.exabgp = ExaBGP(URL_EXABGP)
         super(Subnets, self).__init__()
-        response = self.exabgp.announces_routes(self.mongo_db.get_all_routes())
+        self.exabgp.announces_routes(self.mongo_db.get_all_routes())
 
 
     def get(self):
