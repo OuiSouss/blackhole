@@ -16,4 +16,4 @@ class Post(models.Model):
         validator_ip, message="Exemple: 192.168.0.1/32")])
     next_hop = models.GenericIPAddressField(protocol='IPv4')
     community = models.CharField(max_length=5, validators=[RegexValidator(
-        validator_com, message="Exemple: 45:50")])
+        validator_com, message="Exemple: 45:50")], blank=True, null=True)
