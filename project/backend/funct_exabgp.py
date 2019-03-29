@@ -24,7 +24,7 @@ class ExaBGP:
         :return:  The ExaBGP's response
         """
         response = requests.post(self.url_exabgp, data={'command' : command})
-        if response.ok :
+        if response.ok:
             return response
         return None
 
@@ -40,10 +40,12 @@ class ExaBGP:
                      .format(post['ip'],
                              post['next_hop'])
         else:
+            for com in  post['communities']:
+                community = '[%s]' % com
             command = 'announce route {} next-hop {} community {} \n'\
                      .format(post['ip'],
                              post['next_hop'],
-                             post['communities'])
+                             community)
 
         response = requests.post(self.url_exabgp, data={'command' : command})
         return response.status_code
@@ -74,10 +76,12 @@ class ExaBGP:
                      .format(delete['ip'],
                              delete['next_hop'])
         else:
+            for com in  delete['communities']:
+                community = '[%s]' % com
             command = 'withdraw route {} next-hop {} community {} \n'\
                      .format(delete['ip'],
                              delete['next_hop'],
-                             delete['communities'])
+                             community)
         response = requests.post(self.url_exabgp, data={'command' : command})
         return response.status_code
 
