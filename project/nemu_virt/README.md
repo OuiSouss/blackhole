@@ -81,7 +81,7 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
 10. Installer ExaBGP sur le **route-server**
     ```bash
     apt install python-pip
-    pip install exabgp==3.4.26
+    pip install exabgp==3.4.26 flask
     ```
     **Il faut impérativement utiliser la version 3.4.26 d'ExaBGP et python 2**
 11. Executer Exabgp en plaçant les fichiers dans la VM **route-server** comme suit :
