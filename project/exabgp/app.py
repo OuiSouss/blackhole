@@ -27,7 +27,7 @@ def read_output_file(output_file_path):
     number = 0
     response = ''
     for line in lines:
-        if ('Responding' in line and 'exabgp' in line and number == 0):
+        if ('Responding to httpapi : exabgp' in line) and (number == 0):
             line = line.split(':')
             line = line[-1].strip(' ')
             response = line

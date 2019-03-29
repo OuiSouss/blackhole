@@ -152,5 +152,70 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(post2['is_activated'], post3['is_activated'],
                          'activation failed')
 
+    def test_update_route_and_activation(self):
+        """
+        test_update_route_and_activation
+
+        Test if last_activation is updated when
+        is_activated change from false to true
+
+        """
+        patch = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(patch)
+        patch_activated_false = self.database.update_route({
+            '_id': route_id,
+            'is_activated': False,
+        })
+        last_activation_when_false = patch_activated_false['last_activation']
+        patch_activated_true = self.database.update_route({
+            '_id': route_id,
+            'is_activated': True,
+        })
+        last_activation_when_true = patch_activated_true['last_activation']
+        self.database.delete_route({'_id': route_id})
+        self.assertNotEqual(last_activation_when_false,
+                            last_activation_when_true,
+                            'last_activation must be change')
+
+    def test_put_route_and_activation(self):
+        """
+        test_put_route_and_activation
+
+        Test if last_activation is updated when
+        is_activated change from false to true
+
+        """
+        patch = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(patch)
+        patch_activated_false = self.database.put_route({
+            '_id': route_id,
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop2',
+            'communities': 'test_commu2',
+            'is_activated': False,
+        })
+        last_activation_when_false = patch_activated_false['last_activation']
+        patch_activated_true = self.database.put_route({
+            '_id': route_id,
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop2',
+            'communities': 'test_commu2',
+            'is_activated': True,
+        })
+        last_activation_when_true = patch_activated_true['last_activation']
+        self.database.delete_route({'_id': route_id})
+        self.assertNotEqual(last_activation_when_false,
+                            last_activation_when_true,
+                            'last_activation must be change')
+
+
 if __name__ == '__main__':
     unittest.main()

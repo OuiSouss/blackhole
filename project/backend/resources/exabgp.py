@@ -13,7 +13,9 @@ exabgp_cmd = {
     'restart',
     'reload',
     'reset',
-    'version'
+    'version',
+    'show neighbors',
+    'teardown'
 }
 
 class Exabgp(Resource):
