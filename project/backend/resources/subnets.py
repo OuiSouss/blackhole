@@ -42,8 +42,6 @@ class Subnets(Resource):
         self.mongo_db = MongoDB('Route')
         self.exabgp = ExaBGP(URL_EXABGP)
         super(Subnets, self).__init__()
-        self.exabgp.announces_routes(self.mongo_db.get_all_routes())
-
 
     def get(self):
         """
@@ -55,6 +53,7 @@ class Subnets(Resource):
         :rtype: list
         """
         items = self.mongo_db.get_all_routes()
+        self.exabgp.announces_routes(items)
         for i in items:
             _id = i['_id']
             del i['_id']
