@@ -18,7 +18,7 @@ pip install -r requirements.txt
 ##### Lances les tests
 ```bash
 # Depuis le répertoire "backend"
-nosetests --with-coverage tests/unittest_base.py --cover-package=backend --cover-html
+nosetests --with-coverage tests/* --cover-package=backend --cover-html
 ```
 
 ##### Generate docs
