@@ -24,7 +24,7 @@ class RouteManagerTest(TestCase):
         form_data = {}
         form_data['ip'] = self.correct_ip
         form_data['next_hop'] = self.correct_next_hop
-        form_data['community'] = self.correct_community
+        form_data['communities'] = self.correct_community
 
         form = PostForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -67,7 +67,7 @@ class RouteManagerTest(TestCase):
 
         form_data = {}
         form_data['next_hop'] = self.correct_next_hop
-        form_data['community'] = self.correct_community
+        form_data['communities'] = self.correct_community
 
         for wrong_ip in wrong_ip_list:
             form_data['ip'] = wrong_ip
@@ -81,33 +81,6 @@ class RouteManagerTest(TestCase):
                 print("\n\n>>> accepted wrong_ip : ", wrong_ip)
                 self.assertFalse(form.is_valid())
 
-
-    def test_form_add_route_incorrect_community(self):
-        """
-        Test the form to add a route, but with a list of incorrect community
-        """
-
-        wrong_community_list = []
-        wrong_community_list.append(None)
-        wrong_community_list.append('')
-
-        form_data = {}
-        form_data['ip'] = self.correct_ip
-        form_data['next_hop'] = self.correct_next_hop
-
-        for wrong_community in wrong_community_list:
-            form_data['community'] = wrong_community
-            form = PostForm(data=form_data)
-
-            # Testing impossible cases
-            # the form must not become valid
-            if form.is_valid():
-                # If a wrong value is accepted as correct
-                # Then an assert is triggered
-                print("\n\n>>> accepted community : ", wrong_community)
-                self.assertFalse(form.is_valid())
-
-
     def test_form_add_route_incorrect_next_hop(self):
         """
         Test the form to add a route, but with a list of incorrect next_hop
@@ -117,7 +90,7 @@ class RouteManagerTest(TestCase):
 
         form_data = {}
         form_data['ip'] = self.correct_ip
-        form_data['community'] = self.correct_community
+        form_data['communities'] = self.correct_community
 
         for wrong_next_hop in wrong_next_hop_list:
             form_data['next_hop'] = wrong_next_hop

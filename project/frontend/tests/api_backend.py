@@ -265,7 +265,7 @@ class APIbackendTest(TestCase):
         route_data = {
             'ip': self.test_ip,
             'next_hop': self.test_next_hop,
-            'community': self.test_community}
+            'communities': self.test_community}
         form = post_form(data=route_data)
         self.assertTrue(form.is_valid())
 
@@ -273,7 +273,7 @@ class APIbackendTest(TestCase):
         request_json.post_new_route(
             route_data['ip'],
             route_data['next_hop'],
-            route_data['community']
+            route_data['communities']
             )
 
     def delete_default_route(self):
