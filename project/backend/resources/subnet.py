@@ -44,7 +44,7 @@ class Subnet(Resource):
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
-            help='The next hop with d.d.d.d form 0 < d < 255',
+            help='The communities with a:b form, a and b between 0 and 65535',
             type=inputs.regex(COMMUNITIES_REGEX),
         )
         self.simple_parser = reqparse.RequestParser()
@@ -111,7 +111,9 @@ class Subnet(Resource):
             is_activated = False
         subnet['ip'] = args.ip
         subnet['next_hop'] = args.next_hop
-        subnet['communities'] = args.communities
+        subnet['communities'] = None
+        if (args.communities is not None):
+            subnet['communities'] = list(args.communities.split(','))
         subnet['is_activated'] = is_activated
         subnet = self.mongo_db.put_route(subnet)
         response = self.exabgp.update_one_route(subnet)

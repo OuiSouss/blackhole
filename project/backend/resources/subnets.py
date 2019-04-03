@@ -83,10 +83,13 @@ class Subnets(Resource):
         :rtype: dict, HTTP status
         """
         args = self.general_parser.parse_args()
+        communities = None
+        if (args.communities is not None):
+            communities = list(args.communities.split(','))
         subnet = {
             'ip': args.ip,
             'next_hop': args.next_hop,
-            'communities': args.communities,
+            'communities': communities,
         }
         response = self.exabgp.announce_one_route(subnet)
         if response != 200:
