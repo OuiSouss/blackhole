@@ -33,6 +33,7 @@ class ExaBGP:
         :type post: dict
         :return: The ExaBGP's response
         """
+        command = ''
         if post['communities'] is None:
             command = 'announce route {} next-hop {} \n'\
                      .format(post['ip'],
@@ -69,6 +70,7 @@ class ExaBGP:
         :type delete: dict
         :return:  The ExaBGP's response
         """
+        command = ''
         if delete['communities'] is None:
             command = 'withdraw route {} next-hop {}\n'\
                      .format(delete['ip'],

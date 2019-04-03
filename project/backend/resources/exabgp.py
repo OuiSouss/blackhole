@@ -14,7 +14,7 @@ exabgp_cmd = {
     'reload',
     'reset',
     'version',
-    'show neighbors',
+    'show neighbor',
     'teardown'
 }
 

@@ -10,8 +10,8 @@ from time import sleep
 from flask import Flask, request, abort
 
 app = Flask(__name__)
-EXABGP_LOG = 'tmp/exabgp.log'
-EXABGP_OUT = 'tmp/output.toto'
+EXABGP_LOG = '/tmp/exabgp.log'
+EXABGP_OUT = '/tmp/output.toto'
 
 
 def read_output_file(output_file_path):
