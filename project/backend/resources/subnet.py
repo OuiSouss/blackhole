@@ -4,7 +4,7 @@ subnet.py
 REST API /api/subnet
 """
 from flask import jsonify, abort
-from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_restful import Resource, reqparse, fields, marshal_with, inputs
 from backend.database.funct_base import MongoDB
 from backend.funct_exabgp import ExaBGP
 from backend.resources.settings import URL_EXABGP
@@ -28,23 +28,29 @@ class Subnet(Resource):
     """
 
     def __init__(self):
+        NETWORK_REGEX = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$'
+        IP_REGEX = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+        COMMUNITIES_REGEX = '^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])\:([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
             'ip', dest='ip', location=['form', 'json'], required=True,
-            help='The IP',
+            help='The IP with d.d.d.d/m form 0 < d < 255 and 0 < m < 32',
+            type=inputs.regex(NETWORK_REGEX),
         )
         self.general_parser.add_argument(
             'next_hop', dest='next_hop', location=['form', 'json'],
-            required=True, help='The next hop',
+            required=True, help='The next hop with d.d.d.d form 0 < d < 255',
+            type=inputs.regex(IP_REGEX),
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
-            action='append'
+            help='The next hop with d.d.d.d form 0 < d < 255',
+            type=inputs.regex(IP_REGEX),
         )
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation',
+            required=True, help='The boolean activation',
         )
         self.exabgp = ExaBGP(URL_EXABGP)
         self.mongo_db = MongoDB('Route')
