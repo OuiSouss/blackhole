@@ -104,11 +104,6 @@ class ExaBGPTest(TestCase):
         """
          Tests if the route has successfully been updated on ExaBGP
         """
-        post = {
-            'ip': '10.1.0.3',
-            'next_hop': '3.3.3.3',
-            'communities': '[45:65]'
-        }
         post2 = {
             'ip': '10.1.0.3',
             'next_hop': '2.2.2.2',

@@ -1,8 +1,6 @@
 """
 Class ExaBGP
 """
-import os
-import subprocess
 from flask import abort
 import requests
 
