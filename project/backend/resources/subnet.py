@@ -45,7 +45,7 @@ class Subnet(Resource):
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
             help='The next hop with d.d.d.d form 0 < d < 255',
-            type=inputs.regex(IP_REGEX),
+            type=inputs.regex(COMMUNITIES_REGEX),
         )
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
