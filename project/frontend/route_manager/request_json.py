@@ -17,6 +17,11 @@ def post_new_route(ip_addr, next_hop, communities):
     :type communities: String
     :return: Error code.
     """
+    if communities in ('', 'None'):
+        return requests.post(settings.API_URL,
+                             json={
+                                 'ip': ip_addr,
+                                 'next_hop': next_hop})
     return requests.post(settings.API_URL,
                          json={
                              'ip': ip_addr,
@@ -49,10 +54,16 @@ def put_route(ident, ip_addr, next_hop, communities):
     :type communities: String
     :return: Error code.
     """
+    if communities in ('', 'None'):
+        return requests.put(settings.API_URL_SINGLE+"/"+ident,
+                             json={
+                                 'ip': ip_addr,
+                                 'next_hop': next_hop,
+                                 'is_activated': True})
     return requests.put(settings.API_URL_SINGLE+"/"+ident,
                         json={
                             'ip': ip_addr,
-                            'communities': communities,
+                            'communities': communities.split(',')[0],
                             'next_hop': next_hop,
                             'is_activated': True})
 
