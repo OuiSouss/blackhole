@@ -1,24 +1,26 @@
 \chapter{Diagramme de Gantt}
-% en cours de modifications ;)
 \begin{ganttchart}[
 hgrid=true,
 vgrid={{dotted}}
 ]{1}{18}
 \gantttitle{Routage vers trou noir}{18} \\
 \gantttitlelist{6,...,14}{2} \\
-% red = geoff ; green = cyrielle ; blue = kévin ; yellow = amélie
 \ganttbar[
 bar/.append style={fill=red!40}
 ]{Connexion/Déconnexion}{1}{2} \\
 \ganttbar[
 bar/.append style={fill=red!40}
-]{UI avec Django}{2}{4} \\
+]{UI avec Django}{2}{4}
 \ganttbar[
 bar/.append style={fill=blue!40}
-]{Gestions des routes via UI}{4}{8} \\
+]{}{4}{5}
+ \\
+\ganttbar[
+bar/.append style={fill=blue!40}
+]{Gestions des routes via UI}{4}{10} \\
 \ganttbar[
 bar/.append style={fill=green!40}
-]{Gestion des routes via MongoDB}{4}{8} \\
+]{Gestion des routes via MongoDB}{4}{10} \\
 \ganttbar[
 bar/.append style={fill=yellow!40}
 ]{API Restful}{4}{10} \\
@@ -26,17 +28,11 @@ bar/.append style={fill=yellow!40}
 bar/.append style={fill=yellow!40}
 ]{Conversion HTTP/JSON}{5}{7} \\
 \ganttbar[
-bar/.append style={fill=yellow!40}
-]{Lien UI/API}{8}{10} \\
-\ganttbar[
-bar/.append style={fill=blue!40}
-]{Générer cache}{8}{10} \\
-\ganttbar[
 bar/.append style={fill=green!40}
 ]{Envoyer routes à ExaBGP}{9}{14} \\
 \ganttbar[
 bar/.append style={fill=blue!40}
-]{Embellissement UI}{9}{14} \\
+]{Embellissement UI}{9}{16} \\
 \ganttbar[
 bar/.append style={fill=yellow!40}
 ]{Virtualisation}{9}{16} \\
@@ -46,11 +42,10 @@ bar/.append style={fill=green!40}
 \ganttbar[
 bar/.append style={fill=red!40}
 ]{Tests unitaires frontend}{8}{16}
-
 \end{ganttchart}
-
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-Légende & \cellcolor{green!40} Cyrielle DUBOIS & \cellcolor{yellow!40} Amélie RISI & \cellcolor{red!40} Geoffroy GRESSIER & \cellcolor{blue!40} Kevin Maitre \\
+Légende & \cellcolor{green!40} Cyrielle DUBOIS & \cellcolor{yellow!40} Amélie RISI & \cellcolor{red!40} Geoffroy GRESSIER & \cellcolor{blue!40} Kevin Maitre
+\\
 \hline
 \end{tabular}

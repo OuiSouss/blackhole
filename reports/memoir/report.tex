@@ -1,5 +1,9 @@
 %%% Document class %%%
-\documentclass[a4paper,12pt]{memoir}
+
+%ça évite les pages blanches nulles entre chaque chapitre
+\documentclass[oneside,12pt]{memoir}
+
+%\documentclass[a4paper,12pt]{memoir}
 
 %%% Packages %%%
 \usepackage[margin=1.2in]{geometry}
@@ -13,11 +17,11 @@
 \usepackage{xcolor}
 \usepackage{tabularx}
 \usepackage{colortbl}
-\usepackage{xcolor}
 \usepackage{pgfgantt}
+\usepackage{array}
 
 %%% Graphic path %%%
-\graphicspath{{../medias/}}
+\graphicspath{{medias/}}
 
 %%% Bibliography %%%
 \bibliographystyle{alpha}
@@ -209,6 +213,10 @@ Mention \emph{Informatique},\\
 \input{./chapter-gantt.tex}
 
 \input{./chapter-conclusion.tex}
+
+\newpage 
+
+\input{./remerciements.tex}
 
 \nocite{*}
 

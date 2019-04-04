@@ -1,19 +1,33 @@
 \chapter{Limitations}
 
-\section{Limitation du Frontend}
-\paragraph{}Nous avons essayez de répondre au mieux aux différents besoin du cahier des charges. Malgré cela nous nous sommes heurté face à certains problème non résolu et certaines fonctionnalitées n'ont pas pu être implémentée.
+\paragraph{}Nous avons essayez de répondre au mieux aux différents besoins du cahier des charges. Malgré cela, nous nous sommes heurtés face à certains problèmes non résolus, et certaines fonctionnalités n'ont pas pu être implémentée de manière optimale.
+% stop
 
-\subsection{Nombre de clients}
-\paragraph{}Nous n'avons pas pu gérer la gestion de plusieurs clients sur l'application. Plusieurs clients différents peuvent se connecter sur des comptes différents et agir en même temps sur l'api, malheureusement ce qui pause problème, c'est le fait que chaque client n'a pas conscience des autres et ne verra ce qui est fait par un autre que lorsque il recharge la page, ce qui recharge les données de l'api.
+\section{Limitation du Frontend}
+
+\subsection{Nombre d'utilisateurs}%OK
+\paragraph{}
+
+Plusieurs utilisateurs différents peuvent se connecter et agir en même temps sur notre application. Leurs actions seront toutes prises en compte.
+
+L'API peut gérer ces requêtes venant de sources multiples, mais nous n'avons pas de garantie que ces requêtes seront toutes traitées ou que les accès concurrents ne provoqueront pas de conflits.
+Lors de tests de performance, 20 terminaux ont effectué le maximum de requêtes API qu'ils pouvaient pendant 1 heure. Et toutes ces requêtes ont été traitées.
+Mais le problème principal est que chaque utilisateur ne peut pas savoir si les informations qu'il observe sont obsolètes. Les mises à jour se font uniquement à l'actualisation de la page.
+Si un utilisateur agit sur l'API, les autres utilisateurs ne seront pas au courant de ces changements.
+
+Ce problème est lié au fait que notre application web n'est pas dynamique.\newline
+Elle ne vérifie pas régulièrement si les informations affichées sont à jour.
+
 
 \subsection{Gestion des erreurs}
 \paragraph{}Pour le moment, nous avons mis en oeuvre la gestion de quelques erreurs courantes:
 \begin{itemize}
-    \item Api déconnectée: Une exception permet de rediriger vers une page d'erreur si l'api n'est pas atteignable.
-    \item Erreur sur le format JSON: Une exception permet de rediriger vers une page d'erreur si les données reçu de l'api ne sont pas conformes.
-    \item Erreur d'import: Une exception permet de rediriger vers une page page d'erreur si le fichier d'import ne peut pas être ouvert.
-    \item Erreur de modification: Nous avons désactivé les boutons "modifier" en même temps que les "input" car il est impossible de modifier un input désactiver. 
-    \item Erreur de création: Pour éviter les erreurs de création, nous avons implémenté des validateurs pour que le format soit le bon. Pour le moment, nous ne récupérons pas les "Next\_hop" et les "communautés" implémentée donc la présence des validateurs est la seule sécurité.
+    \item \textbf{Api déconnectée} : Une exception permet de rediriger vers une page d'erreur si l'Api n'est pas atteignable.%OK
+    \item \textbf{Erreur sur le format JSON} : Une exception permet de rediriger vers une page d'erreur si les données reçues de l'api ne sont pas conformes.%OK
+    \item \textbf{Erreur d'import} : Une exception permet de rediriger vers une page d'erreur si le fichier d'import ne peut pas être ouvert.%OK
+    \item \textbf{Erreur de modification} : Nous avons désactivé les boutons "modifier" en même temps que les "inputs ", car il est impossible de modifier un input désactivé. %pas compris
+    \item \textbf{Erreur de création} : Pour éviter les erreurs de création, nous avons implémenté des validateurs pour que le format des routes soit correct.%OK
+    Pour le moment, nous ne récupérons pas les "Next\_hop" et les "communautés" implémentée donc la présence des validateurs est la seule sécurité.%pas compris
 \end{itemize}
 
 \subsection{Page Non Dynamique}
@@ -21,36 +35,56 @@
 De plus, nous utilisons peu de javascript, les fonctions de tri pourraient être ajouté dans des scripts pour éviter de faire un tri dans le view et donc éviter de faire un nouveau GET. 
 
 \subsection{Vitesse d'exécution}
+\paragraph{}Lors de nos tests, nous avons pu vérifier la vitesse d'affichage de notre "Dashboard" en fonction du nombre routes présente dans nos données. Cela nous à montré que si le nombre de route est trop grand, le chargement de la page peut être durer plusieurs secondes. Sachant que à chaque action la page doit être rechargée.
 
-
-
-
-\paragraph{}Lors de nos tests, nous avons pu vérifier la vitesse d'affichage de notre "Dashboard" en fonction du nombre routes présente dans nos données. Cela nous à démontré que si le nombre de route est trop grand, le chargement peut être assez long sachant que à chaque action on recharge les données.
-
-\subsection{Complexité}
+%\subsection{Complexité}
 % Complexité linéaire, pas d'anomalies
 
-\subsection{Utilisation de la mémoire}
+%\subsection{Utilisation de la mémoire}
 % Faible utilisation d'espace mémoire
 % 3 string (ip, next_hop, community)
 % 3 dates (date_modif, date_creation, date_last_modif)
 % 1 booléen (is_active)
 
-\subsection{Fonctionnalitées}
+\subsection{Fonctionnalités}
+\paragraph{}Pour le moment certaines fonctionnalités implémentées restent assez limitées ou présentent des bogues.
+\begin{itemize}
+    \item Chaque route ne peut être assignée qu'à une seule communauté.
+    \item Il est impossible de faire plusieurs modification et de les envoyer en une seule fois.
+    \item Un bogue sur l'import semble apparaître aléatoirement.% C'est un bug déterministe, il est pas vraiment aléatoire
+    \item Le système de Log est une chaîne de caractère qui se vide lorsque elle atteint un certain seuil.
+    \item Il n'y à pas de système de cache sur les routes.
+    \item Le systéme de filtre n'a pas pu etre implémenté.
+\end{itemize}
+
 % Impossible de créer une route dans plusieurs communautés
 % Conversion bizarre "String <=> Liste" par l'API
 
-\subsection{Performance}
-% Lenteur d'exécution des opérations par l'intermédiaire de Django
-% Pas de parallélisme implicite. Nécessite librairies et implémentation
+\subsection{Tests et performance}
 
-% Rapidité d'exécution des opérations sans l'intermédiaire de Django
-% Parallélisme simple en exécutant les commandes depuis plusieurs terminaux
-% Utilitaires de développement
+Notre application web est composée de 3 éléments.
+L'interface web avec Django, l'API avec Flask et ExaBGP. L'API réagit rapidement (320ms) aux opérations qui lui sont demandées, ExaBGP n'as pas été assez testé pour déterminer sa vitesse d'exécution et Django peut prendre plusieurs secondes pour effectuer des opérations élémentaires. Comme supprimer plusieurs éléments.\newline
 
-\section{Limitation du backend}
-% Les opérations API sont rapide (de l'ordre de 300ms)
-% Les opérations sur le frontend sont lentes (de l'ordre le la seconde)
-% Les opérations ExaBGP ont une vitesse indéterminnées (ont sait pas si c'est rapide ou pas)
+Deux éléments ralentissent Django par rapport aux tests. L'affichage graphique des éléments et la manière d'appeler l'API.
+Les tests n'ont pas besoin d'affichage graphique, peuvent être lancés en parallèle et appellent l'API avec les mêmes fonctions que le frontend mais de manière différente.
+Ce qui rend leur exécution beaucoup plus rapide que le frontend.Cette propriété des tests permet de créer ou supprimer des routes aussi rapidement que l'API le permet.\newline
 
+Mais lors de tests, qu'ils soient unitaires ou qu'ils servent à mesure les performances, les routes créées étaient visibles pour tout les utilisateurs.
+Pour éviter de mélanger les routes "test" et les routes de l'utilisateur, chaque test qui créée des routes se charge de détruire ses routes. De cette manière, l'utilisateur n'est pas dérangé par des routes éphémères.\newline
 
+Mais ce comportement est particulièrement gênant dans un seul cas, \textbf{la création massive de routes pour des tests de performances}.
+Si un utilisateur veut se connecter, ses routes seront cachées par une énorme quantité de route "test" et le temps de chargement de la page sera beaucoup plus long (1 minute).
+La destruction de ces routes prendra elle aussi du temps, et \textbf{pendant cette période l'utilisateur ne pourra pas utiliser efficacement l'application}.
+
+\section{Limitation du Backend}
+
+Concernant le backend, nous n'avons pas rencontré de réel problème lors de nos tests.
+
+\subsection{Communautés}
+Un inconvénient qui pourrait être fixé serait la réécriture des communautés que fait l'API quand elle les reçoit. En effet des crochets "[]" sont ajoutés et peuvent poser problème lors de l'envoi des routes à ExaBGP.
+De plus, la manière dont sont implémentées les fonctions, permettant leur envoi, ne prennent en compte qu'une seule communauté.
+
+\subsection{ExaBGP}
+Lors de l'échec de l'ajout ou de la suppression d'une route avec ExaBGP, celui-ci renvoi tout de même une réponse positive. Il faudrait donc modifier l'api d'ExaBGP pour qu'il renvoi un code erreur permettant l'identification de cet échec.
+
+Quand le commande \textbf{shutdown} pour ExaBGP est envoyée, il faut redémarrer le service directement sur le \verb+route-server+. Cette action n'est pas disponible depuis notre API.
