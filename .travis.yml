@@ -23,7 +23,7 @@ matrix:
       script:
         - nosetests project/backend/tests/*
         - cd project
-        - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/*
+        - nosetests --with-xunit --with-coverage --cover-package=backend --cover-inclusive --cover-xml backend/tests/mock/* backend/tests/end-to-end/unittest_base.py
         - cd ..
         - bash generate-pylint-report.sh
         - sonar-scanner
