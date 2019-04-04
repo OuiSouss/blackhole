@@ -8,15 +8,10 @@ from backend.database.settings import get_uri
 
 class MongoDB:
     """
-	Class of the database on MongoDB
+    Class of the database on MongoDB
     """
 
     def __init__(self, collection_name):
-        """
-        Initialization of the connection to the database
-	    :param collection_name: The name of the collection in the database
-	    :type collection_name: string
-        """
         mongo_db = get_uri()
         mongo_connection = 'mongodb://' + mongo_db
         self.client = MongoClient(mongo_connection)
@@ -33,15 +28,19 @@ class MongoDB:
         :param get: A dictionnary with _id and its value
         :type get: dict
         """
+
         route = self.route.find_one({'_id' : get['_id']})
         return route
 
 
     def get_all_routes(self):
         """
-        Get all of the routes stored in the database
-        :return: A list contains all of the routes
+        get_all_routes stored in the database
+
+        :return: A list of all of the routes
+        :rtype: list
         """
+
         routes = self.route.find()
         output = []
         for route in routes:
@@ -50,10 +49,14 @@ class MongoDB:
 
     def add_route(self, post):
         """
-        Add one route in the database
+        add_route in database
+
+        :param post: Informations of what need to add
         :type post: dict
         :return: id of created route
+        :rtype: ObjectID
         """
+
         route_ip = post['ip']
         route_nexthop = post['next_hop']
         route_communities = post['communities']
@@ -69,27 +72,37 @@ class MongoDB:
 
     def delete_route(self, delete):
         """
-        Delete one route in the database
-        :type delete: dict
+        delete_route
+
+        :param delete: id to delete
+        :type delete: ObjectID
         """
+
         route_id = delete['_id']
         self.route.delete_many({'_id': route_id})
 
     def delete_all_route(self):
         """
-        Delete all routes in the database
+        delete_all_route
         """
+
         self.route.delete_many({})
 
     def update_route(self, patch):
         """
+        update_route
+
         Update the field 'is_activated'.
         If the field value is False, the fied value become True (vice versa).
         modified_at is updated every time and last_activation when
         is_activated was False and becomes True
-        :param patch: dict
-        :return: The updated route
+
+        :param patch: Dict with id and is_activated
+        :type patch: dict
+        :return: The update route
+        :rtype: dict
         """
+
         route_id = patch['_id']
         route_is_activated = patch['is_activated']
         r = self.route.find_one({'_id': route_id})
@@ -106,13 +119,19 @@ class MongoDB:
 
     def put_route(self, put):
         """
+        put_route
+
         Update all fields except created_at
         If the field value is False, the fied value become True (vice versa).
         modified_at is updated every time and last_activation when
         is_activated was False and becomes True
-        :param put: dict
-        :return: The update route
+
+        :param put: Dict with id, ip, next_hop, communities and is_activated
+        :type put: dict
+        :return: The updated route
+        :rtype: dict
         """
+
         route_id = put['_id']
         route_ip = put['ip']
         route_nexthop = put['next_hop']

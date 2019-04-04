@@ -21,7 +21,7 @@ class APIbackendTest(TestCase):
     """
     Test backend API
     """
-    
+
     # Class variables : authentication
     username = 'testuser2'
     password = 'secret2'
@@ -30,11 +30,11 @@ class APIbackendTest(TestCase):
     # Class variables : route elements
     test_ip = '1.1.1.1/1'
     test_next_hop = '1.1.1.1'
-    test_community = 'XYZ'
+    test_community = '1:1'
 
     modif_ip = '2.2.2.2/2'
     modif_next_hop = '3.3.3.3'
-    modif_community = 'ABC'
+    modif_community = '2:2'
 
     def setUp(self):
         """
@@ -46,7 +46,9 @@ class APIbackendTest(TestCase):
             'username': self.username,
             'password': self.password}
         User.objects.create_user(**self.credentials)
-        self.client.post(settings.LOGIN_URL, {'username': self.username, 'password': self.password})
+        self.client.post(settings.LOGIN_URL,
+                         {'username': self.username,
+                          'password': self.password})
 
     # Tests
     def test_reachable_api(self):
@@ -56,7 +58,8 @@ class APIbackendTest(TestCase):
         try:
             requests_get(settings.API_URL)
         except connection_error:
-            raise AssertionError("\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n>>> Backend API unreachable,\
+                                 consider enabling it")
 
     def test_get_routes(self):
         """
@@ -66,10 +69,11 @@ class APIbackendTest(TestCase):
         try:
             response = requests_get(settings.API_URL)
             json_data = response.json()
-            self.assertGreaterEqual(len(json_data), 0) # there must be data, can't be None
+            self.assertGreaterEqual(len(json_data), 0)
 
         except connection_error:
-            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n\n>>> Backend API unreachable, \
+                                 consider enabling it")
 
     def test_add_empty_route(self):
         """
@@ -112,7 +116,8 @@ class APIbackendTest(TestCase):
 
         # check if the test route is active
         route_activation = route['is_activated']
-        self.assertTrue(route_activation, "\n\n>>> Route should be activated when created")
+        self.assertTrue(route_activation, "\n\n>>> Route should be activated\
+                                           when created")
 
         # desactivate test route
         request_json.enable_disable_route(route_id, False)
@@ -123,7 +128,8 @@ class APIbackendTest(TestCase):
 
         # check if the test route is not active
         route_activation = route['is_activated']
-        self.assertFalse(route_activation, "\n\n>>> Route should be desactivated when desactivated")
+        self.assertFalse(route_activation, "\n\n>>> Route should be \
+                                            desactivated when desactivated")
 
         # delete test route
         request_json.delete_route(route_id)
@@ -157,7 +163,7 @@ class APIbackendTest(TestCase):
         test = request_json.get_one_route(route_id)
         route = test.json()
 
-        # TODO : 'modified_at' can't be tested unless we wait at least one minute
+        # TODO : 'modified_at' can't be tested unless we wait at least a minute
         # (would slow down the testing process)
 
         # check the differences
@@ -191,7 +197,7 @@ class APIbackendTest(TestCase):
         # get current routes : after removing the test route
         after_deletion_amount = self.get_route_amount()
 
-        # print(initial_amount, " => ", after_addition_amount, " => ", after_deletion_amount)
+        # after_deletion_amount)
         self.assertEqual(initial_amount + 1, after_addition_amount)
         self.assertEqual(after_addition_amount - 1, after_deletion_amount)
 
@@ -206,11 +212,11 @@ class APIbackendTest(TestCase):
             response = requests_get(settings.API_URL)
             json_data = response.json()
             size_json = len(json_data)
-            # print("Routes :", size_json)
-            self.assertGreaterEqual(size_json, 0) # there must be data, can't be None
+            self.assertGreaterEqual(size_json, 0)
 
         except connection_error:
-            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n\n>>> Backend API unreachable, consider \
+                                  enabling it")
         return len(json_data)
 
     def get_route_list(self):
@@ -224,11 +230,11 @@ class APIbackendTest(TestCase):
             response = requests_get(settings.API_URL)
             json_data = response.json()
             size_json = len(json_data)
-            #print("Routes :", size_json)
-            self.assertGreaterEqual(size_json, 0) # there must be data, can't be None
+            self.assertGreaterEqual(size_json, 0)
 
         except connection_error:
-            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n\n>>> Backend API unreachable, consider \
+                                 enabling it")
 
         return json_data
 
@@ -238,7 +244,6 @@ class APIbackendTest(TestCase):
         Clarify the process of getting one testing route
         """
         testing_route_detected = False
-
         route = None
         for route in route_list:
             if self.is_deletable_route(route):
@@ -256,7 +261,7 @@ class APIbackendTest(TestCase):
         route_data = {
             'ip': self.test_ip,
             'next_hop': self.test_next_hop,
-            'community': self.test_community}
+            'communities': self.test_community}
         form = post_form(data=route_data)
         self.assertTrue(form.is_valid())
 
@@ -264,7 +269,7 @@ class APIbackendTest(TestCase):
         request_json.post_new_route(
             route_data['ip'],
             route_data['next_hop'],
-            route_data['community']
+            route_data['communities']
             )
 
     def delete_default_route(self):

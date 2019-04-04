@@ -4,45 +4,46 @@ exabgp.py
 REST API /api/exabgp
 """
 from flask import abort
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from backend.funct_exabgp import ExaBGP
+from backend.resources.settings import URL_EXABGP
 
 exabgp_cmd = {
     'shutdown',
     'restart',
-    'reload'
+    'reload',
+    'reset',
+    'version',
+    'show neighbor',
+    'teardown'
 }
 
 class Exabgp(Resource):
     """
-    Exabgp class to provide GET method.
+    Exabgp provide GET method.
     """
 
     def __init__(self):
-        """
-        Initialization of Exabgp class.
-        """
-        self.general_parser = reqparse.RequestParser()
-        self.exabgp = ExaBGP('output.txt')
+        self.exabgp = ExaBGP(URL_EXABGP)
         super(Exabgp, self).__init__()
 
-    def get(self):
+    def post(self, command):
         """
-        Execute a command on the list to ExaBGP
+        post Execute a command on the list to ExaBGP
+
+        :param command: command to execute
+        :type command: str
+        :return: response of exabgp
+        :rtype: json
         """
-        cmd = self.general_parser.copy()
-        cmd.add_argument(
-            'command', dest='command', location=['form', 'json'], required=True,
-            help='The command',
-        )
-        arg = cmd.parse_args()
-        if arg['command'] not in exabgp_cmd:
+
+        if command not in exabgp_cmd:
             abort(404,
-                  message='Command does not exist : {}'\
-                          .format(arg['command']))
-        response = self.exabgp.action(arg['command'])
-        if response != 'yes':
-            abort(404,
-                  message='Cannot launch command : {}'\
-                          .format(arg['command']))
-        return 200
+                  description='Command does not exist : {}'\
+                          .format(command))
+        response = self.exabgp.action(command)
+        response = {
+            "response": response.text.strip('\n'),
+            "status": response.status_code
+        }
+        return response

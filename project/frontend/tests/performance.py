@@ -15,7 +15,6 @@ from django.conf import settings
 from requests.exceptions import ConnectionError as connection_error
 from requests import get as requests_get
 
-import route_manager.request_json
 # TODO : another file to clarify the creation/destruction of routes
 #        instead of duplicating code would be nice
 
@@ -57,7 +56,9 @@ class PerformanceTest(TestCase):
             'username': self.username,
             'password': self.password}
         User.objects.create_user(**self.credentials)
-        self.client.post(settings.LOGIN_URL, {'username': self.username, 'password': self.password})
+        self.client.post(settings.LOGIN_URL,
+                         {'username': self.username,
+                          'password': self.password})
 
     # clear ; python3 manage.py test tests.performance.PerformanceTest.perf_route_creation
     def perf_route_creation(self):
@@ -83,15 +84,17 @@ class PerformanceTest(TestCase):
         """
         print(" ")
         print(self.massive_amount, "routes to create\n")
-        
+
         # Amount of groups, useful to display progress
-        # If that value is too close to 'massive_amount', progress will invisible (0%)
-        # If that value is too small, progress will be invisible (not enough info)
+        # If that value is too close to 'massive_amount',
+        # progress will invisible (0%)
+        # If that value is too small, progress will be
+        # invisible (not enough info)
         partition = 10
 
         step_iteration = int(self.massive_amount / partition)
         rest_iteration = self.massive_amount - step_iteration * partition
-        progress_iteration = int(step_iteration / self.massive_amount * 100) 
+        progress_iteration = int(step_iteration / self.massive_amount * 100)
 
         advancement = 0
         # print("massive_amount :", self.massive_amount)
@@ -132,7 +135,7 @@ class PerformanceTest(TestCase):
                 request_json.delete_route(route_id)
                 amount_deleted += 1
 
-                if (amount_deleted == self.amount):
+                if amount_deleted == self.amount:
                     break
 
     # clear ; python3 manage.py test tests.performance.PerformanceTest.perf_route_destruction
@@ -148,24 +151,24 @@ class PerformanceTest(TestCase):
         limit_percent = int(json_size/100)
         deletions = 0
         advancement = 0
-        
+
         # print("json_size",json_size)
         # print("limit_percent",limit_percent)
 
         print(" ")
         print(json_size, "routes to destroy\n")
-    
+
         self.show_advancement(advancement)
 
         # find the routes to delete
         for route in json_data:
             if self.is_deletable_route(route):
                 route_id = str(route['id'])
-                route_manager.request_json.delete_route(route_id)
+                request_json.delete_route(route_id)
 
                 deletions += 1
                 advancement += 1
-                
+
                 if advancement > limit_percent:
                     advancement = 0
                     progress = int((deletions-1)/json_size*100)
@@ -178,13 +181,13 @@ class PerformanceTest(TestCase):
         """
         Route deletion ( almost all )
         Efficient in parrallel, unreliable alone
-        May ask to delete routes that have already been deleted 
+        May ask to delete routes that have already been deleted
         """
 
         response = requests_get(settings.API_URL)
         json_data = response.json()
         json_size = len(json_data)
-        
+
         print(json_size, "routes to destroy\n")
 
         # find the routes to delete
@@ -193,7 +196,7 @@ class PerformanceTest(TestCase):
             if self.is_deletable_route(route):
                 route_id = str(route['id'])
                 print(">> ", route_id)
-                route_manager.request_json.delete_route(route_id)
+                request_json.delete_route(route_id)
 
 
     def show_advancement(self, advancement):
@@ -225,7 +228,8 @@ class PerformanceTest(TestCase):
             self.assertGreaterEqual(size_json, 0) # there must be data, can't be None
 
         except connection_error:
-            raise AssertionError("\n\n>>> Backend API unreachable, consider enabling it")
+            raise AssertionError("\n\n>>> Backend API unreachable, \
+                                  consider enabling it")
 
         return json_data
 

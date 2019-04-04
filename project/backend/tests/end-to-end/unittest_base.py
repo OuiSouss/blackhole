@@ -10,16 +10,16 @@ class BaseTest(unittest.TestCase):
     """
 
     def setUp(self):
-        """
-         Test initialization
-        """
         self.database = MongoDB('Test')
         self.database.delete_all_route()
 
     def test_get_route_by_id(self):
         """
-         Tests if the route has successfully been got to the database
+        test_get_route_by_id
+
+        Tests if the route has successfully been got to the database
         """
+
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -36,8 +36,11 @@ class BaseTest(unittest.TestCase):
 
     def test_add_route(self):
         """
-         Tests if the route has successfully been added to the database
+        test_add_route
+
+        Tests if the route has successfully been added to the database
         """
+
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -54,8 +57,11 @@ class BaseTest(unittest.TestCase):
 
     def test_get_all_routes(self):
         """
-         Test is the route has succesfully been got to the database
+        test_get_all_routes
+
+        Test is the route has succesfully been got to the database
         """
+
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -89,8 +95,11 @@ class BaseTest(unittest.TestCase):
 
     def test_update_route(self):
         """
-         Test if the route has succesfully been updated in the database
+        test_update_route
+
+        Test if the route has succesfully been updated in the database
         """
+
         patch = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -106,8 +115,11 @@ class BaseTest(unittest.TestCase):
 
     def test_delete_route(self):
         """
-         Test  if the route has succesfully been deleted in the database
+        test_delete_route
+
+        Test  if the route has succesfully been deleted in the database
         """
+
         delete = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -120,8 +132,11 @@ class BaseTest(unittest.TestCase):
 
     def test_put_route(self):
         """
-         Test  if the route has succesfully been updated in the database
+        test_put_route
+
+        Test  if the route has succesfully been updated in the database
         """
+
         post = {
             'ip': 'test_ip',
             'next_hop': 'test_nexthop',
@@ -151,6 +166,71 @@ class BaseTest(unittest.TestCase):
                          'insertion failed')
         self.assertEqual(post2['is_activated'], post3['is_activated'],
                          'activation failed')
+
+    def test_update_route_and_activation(self):
+        """
+        test_update_route_and_activation
+
+        Test if last_activation is updated when
+        is_activated change from false to true
+        """
+
+        patch = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(patch)
+        patch_activated_false = self.database.update_route({
+            '_id': route_id,
+            'is_activated': False,
+        })
+        last_activation_when_false = patch_activated_false['last_activation']
+        patch_activated_true = self.database.update_route({
+            '_id': route_id,
+            'is_activated': True,
+        })
+        last_activation_when_true = patch_activated_true['last_activation']
+        self.database.delete_route({'_id': route_id})
+        self.assertNotEqual(last_activation_when_false,
+                            last_activation_when_true,
+                            'last_activation must be change')
+
+    def test_put_route_and_activation(self):
+        """
+        test_put_route_and_activation
+
+        Test if last_activation is updated when
+        is_activated change from false to true
+        """
+
+        patch = {
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop',
+            'communities': 'test_commu'
+        }
+        route_id = self.database.add_route(patch)
+        patch_activated_false = self.database.put_route({
+            '_id': route_id,
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop2',
+            'communities': 'test_commu2',
+            'is_activated': False,
+        })
+        last_activation_when_false = patch_activated_false['last_activation']
+        patch_activated_true = self.database.put_route({
+            '_id': route_id,
+            'ip': 'test_ip',
+            'next_hop': 'test_nexthop2',
+            'communities': 'test_commu2',
+            'is_activated': True,
+        })
+        last_activation_when_true = patch_activated_true['last_activation']
+        self.database.delete_route({'_id': route_id})
+        self.assertNotEqual(last_activation_when_false,
+                            last_activation_when_true,
+                            'last_activation must be change')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -10,7 +10,6 @@ from bson import ObjectId
 from flask import json
 from werkzeug.routing import BaseConverter
 
-
 class MongoJSONEncoder(json.JSONEncoder):
     """
     MongoJSONEncoder Extends json.JSONEncoder

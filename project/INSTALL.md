@@ -48,16 +48,16 @@ cd backend/database
 
 ```bash
 # GET : Liste de toutes les routes créées
-curl -i http://127.0.0.1:5000/api/subnets -X GET
+curl -i http://127.0.0.1:5555/api/subnets -X GET
 
 # POST : Créer une route
-curl -i http://127.0.0.1:5000/api/subnets -X POST -d "ip=1.13.12.1&next_hop=45.56.1.2&communities=45:4&communities=63:45"
+curl -i http://127.0.0.1:5555/api/subnets -X POST -d "ip=1.13.12.1&next_hop=45.56.1.2&communities=45:4&communities=63:45"
 
 # DELETE : Supprimer une route selon son ID
-curl -i http://127.0.0.1:5000/api/subnet/<id_number>  -X DELETE
+curl -i http://127.0.0.1:5555/api/subnet/<id_number>  -X DELETE
 ```
 # GET : Relancer ExaBGP
-curl -i http://127.0.0.1:5000/api/exabgp -X GET -d "command=restart"
+curl -i http://127.0.0.1:5555/api/exabgp/restart -X POST
 
 # Frontend
 

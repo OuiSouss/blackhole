@@ -2,11 +2,14 @@
 
 {% block content %}
 
-<h1>Error 503</h1>
+<h1 class="display-1 text-center">Error 503</h1>
 
 <br>
 
-Exception: {{exception}}
+<blockquote class="blockquote text-right">
+  <p class="mb-0">Exception: {{exception}}</p>
+  <footer class="blockquote-footer">Connection Error</footer>
+</blockquote>
 
 <br>
 {% endblock %}

@@ -16,4 +16,4 @@ api = Api(api_bp)
 # Route
 api.add_resource(Subnet, '/subnet/<object_id:subnet_id>')
 api.add_resource(Subnets, '/subnets')
-api.add_resource(Exabgp, '/exabgp')
+api.add_resource(Exabgp, '/exabgp/<string:command>')

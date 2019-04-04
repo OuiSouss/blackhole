@@ -4,9 +4,10 @@ subnet.py
 REST API /api/subnet
 """
 from flask import jsonify, abort
-from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_restful import Resource, reqparse, fields, marshal_with, inputs
 from backend.database.funct_base import MongoDB
 from backend.funct_exabgp import ExaBGP
+from backend.resources.settings import URL_EXABGP
 
 subnets_fields = {
     'id': fields.String,
@@ -21,31 +22,40 @@ subnets_fields = {
 
 class Subnet(Resource):
     """
-    Subnet class to provide GET, PUT, DELETE and PATCH methods to
-    frontend. This class communicates with ExaBGP and store info in MongoDB
+    Subnet provide GET, PUT, DELETE and PATCH methods to
+    frontend.
+
+    This class communicates with ExaBGP and store info in MongoDB
     database.
     """
 
+
     def __init__(self):
+        NETWORK_REGEX = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$'
+        IP_REGEX = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+        COMMUNITIES_REGEX = '^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])\:([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
         self.general_parser = reqparse.RequestParser()
         self.general_parser.add_argument(
             'ip', dest='ip', location=['form', 'json'], required=True,
-            help='An IP is required',
+            help='The IP with d.d.d.d/m form 0 < d < 255 and 0 < m < 32',
+            type=inputs.regex(NETWORK_REGEX),
         )
         self.general_parser.add_argument(
             'next_hop', dest='next_hop', location=['form', 'json'],
-            required=True, help='A next hop is required',
+            required=True, help='The next hop with d.d.d.d form 0 < d < 255',
+            type=inputs.regex(IP_REGEX),
         )
         self.general_parser.add_argument(
             'communities', dest='communities', location=['form', 'json'],
-            action='append'
+            help='The communities with a:b form, a and b between 0 and 65535',
+            type=inputs.regex(COMMUNITIES_REGEX),
         )
         self.simple_parser = reqparse.RequestParser()
         self.simple_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation field is required',
+            required=True, help='The boolean activation',
         )
-        self.exabgp = ExaBGP('output.txt')
+        self.exabgp = ExaBGP(URL_EXABGP)
         self.mongo_db = MongoDB('Route')
         super(Subnet, self).__init__()
 
@@ -75,7 +85,7 @@ class Subnet(Resource):
         """
         put PUT Method
 
-        PUT api/subnet/<object_id:subnet_id>/
+        PUT api/subnet/<object_id:subnet_id>
 
         {
             ip: <ip>
@@ -96,21 +106,21 @@ class Subnet(Resource):
         put_parser = self.general_parser.copy()
         put_parser.add_argument(
             'is_activated', dest='is_activated', location=['form', 'json'],
-            required=True, help='The activation field is required',
+            required=True, help='The activation',
         )
         args = put_parser.parse_args()
         is_activated = True
         if (args.is_activated == 'false' or args.is_activated == 'False'):
             is_activated = False
-        communities = args.communities
-        if communities is None:
-            communities = []
         subnet['ip'] = args.ip
         subnet['next_hop'] = args.next_hop
-        subnet['communities'] = communities
+        subnet['communities'] = None
+        if args.communities is not None:
+            subnet['communities'] = list(args.communities.split(','))
         subnet['is_activated'] = is_activated
+        subnet = self.mongo_db.put_route(subnet)
         response = self.exabgp.update_one_route(subnet)
-        if response != 'yes':
+        if response != 200:
             abort(404,
                   message='Cannot update the route on ExaBGP with id : {}'\
                           .format(subnet_id))
@@ -147,7 +157,7 @@ class Subnet(Resource):
             'is_activated': is_activated
         }
         response = self.exabgp.update_one_route(patch)
-        if response != 'yes':
+        if response != 200:
             abort(404,
                   message='Cannot update the route on ExaBGP with id : {}'\
                           .format(subnet_id))
@@ -164,7 +174,7 @@ class Subnet(Resource):
         """
         subnet = self.mongo_db.get_route_by_id({'_id' : subnet_id})
         response = self.exabgp.withdraw_one_route(subnet)
-        if response != 'yes':
+        if response != 200:
             abort(404,
                   message='Cannot delete the route on ExaBGP with id : {}'\
                           .format(subnet_id))
