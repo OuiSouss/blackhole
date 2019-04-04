@@ -11,7 +11,9 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
 1. Executer le script [dyna.sh](./dyna.sh)
 2. Lancer les VMs : `nemu -f bhre.py -i`
 3. Dans les VM sauf **route-server** démarrer Bird : `mkdir /run/bird; bird`
-4. Dans le **route-server**, démarrer ExaBGP : `systemctl start exabgp`
+4. Dans le **route-server**, démarrer ExaBGP : `systemctl start exabgp` ou `env exabgp.daemon.daemonize=false exabgp.log.destination=exabgp.log exabgp exabgp.conf` pour avoir un fichier de log (conseillé)
+5. Activer le pyenv : `pyenv activate venv`
+6. Lancer le projet : `cd project/frontend; ./manage.py runserver`, puis `cd project/backend; ./run.sh`
 
 ## Etapes de mise en route à la premiere exécution
 
@@ -93,7 +95,22 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
     cp exabgp/exabgp.conf /etc/exabgp/exabgp.conf
     cp exabgp/exabgp.service /etc/systemd/system/exabgp.service
 
-    # Execution
+    # Execution sans fichier de log
     systemctl start exabgp
+
+    # Execution avec un fichier de log
+    env exabgp.daemon.daemonize=false exabgp.log.destination=exabgp.log exabgp exabgp.conf
     ```
+    La dernière manière est meilleure car elle permet de récupérer les messages de retour d'exabgp et de les afficher dans l'application web
 12. De la même façon, il est possible de récupérer tous le projet via le même style de commande sur le tag "project".
+13. Il est possible que l'installation des requirements ne fonctionne pas. Nous avons pour cela utiliser un environnement virtuel. Suivre la procédure suivante  dans le **route-server**:
+
+    - `curl https://pyenv.run | bash` : si cette commande ne fonctionne pas, il faut installer curl, voire même update les paquets
+    - pyenv install 3.5.2
+    - mkdir venv
+    - cd venv
+    - pyenv virtualenv 3.5.2 venv
+
+    Le fonctionnement se base sur le même principe qu'un environnement virtuel. Il faut l'activer : **pyenv activate venv** et il se désactive par **pyenv deactivate**.
+
+    Quand le pyenv est activé y a plus qu'à faire le **pip install -r requirements.txt**. Et normalement, notre appli fonctionne après.
