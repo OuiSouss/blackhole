@@ -55,12 +55,12 @@ def put_route(ident, ip_addr, next_hop, communities):
     :return: Error code.
     """
     if communities in ('', 'None'):
-        return requests.put(settings.API_URL_SINGLE+"/"+ident,
-                             json={
-                                 'ip': ip_addr,
-                                 'next_hop': next_hop,
-                                 'is_activated': True})
-    return requests.put(settings.API_URL_SINGLE+"/"+ident,
+        return requests.put(settings.API_URL_SINGLE + "/" + ident,
+                            json={
+                                'ip': ip_addr,
+                                'next_hop': next_hop,
+                                'is_activated': True})
+    return requests.put(settings.API_URL_SINGLE + "/" + ident,
                         json={
                             'ip': ip_addr,
                             'communities': communities.split(',')[0],

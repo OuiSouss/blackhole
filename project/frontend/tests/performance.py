@@ -15,7 +15,6 @@ from django.conf import settings
 from requests.exceptions import ConnectionError as connection_error
 from requests import get as requests_get
 
-import route_manager.request_json
 # TODO : another file to clarify the creation/destruction of routes
 #        instead of duplicating code would be nice
 
@@ -136,7 +135,7 @@ class PerformanceTest(TestCase):
                 request_json.delete_route(route_id)
                 amount_deleted += 1
 
-                if (amount_deleted == self.amount):
+                if amount_deleted == self.amount:
                     break
 
     # clear ; python3 manage.py test tests.performance.PerformanceTest.perf_route_destruction
@@ -165,7 +164,7 @@ class PerformanceTest(TestCase):
         for route in json_data:
             if self.is_deletable_route(route):
                 route_id = str(route['id'])
-                route_manager.request_json.delete_route(route_id)
+                request_json.delete_route(route_id)
 
                 deletions += 1
                 advancement += 1
@@ -197,7 +196,7 @@ class PerformanceTest(TestCase):
             if self.is_deletable_route(route):
                 route_id = str(route['id'])
                 print(">> ", route_id)
-                route_manager.request_json.delete_route(route_id)
+                request_json.delete_route(route_id)
 
 
     def show_advancement(self, advancement):

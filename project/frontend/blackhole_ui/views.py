@@ -114,7 +114,8 @@ def sort_switcher(request, json_data):
                                key=lambda elem: (json_ip_sort(elem, 'next_hop')
                                                  ), reverse=True)
     elif 'com_sort' in request:
-        community_none = list(filter(lambda com: com['communities'] == None, json_data))
+        community_none = list(filter(
+            lambda com: com['communities'] is None, json_data))
         if community_none:
             pass
         elif str(request['com_sort']) == '1':
@@ -306,7 +307,6 @@ def index(request):
                     '| Post:' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'command_bgp' in request.POST:
-            print (request.POST)
             response_actual = rq_json.post_command_bgp(
                 str(request.POST['command_bgp']))
             requestlist = requestlist[:] + \
