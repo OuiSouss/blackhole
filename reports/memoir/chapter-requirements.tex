@@ -82,7 +82,7 @@ Pour permettre une gestion plus simplifiée des différentes fonctions demandée
 L'interface graphique que l'utilisateur va utiliser est une application Web, un client léger, qui est dépendante d'un serveur pour fonctionner correctement.\newline
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{medias/ui_upper_marked.png}
+    \includegraphics[width=\textwidth]{ui_upper_marked.png}
     \caption{Interface utilisateur}
     \label{fig:ui_upper}
 \end{figure}
@@ -95,7 +95,7 @@ Ce lien permet d'être redirigé vers cette page. Il peut être utile si l'utili
 Ce lien permet d'accéder à la page d'administration de l'application.\newline
 
 \textbf{Déroulant "Import/Export"} (3)\newline
-Ce déroulant permet d'afficher les boutons "Import" et "Export". 
+Ce déroulant permet d'afficher les boutons "Import" et "Export".
 \begin{itemize}
     \item Le bouton "Import" permet d'importer des routes contenue dans un fichier. Lorsque l'on utilise ce bouton, un gestionnaire de fichier se lance et il faut sélectionner un fichier contenants des routes au format JSON.
     \item Le bouton "Export" permet d'exporter toutes les routes de la page dans un fichier. Lorsque l'on utilise ce bouton, une zone de texte apparaît et il suffit d'écrire le chemin ou exporter les routes. L'export se fait dans un fichier "data.json" et les routes sont écrite en format JSON.\newline
@@ -120,7 +120,7 @@ Elle permet aussi d'obtenir le résultat des commandes ExaBGP.\newline
 Ce bouton permet de faire apparaître un petit menu pour permettre à l'utilisateur de se déconnecter ou de changer son mot de passe.
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{medias/ui_lower_marked.png}
+    \includegraphics[width=\textwidth]{ui_lower_marked.png}
     \caption{Interface utilisateur}
     \label{fig:ui_lower}
 \end{figure}
@@ -340,7 +340,7 @@ Afin que le groupe de Détection de charge puisse transmettre des informations �
     }
     \end{minted}
     \item [\textbf{Réponse à l'action exécutée}] :
-    
+
     \begin{minted}{js}
     # Success:
     {
@@ -354,7 +354,7 @@ Afin que le groupe de Détection de charge puisse transmettre des informations �
 
 \end{itemize}
 
-Le champs IP ne doit pas excéder 20 adresses ip. 
+Le champs IP ne doit pas excéder 20 adresses ip.
 Le champs action doit faire partie des demandes suivantes :
 
 \begin{itemize}
@@ -373,87 +373,87 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
     # Success:
     [
       {
-        "communities": null, 
-        "created_at": "2019-04-04T02:14:35", 
-        "id": "5ca55a7b95c1b91da652e12b", 
-        "ip": "11.2.0.2/32", 
-        "is_activated": false, 
-        "last_activation": "2019-04-04T02:20:13", 
-        "modified_at": "2019-04-04T02:20:21", 
+        "communities": null,
+        "created_at": "2019-04-04T02:14:35",
+        "id": "5ca55a7b95c1b91da652e12b",
+        "ip": "11.2.0.2/32",
+        "is_activated": false,
+        "last_activation": "2019-04-04T02:20:13",
+        "modified_at": "2019-04-04T02:20:21",
         "next_hop": "192.0.2.1"
-      }, 
+      },
       {
         "communities": [
           "1:1"
-        ], 
-        "created_at": "2019-04-04T02:22:07", 
-        "id": "5ca55c3f95c1b91e3c05b0a4", 
-        "ip": "10.1.0.2/32", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T02:22:49", 
-        "modified_at": "2019-04-04T01:40:46", 
+        ],
+        "created_at": "2019-04-04T02:22:07",
+        "id": "5ca55c3f95c1b91e3c05b0a4",
+        "ip": "10.1.0.2/32",
+        "is_activated": true,
+        "last_activation": "2019-04-04T02:22:49",
+        "modified_at": "2019-04-04T01:40:46",
         "next_hop": "192.0.2.1"
-      }, 
+      },
       {
         "communities": [
           "2:2"
-        ], 
-        "created_at": "2019-04-04T02:02:23", 
-        "id": "5ca5498fbac6dd5fe5581e0c", 
-        "ip": "11.1.0.1/32", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T02:02:23", 
-        "modified_at": "2019-04-04T02:02:23", 
+        ],
+        "created_at": "2019-04-04T02:02:23",
+        "id": "5ca5498fbac6dd5fe5581e0c",
+        "ip": "11.1.0.1/32",
+        "is_activated": true,
+        "last_activation": "2019-04-04T02:02:23",
+        "modified_at": "2019-04-04T02:02:23",
         "next_hop": "192.0.2.1"
       }
     ]
     \end{minted}
-    
+
     \item [\textbf{POST /api/subnets}] : Créer une route
-    
+
     \texttt{Requête :}
     \begin{minted}{js}
     {
-        "ip": "192.168.1.1/24", 
+        "ip": "192.168.1.1/24",
         "next_hop": "16.15.6.56"
     }
     # Or
     {
-        "ip": "192.168.1.1/24", 
+        "ip": "192.168.1.1/24",
         "next_hop": "16.15.6.56",
         "communities": [
             "1:1",
         ]
     }
     \end{minted}
-    
+
     \texttt{Réponse au POST :}
     \begin{minted}{js}
     # Success:
     {
-        "communities": null, 
-        "created_at": "2019-04-04T11:23:13", 
-        "id": "5ca5cd01bac6dd13792ce339", 
-        "ip": "192.168.1.1/24", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T11:23:13", 
-        "modified_at": "2019-04-04T11:23:13", 
+        "communities": null,
+        "created_at": "2019-04-04T11:23:13",
+        "id": "5ca5cd01bac6dd13792ce339",
+        "ip": "192.168.1.1/24",
+        "is_activated": true,
+        "last_activation": "2019-04-04T11:23:13",
+        "modified_at": "2019-04-04T11:23:13",
         "next_hop": "16.15.6.56"
      }
      # Or :
      {
         "communities": [
           "2:2"
-        ], 
-        "created_at": "2019-04-04T02:02:23", 
-        "id": "5ca5498fbac6dd5fe5581e0c", 
-        "ip": "11.1.0.1/32", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T02:02:23", 
-        "modified_at": "2019-04-04T02:02:23", 
+        ],
+        "created_at": "2019-04-04T02:02:23",
+        "id": "5ca5498fbac6dd5fe5581e0c",
+        "ip": "11.1.0.1/32",
+        "is_activated": true,
+        "last_activation": "2019-04-04T02:02:23",
+        "modified_at": "2019-04-04T02:02:23",
         "next_hop": "192.0.2.1"
       }
-     
+
 
     # Failure:
     {
@@ -463,61 +463,61 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
         }
     }
     \end{minted}
-    
+
     \item [\textbf{GET /api/subnet/id}] : Afficher la route correspondant à l'id
-    
+
     \begin{minted}{js}
      # Success:
     {
-        "communities": null, 
-        "created_at": "2019-04-04T11:23:13", 
-        "id": "5ca5cd01bac6dd13792ce339", 
-        "ip": "192.168.1.1/24", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T11:23:13", 
-        "modified_at": "2019-04-04T11:23:13", 
+        "communities": null,
+        "created_at": "2019-04-04T11:23:13",
+        "id": "5ca5cd01bac6dd13792ce339",
+        "ip": "192.168.1.1/24",
+        "is_activated": true,
+        "last_activation": "2019-04-04T11:23:13",
+        "modified_at": "2019-04-04T11:23:13",
         "next_hop": "16.15.6.56"
      }
      # Or :
      {
         "communities": [
           "2:2"
-        ], 
-        "created_at": "2019-04-04T02:02:23", 
-        "id": "5ca5498fbac6dd5fe5581e0c", 
-        "ip": "11.1.0.1/32", 
-        "is_activated": true, 
-        "last_activation": "2019-04-04T02:02:23", 
-        "modified_at": "2019-04-04T02:02:23", 
+        ],
+        "created_at": "2019-04-04T02:02:23",
+        "id": "5ca5498fbac6dd5fe5581e0c",
+        "ip": "11.1.0.1/32",
+        "is_activated": true,
+        "last_activation": "2019-04-04T02:02:23",
+        "modified_at": "2019-04-04T02:02:23",
         "next_hop": "192.0.2.1"
       }
     \end{minted}
 
     \item [\textbf{PUT /api/subnet/id}] : Remplacer la route avec cet id
-    
+
     \texttt{Requête :}
     \begin{minted}{js}
     {
-        "ip": "192.168.1.1/24", 
-        "next_hop": "6.15.6.56", 
-        "is_activated": false, 
+        "ip": "192.168.1.1/24",
+        "next_hop": "6.15.6.56",
+        "is_activated": false,
         "communities": ["1:1"]
     }
     \end{minted}
-    
+
     \texttt{Réponse :}
     \begin{minted}{js}
     # Success:
     {
       "communities": [
         "1:1"
-      ], 
-      "created_at": "2019-04-04T14:12:03", 
-      "id": "5ca5f493bac6dd30c8759baa", 
-      "ip": "192.168.1.1/24", 
-      "is_activated": true, 
-      "last_activation": "2019-04-04T14:12:03", 
-      "modified_at": "2019-04-04T14:12:03", 
+      ],
+      "created_at": "2019-04-04T14:12:03",
+      "id": "5ca5f493bac6dd30c8759baa",
+      "ip": "192.168.1.1/24",
+      "is_activated": true,
+      "last_activation": "2019-04-04T14:12:03",
+      "modified_at": "2019-04-04T14:12:03",
       "next_hop": "16.15.6.56"
     }
 
@@ -532,14 +532,14 @@ Pour se baser sur l'architecture REST, nous organiserons nos URL en conséquence
     \end{minted}
 
     \item [\textbf{PATCH /api/subnet/id}] : Modifier la route avec cet id
-    
+
     \texttt{Requête :}
     \begin{minted}{js}
     {
         "is_activated": true
     }
     \end{minted}
-    
+
     \texttt{Réponse :}
     \begin{minted}{js}
     # Success:
