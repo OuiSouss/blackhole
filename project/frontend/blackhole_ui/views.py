@@ -28,6 +28,8 @@ def check_community(community):
     :return: cleaned community
     """
     community_changed = ''
+    if community in '':
+        return community_changed
     for char, _ in enumerate(community):
         if((community[char] != '/') and (community[char] != '\"')
            and (community[char] != '\'') and (community[char] != '[')
@@ -112,7 +114,10 @@ def sort_switcher(request, json_data):
                                key=lambda elem: (json_ip_sort(elem, 'next_hop')
                                                  ), reverse=True)
     elif 'com_sort' in request:
-        if str(request['com_sort']) == '1':
+        community_none = list(filter(lambda com: com['communities'] == None, json_data))
+        if community_none:
+            pass
+        elif str(request['com_sort']) == '1':
             json_data = sorted(json_data,
                                key=lambda elem: (
                                    json_sort(elem, 'communities'))
@@ -224,14 +229,6 @@ def index(request):
                       {'exception': exception})
     if request.method == 'POST':
         form = PostForm(request.POST)
-        if form.is_valid():
-            route = form.save(commit=False)
-            response_actual = rq_json.post_new_route(
-                str(route.ip),
-                str(route.next_hop),
-                check_community(str(route.community)))
-            requestlist = requestlist[:] + '| Post:' + str(response_actual)
-            return redirect(settings.DASHBOARD_URL)
 
         json_data = sort_switcher(request.POST, json_data)
         if 'id_delete' in request.POST:
@@ -309,11 +306,19 @@ def index(request):
                     '| Post:' + str(response_actual) + ' '
             return redirect(settings.DASHBOARD_URL)
         if 'command_bgp' in request.POST:
-            print(request.POST)
+            print (request.POST)
             response_actual = rq_json.post_command_bgp(
                 str(request.POST['command_bgp']))
             requestlist = requestlist[:] + \
-                '| ExaBGP:' + str(response_actual) + ' '
+                '| ExaBGP:' + str(response_actual.text) + ' '
+        if form.is_valid():
+            route = form.save(commit=False)
+            response_actual = rq_json.post_new_route(
+                str(route.ip),
+                str(route.next_hop),
+                check_community(str(route.community)))
+            requestlist = requestlist[:] + '| Post:' + str(response_actual)
+            return redirect(settings.DASHBOARD_URL)
     else:
         form = PostForm()
     return render(request, settings.TEMPLATE_DASHBOARD, {
