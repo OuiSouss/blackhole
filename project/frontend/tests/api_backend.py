@@ -30,11 +30,11 @@ class APIbackendTest(TestCase):
     # Class variables : route elements
     test_ip = '1.1.1.1/1'
     test_next_hop = '1.1.1.1'
-    test_community = 'XYZ'
+    test_community = '1:1'
 
     modif_ip = '2.2.2.2/2'
     modif_next_hop = '3.3.3.3'
-    modif_community = 'ABC'
+    modif_community = '2:2'
 
     def setUp(self):
         """
@@ -197,7 +197,6 @@ class APIbackendTest(TestCase):
         # get current routes : after removing the test route
         after_deletion_amount = self.get_route_amount()
 
-        # print(initial_amount, " => ", after_addition_amount, " => ",
         # after_deletion_amount)
         self.assertEqual(initial_amount + 1, after_addition_amount)
         self.assertEqual(after_addition_amount - 1, after_deletion_amount)
@@ -213,7 +212,6 @@ class APIbackendTest(TestCase):
             response = requests_get(settings.API_URL)
             json_data = response.json()
             size_json = len(json_data)
-            # print("Routes :", size_json)
             self.assertGreaterEqual(size_json, 0)
 
         except connection_error:
@@ -232,7 +230,6 @@ class APIbackendTest(TestCase):
             response = requests_get(settings.API_URL)
             json_data = response.json()
             size_json = len(json_data)
-            #print("Routes :", size_json)
             self.assertGreaterEqual(size_json, 0)
 
         except connection_error:
@@ -247,7 +244,6 @@ class APIbackendTest(TestCase):
         Clarify the process of getting one testing route
         """
         testing_route_detected = False
-
         route = None
         for route in route_list:
             if self.is_deletable_route(route):
