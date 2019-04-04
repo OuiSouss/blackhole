@@ -111,6 +111,20 @@ Lors d'une première execution se référer à la dernière partie de ce fichier
     - cd venv
     - pyenv virtualenv 3.5.2 venv
 
+    Il y a des chances pour que toutes les bibliothèques ne soient pas installées. pour cela, il suffit juste de faire :
+    - apt-get install libbz2-dev libreadline-dev libsqlite3-dev
+    Si elles ne s'installent pas, il suffit de faire :
+    - vi /etc/apt/sources.list
+    - ajouter ceci dans le fichier :
+        deb http://ch.archive.ubuntu.com/ubuntu/ raring main restricted
+        deb-src http://ch.archive.ubuntu.com/ubuntu/ raring main restricted
+        +deb http://ch.archive.ubuntu.com/ubuntu/ raring-updates main restricted
+        +deb-src http://ch.archive.ubuntu.com/ubuntu/ raring-updates main restricted
+    - apt-get update
+    - apt-cache policy libssl-dev
+    - refaire l'installation des bibliothèques
+    - relancer l'installation du pyenv
+
     Le fonctionnement se base sur le même principe qu'un environnement virtuel. Il faut l'activer : **pyenv activate venv** et il se désactive par **pyenv deactivate**.
 
     Quand le pyenv est activé y a plus qu'à faire le **pip install -r requirements.txt**. Et normalement, notre appli fonctionne après.
