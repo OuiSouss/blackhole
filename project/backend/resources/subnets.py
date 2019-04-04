@@ -22,7 +22,7 @@ subnets_fields = {
 
 class Subnets(Resource):
     """
-    Subnets class to provide GET, POST methods.
+    Subnets provide GET, POST methods.
     """
 
     def __init__(self):
@@ -58,6 +58,7 @@ class Subnets(Resource):
         :return: List of subnets stored on database
         :rtype: list
         """
+
         items = self.mongo_db.get_all_routes()
         self.exabgp.announces_routes(items)
         for i in items:
@@ -82,9 +83,10 @@ class Subnets(Resource):
         :return: The created subnet
         :rtype: dict, HTTP status
         """
+
         args = self.general_parser.parse_args()
         communities = None
-        if (args.communities is not None):
+        if args.communities is not None:
             communities = list(args.communities)
         subnet = {
             'ip': args.ip,

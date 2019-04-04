@@ -20,20 +20,23 @@ exabgp_cmd = {
 
 class Exabgp(Resource):
     """
-    Exabgp class to provide GET method.
+    Exabgp provide GET method.
     """
 
     def __init__(self):
-        """
-        Initialization of Exabgp class.
-        """
         self.exabgp = ExaBGP(URL_EXABGP)
         super(Exabgp, self).__init__()
 
     def post(self, command):
         """
-        Execute a command on the list to ExaBGP
+        post Execute a command on the list to ExaBGP
+
+        :param command: command to execute
+        :type command: str
+        :return: response of exabgp
+        :rtype: json
         """
+
         if command not in exabgp_cmd:
             abort(404,
                   description='Command does not exist : {}'\

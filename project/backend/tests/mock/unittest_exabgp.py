@@ -8,13 +8,10 @@ from backend.resources.settings import URL_EXABGP
 
 class ExaBGPTest(TestCase):
     """
-    ExaBGPTest Test actions of ExaBGP class
+    ExaBGPTest Test actions of ExaBGP class with mock object
     """
 
     def setUp(self):
-        """
-         Test initialization
-        """
         self.exabgp = ExaBGP(URL_EXABGP)
         self.exabgp_cmd = [
             'shutdown',
@@ -29,8 +26,13 @@ class ExaBGPTest(TestCase):
     @patch('backend.funct_exabgp.requests.post')
     def test_action_when_command_good(self, mock_post):
         """
-         Tests if the command has successfully been activated on ExaBGP
+        test_action_when_command_good
+
+        Tests if the command has successfully been activated on ExaBGP
+
+        :param mock_post: mock object to simulate post request
         """
+
         mock_post.return_value.ok = True
         for cmd in self.exabgp_cmd:
             response = self.exabgp.action(cmd)
@@ -39,8 +41,13 @@ class ExaBGPTest(TestCase):
     @patch('backend.funct_exabgp.requests.post')
     def test_action_when_command_not_good(self, mock_post):
         """
-         Tests if the command has successfully been activated on ExaBGP
+        test_action_when_command_not_good
+
+        Tests if the command has successfully been activated on ExaBGP
+
+        :param mock_post: mock object to simulate post request
         """
+
         mock_post.return_value.ok = False
         cmd = [
             'toto',
@@ -56,8 +63,13 @@ class ExaBGPTest(TestCase):
     @patch('backend.funct_exabgp.requests.post')
     def test_announce_one_route(self, mock_post):
         """
-         Tests if the route has successfully been activated on ExaBGP
+        test_announce_one_route
+
+        Tests if the route has successfully been activated on ExaBGP
+
+        :param mock_post: mock object
         """
+
         post = {
             'ip': '10.1.0.3',
             'next_hop': '2.2.2.2',
@@ -79,8 +91,13 @@ class ExaBGPTest(TestCase):
     @patch('backend.funct_exabgp.requests.post')
     def test_withdraw_one_route(self, mock_post):
         """
-         Tests if the route has successfully been withdrawn on ExaBGP
+        test_withdraw_one_route
+
+        Tests if the route has successfully been withdrawn on ExaBGP
+
+        :param mock_post: mock object
         """
+
         post = {
             'ip': '10.1.0.3',
             'next_hop': '2.2.2.2',
@@ -102,8 +119,13 @@ class ExaBGPTest(TestCase):
     @patch('backend.funct_exabgp.requests.post')
     def test_update_one_route(self, mock_post):
         """
-         Tests if the route has successfully been updated on ExaBGP
+        test_update_one_route
+
+        Tests if the route has successfully been updated on ExaBGP
+
+        :param mock_post: mock object
         """
+
         post2 = {
             'ip': '10.1.0.3',
             'next_hop': '2.2.2.2',

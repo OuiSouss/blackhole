@@ -22,10 +22,13 @@ subnets_fields = {
 
 class Subnet(Resource):
     """
-    Subnet class to provide GET, PUT, DELETE and PATCH methods to
-    frontend. This class communicates with ExaBGP and store info in MongoDB
+    Subnet provide GET, PUT, DELETE and PATCH methods to
+    frontend.
+
+    This class communicates with ExaBGP and store info in MongoDB
     database.
     """
+
 
     def __init__(self):
         NETWORK_REGEX = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[1-2][0-9]|[0-9]))$'
@@ -112,7 +115,7 @@ class Subnet(Resource):
         subnet['ip'] = args.ip
         subnet['next_hop'] = args.next_hop
         subnet['communities'] = None
-        if (args.communities is not None):
+        if args.communities is not None:
             subnet['communities'] = list(args.communities.split(','))
         subnet['is_activated'] = is_activated
         subnet = self.mongo_db.put_route(subnet)
