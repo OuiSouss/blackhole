@@ -85,7 +85,7 @@ class Subnets(Resource):
         args = self.general_parser.parse_args()
         communities = None
         if (args.communities is not None):
-            communities = list(args.communities.split(','))
+            communities = list(args.communities)
         subnet = {
             'ip': args.ip,
             'next_hop': args.next_hop,
