@@ -4,7 +4,8 @@ PREZ_PDF = presentation.pdf
 PREZ_TEX = presentation.tex
 PREZ_DEP = prez-api-rest.tex prez-architecture.tex prez-conclusion.tex
 PREZ_DEP += prez-intro.tex prez-requirements.tex prez-sequence-diagram.tex
-PREZ_DEP += prez-tests.tex
+PREZ_DEP += prez-tests.tex prez-use_cases.tex prez-ui.tex
+
 
 all: $(PREZ_PDF)
 

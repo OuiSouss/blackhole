@@ -5,14 +5,50 @@
 \begin{block}{Objectifs}
     \begin{itemize}
         \item Protection contre attaques DoS/DDoS identifiées
-        \item Interface graphique pour la gestion de routes
+        \item Application REST redirigeant trafic dans trou noir
+        \item Gestion des routes
     \end{itemize}
 \end{block}
-\begin{exampleblock}{Comment}
+
+\begin{exampleblock}{Techniques de redirection vers trou noir}
     \begin{itemize}
-        \item Gérer l'information reçue
-        \item Gérer des routes
-    \end{itemize}    
+        \item Par la destination
+        \item Par la source
+        \item Par la communauté
+    \end{itemize}
 \end{exampleblock}
 
+\end{frame}
+
+\begin{frame}{Présentation}{API REST}
+    \begin{minipage}{0.45\textwidth}
+    \begin{block}{Client / Serveur}
+        Séparation interface / données
+    \end{block}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \begin{block}{Stateless}
+        Pas de dépendance à un état, ex session
+    \end{block}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \begin{block}{Cache}
+        Données possiblement en cache
+    \end{block}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \begin{block}{Interface uniforme}
+        Architecture simple
+    \end{block}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \begin{block}{Système en couche}
+        Encapsulation des services
+    \end{block}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \begin{alertblock}{Code à la demande}
+        \alert{Optionnel}
+    \end{alertblock}
+    \end{minipage}
 \end{frame}
