@@ -7,7 +7,7 @@
 \begin{table}
     \begin{tabulary}{\textwidth}{|C C C|}
         \hline
-        \rowcolor{primaryLight}\color{background}{Méthode HTTP} & \color{background}{URI} & \color{background}{Paramètres}\\
+        \rowcolor{primaryLight}\color{background}{Méthode HTTP} & \color{background}{URI} & \color{background}{Paramètre(s)}\\
         \hline
 	    GET & api/subnets & \\
 	    POST & api/subnets & ip, next\_hop, communities \\
@@ -15,17 +15,16 @@
 	    GET & api/subnet/<id> & \\
 	    PUT & api/subnet/<id> & TOUS \\
 	    PATCH & api/subnet/<id> & is\_activated \\
-	    DELETE & api/subnet/<id> & \\ 
+	    DELETE & api/subnet/<id> & \\
 	    \hline
-	    GET & api/exabgp/version & \\
-	    POST & api/exabgp/?<parametre> & commandes \\
+	    POST & api/exabgp/<parametre> & commande exabgp \\
 	    \hline
 	\end{tabulary}
 \end{table}
 \end{frame}
 
 \begin{frame}{Architecture}{Architecture de l'API REST}
-    \includegraphics[width=0.8\textwidth, height=0.7\textwidth]{classes_backend.png}
+    \includegraphics[width=\textwidth, height=0.7\textwidth]{classes_backend.png}
 \end{frame}
 
 \begin{frame}[fragile]{Architecture}{Format JSON}
@@ -35,13 +34,13 @@
               {
                 "communities": [
                   "50:52"
-                ], 
-                "created_at": "2019-02-18T17:38:47", 
-                "id": "5c6adf97f16dda55fcc79151", 
-                "ip": "192.168.0.1", 
-                "is_activated": true, 
-                "last_activation": "2019-02-19T14:52:21", 
-                "modified_at": "2019-02-19T14:52:21", 
+                ],
+                "created_at": "2019-02-18T17:38:47",
+                "id": "5c6adf97f16dda55fcc79151",
+                "ip": "192.168.0.1/32",
+                "is_activated": true,
+                "last_activation": "2019-02-19T14:52:21",
+                "modified_at": "2019-02-19T14:52:21",
                 "next_hop": "1.1.1.1"
               }
           ]
@@ -52,8 +51,8 @@
 \begin{frame}{Architecture}{Diagramme de séquence}
     \begin{figure}
          \centering
-        \includegraphics[width=55mm,height= 0.7\textwidth,scale=0.6]{diagram_seq.PNG}
+        \includegraphics[width=0.8\textwidth,height= 0.65\textwidth]{diagram_seq.PNG}
         \label{fig:my_label}
     \end{figure}
-   
+
 \end{frame}

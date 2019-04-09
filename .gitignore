@@ -10,6 +10,9 @@
 **/*.fls
 **/*.pyg
 **/*.synctex.gz
+**/*.nav
+**/*.snm
+**/*.vrb
 **/__pycache__/
 **/venv
 **/VirtualEnv
